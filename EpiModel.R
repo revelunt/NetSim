@@ -104,6 +104,8 @@ est1 <- netest(sw.net, formation, target.stats, coef.diss,
                set.control.ergm = control.ergm(MCMLE.maxit = 250), edapprox = T)
 est1$fit <- logLik(est1$fit, add = TRUE)
 
+save(est1, file = "est1.rda", compress = "bzip2")
+
 ## network dignostics
 dx <- netdx(est1, nsims = 100, nsteps = max.time,
             ncores = ncores, verbose = T, keep.tedgelist = T)
@@ -156,23 +158,58 @@ control <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "
                        ncores = ncores)
 
 sim1 <- netsim(est1, param, init, control)
-saveRDS(sim1, file = "sim1.SI.model.rds")
-print(sim1);  plot(sim1)
-summary(sim1, at = 500)
+save(sim1, file = "sim1.SI.model.rda", compress = "bzip2")
 
+## load the saved simulations
+load("est1.rda")
+load("sim1.SI.model.rda")
+
+## summary of simulations
+print(sim1)
+summary(sim1, at = 500)
 setDT(sim1DT <- as.data.frame(sim1))
 
-par(mfrow = c(1,2)) ## plot side-by-side, with 95% CIs for 100 simulations
-plot(sim1, y = c("s.num.pidD", "i.num.pidD"), legend = TRUE, popfrac = T, qnts = 0.95); abline(v = 670, lty = 2)
-plot(sim1, y = c("s.num.pidR", "i.num.pidR"), legend = TRUE, popfrac = T, qnts = 0.95); abline(v = 445, lty = 2)
+## overall and party-specific prevalence
+pdf("Prevalence_SI.model.pdf")
+plot(sim1, mean.col = c('grey', "black"), qnts.col = c('grey', "black"),
+     legend = F, popfrac = T, qnts = 0.95)
+abline(v = 103, lty = 2);  text(130, 0.05, "t = 103", col = "black")
+legend("right", legend = c("Infected: overall", "Suspected: overall"), lwd = 3,
+       col = c("black", "grey"), bg = "white", bty = "n")
+#par(mfrow = c(1,2), margin(0, 0, 0, 0)) ## plot side-by-side, with 95% CIs for 100 simulations
+plot(sim1, y = c("s.num.pidD", "i.num.pidD"), mean.col = c('grey', "black"), qnts.col = c('grey', "black"),
+     legend = F, popfrac = T, qnts = 0.95)
+abline(v = 140, lty = 2);  text(170, 0.05, "t = 140", col = "black")
+legend("right", legend = c("Infected: Dem", "Suspected: Dem"), lwd = 3,
+       col = c("black", "grey"), bg = "white", bty = "n")
+plot(sim1, y = c("s.num.pidR", "i.num.pidR"), mean.col = c('grey', "black"), qnts.col = c('grey', "black"),
+     legend = F, popfrac = T, qnts = 0.95)
+abline(v = 68, lty = 2); text(98, 0.05, "t = 68", col = "black")
+legend("right", legend = c("Infected: Rep", "Suspected: Rep"), lwd = 3,
+       col = c("black", "grey"), bg = "white", bty = "n")
 
-par(mfrow = c(1,2), mar = c(0,0,1,0))
-plot(sim1, type = "network", at = 1, sims = "mean", col.status = TRUE, main = "Prevalence at t1")
-plot(sim1, type = "network", at = 500, sims = "mean", col.status = TRUE, main = "Prevalence at t500")
+par(mfrow = c(1,2), mar = c(0,0,0,0))
+
+nw1 <- get_network(sim1, collapse = TRUE, at = 1)
+cols <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", "grey20", "grey50")
+vertex.cex <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", 0.6, 0.4)
+vertex.cex[isolates(nw1)] <- 0.2
+plot(nw1, mode = "fruchtermanreingold", displayisolates = T,
+     vertex.col = cols, vertex.border = "grey60", edge.col = "grey40", vertex.cex = vertex.cex)
+title("Prevalence at t1", line = -2)
+
+nw103 <- get_network(sim1, collapse = TRUE, at = 103)
+cols <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", "grey20", "grey50")
+vertex.cex <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", 0.6, 0.4)
+vertex.cex[isolates(nw103)] <- 0.2
+plot(nw103, mode = "fruchtermanreingold", displayisolates = T,
+     vertex.col = cols, vertex.border = "grey60", edge.col = "grey40", vertex.cex = vertex.cex)
+title("Prevalence at t103", line = -2)
+
 par(mfrow = c(1,1))
-comp_plot(sim1, at = 50, digits = 1)
-comp_plot(sim1, at = 500, digits = 1)
-
+comp_plot(sim1, at = 2, digits = 2)
+comp_plot(sim1, at = 103, digits = 2)
+dev.off()
 
 ## extended SIS model with network structure as a moderator of epidemic process
 ## infection model, SIMPLE EXPOSURE FROM THOSE ALREADY INFECTED
@@ -332,41 +369,64 @@ progress <- function(dat, at) {
   return(dat)
 }
 
-param <- param.net(inf.prob = 0.5, act.rate = 2, ir.rate = 0, tau = 0.5)
+## initial settings: infection prob = 0.16, difference betwwen R vs. D = 0.04 (0.18 vs. 0.14)
+## assumes no recovery from infection (believing misperceptions),
+## and progress to infection from exposure occurs when more than half of one's neighbors also
+## believe the misperception that an ego is exposed to.
+param <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, ir.rate = 0, tau = 0.5)
 init <- init.net(status.vector = status.vector)
 
-control <- control.net(type = "SI", nsteps = 500, nsims = 10, epi.by = "pid",
-                       ncores = 4,
+control <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
+                       ncores = ncores,
                        infection.FUN = infect,
                        progress.FUN = progress,
                        recovery.FUN = NULL, skip.check = TRUE,
                        depend = F, verbose.int = 1)
 
 sim2 <- netsim(est1, param, init, control)
+save(sim2, file = "sim2.SEI.model.rda", compress = "bzip2")
 print(sim2)
 
+# load saved objects
+load("sim2.SEI.model.rda")
+print(sim2)
+
+sim2 <- get.exposed.sim(sim2)
+setDT(sim2DT <- as.data.frame(sim2))
+
 plot(sim2, y = c("s.num.pidD", "i.num.pidD"), legend = TRUE,
-     popfrac = TRUE, mean.smooth = TRUE, qnts = 1)
-plot(sim2, y = c("s.num.pidR", "i.num.pidR"), legend = TRUE,
-     popfrac = TRUE, mean.smooth = TRUE, qnts = 1)
+     popfrac = TRUE, mean.smooth = TRUE, qnts = 0.95)
+
+plot(sim2, y = c("s.num.pidD", "e.num.pidD", "i.num.pidD"),
+     mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
+     legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
+#abline(v = 598, lty = 2);  text(630, 0.05, "t = 598", col = "black")
+legend("right", legend = c("Infected: Dem", "Suspected: Dem", "Exposed: Dem"), lwd = 3,
+       col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+
+plot(sim2, y = c("s.num.pidR", "e.num.pidR", "i.num.pidR"),
+     mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
+     legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
+legend("right", legend = c("Infected: Rep", "Suspected: Rep", "Exposed: Rep"), lwd = 3,
+       col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
 
 ## for some reason, summry function does not work with custom model
 ## see http://statnet.github.io/nme/d3-s2.html#data_extraction for manual data extraction
-summary(sim2, at = 5)
-
-summary.sim2 <- as.data.frame(sim2, out = "vals")
-setDT(summary.sim2)
-summary.sim2[, e.num.pidD := num.pidD - s.num.pidD - i.num.pidD]
-summary.sim2[, e.num.pidR := num.pidR - s.num.pidR - i.num.pidR]
-
-### CHECK THIS CODE ##
-ggplot(summary.sim2, aes(x = time, y = e.num.pidD)) +
-  geom_smooth(method = "auto", colour = "steelblue") +
-  geom_smooth(aes(x = time, y = i.num.pidD), method = "auto", colour = "blue")
-
-ggplot(summary.sim2, aes(x = time, y = e.num.pidR)) +
-  geom_smooth(method = "auto", colour = "firebrick") +
-  geom_smooth(aes(x = time, y = i.num.pidD), method = "auto", colour = "red")
+# summary(sim2, at = 5)
+#
+# summary.sim2 <- as.data.frame(sim2, out = "vals")
+# setDT(summary.sim2)
+# summary.sim2[, e.num.pidD := num.pidD - s.num.pidD - i.num.pidD]
+# summary.sim2[, e.num.pidR := num.pidR - s.num.pidR - i.num.pidR]
+#
+# ### CHECK THIS CODE ##
+# ggplot(summary.sim2, aes(x = time, y = e.num.pidD)) +
+#   geom_smooth(method = "auto", colour = "steelblue") +
+#   geom_smooth(aes(x = time, y = i.num.pidD), method = "auto", colour = "blue")
+#
+# ggplot(summary.sim2, aes(x = time, y = e.num.pidR)) +
+#   geom_smooth(method = "auto", colour = "firebrick") +
+#   geom_smooth(aes(x = time, y = i.num.pidD), method = "auto", colour = "red")
 
 
 ## examine simulated networks over time

@@ -42,3 +42,42 @@ rep.row <- function(x, n) {
 rep.col <- function(x, n) {
   matrix(rep(x, each = n), ncol = n, byrow = TRUE)
 }
+
+
+## function to get no. of "exposed" from netsim object
+
+get.exposed.sim <- function(sim) {
+  if(!(class(sim) == "netsim")) {
+    stop("requires 'netsim' object from EpiModel with custom modules. Check your data...")
+  }
+
+  ninit <- length(sim$epi)
+  epi.by <- sim$control$epi.by
+
+  ## add number of those being exposed
+  vars.to.add <- c("e.num")
+
+  ## if there's "epi.by" arguments
+  if(!(is.null(epi.by) == TRUE)) {
+    category <- names(table(get.vertex.attribute.active(sim$network$sim1,epi.by, at = 1)))
+    ncat <- length(category)
+    vars.to.add <- c(paste(paste(vars.to.add, epi.by, sep = "."), category, sep = ""))
+    base.vars <- names(sim$epi)[grepl("num\\.[[:alpha:]]+", names(sim2$epi))]
+
+    ## add placeholder
+    for (var in vars.to.add) {
+      sim$epi[[var]] <- as.data.frame(matrix(nrow = dim(sim$epi[[1]])[1], ncol = dim(sim$epi[[1]])[2]))
+    }
+
+    ## total n = suspected + exposed + infected
+    ## exposed = total n - (suspected + infected)
+    for (k in seq_len(ncat)) {
+      sim$epi[[ninit + k]] <-
+        sim$epi[[base.vars[k + ncat*2]]] - (sim$epi[[base.vars[k]]] + sim$epi[[base.vars[k + ncat]]])
+    }
+
+
+  }
+  ## return dataset
+  return(sim)
+}

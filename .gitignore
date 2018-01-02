@@ -15,8 +15,8 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
-# anything from netlogo category
-NetLogo 5.3.1/
+# anything from lit subfolder
+Lits/
 
 # Rstudio files
 *.Rproj.user
@@ -31,3 +31,4 @@ NetLogo 5.3.1/
 *.sav
 
 *.history
+*.rda
