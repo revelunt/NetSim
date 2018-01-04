@@ -17,7 +17,7 @@ source("helper-functions.R")
 # (so individuals may transition back and forth between the susceptible and infected states)
 
 # Setup
-# 1. Construct a network (Bernoulli Random Graphs vs. more realistic social networks) with some key covariates
+# 1. Construct a network (Bernoulli Random Graphs vs. small world graphs vs. more realistic social networks) with some key covariates
 # (the overall prevalence of those covariates are taken from previous literature)
 # 2. Choose one person at random, and set him/her and his/her neighbors as
 #    initial adopters
@@ -77,8 +77,20 @@ sw.net <- network::set.vertex.attribute(sw.net, "sophistication", sophistication
 ## Step 1: fit network dynamics ##
 ## ---------------------------- ##
 
-## formation model
-formation <- ~ edges + nodematch("pid") + nodefactor("pid") + concurrent
+formation <- list()
+target.stats <- list()
+coef.diss <- list()
+## formation model for Bernoulli network (assumes	homogeneous	edge probability)
+formation[[1]] <- ~ edges
+
+## formation model for tree-like network (absence of triangles)
+formation[[2]] <- ~ edges + concurrent + degree1.5
+
+## formation model for scale-free network
+formation[[3]] <- ~ edges + concurrent + degrange(2:8)
+
+## formation model for more realistic network, conditioned by party identification
+formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + concurrent + degrange(2:8)
 
 ## for nodematch target statistics: from ANES 2008-2009 Panel Study
 ## see setups.R file for detail.
@@ -89,53 +101,99 @@ formation <- ~ edges + nodematch("pid") + nodefactor("pid") + concurrent
 ## nodematch (assuming 70% within the same pid group,
 ## the product of the number of edges and the probability of a same-group edge = 1500*0.7 = 1050),
 ## for concurrent (separately by pid), assume 35% of ties would have more than two edges,
-## therefore 0.35*nD & 0.35&nR
+## therefore 0.35*nD + 0.35*nR
 ## and degrange (no. of nodes with more than 5 edges, there's none, so 0)
-get.target.stats(nD, nR, 0.66, 0.73, 0.66, 0.26)
-target.stats <- c(792, 578.16, 753.72, 624)
+## get.target.stats(nD, nR, 0.66, 0.73, 0.66, 0.26)
+target.stats[[1]] <- 792
+target.stats[[2]] <- c(792, 438, 2025)
+target.stats[[3]] <- c(792, 285, 280, 72.675, 38.745, 27.605, 17.5, 11.38, 5.3)
+target.stats[[4]] <- c(792, 578.16, 753.72, 285, 280, 72.675, 38.745, 27.605, 17.5, 11.38, 5.3)
 
 ## dissolution model
 ## see http://www.sciencedirect.com/science/article/pii/S0747563216309086#bib55
 ## almost 20% of the respondents reported that they have either hidden other people's comments
 ## or unfriended others because they do not share political views
-coef.diss <- dissolution_coefs(~offset(edges) + offset(nodematch("pid")), duration = c(80, 100))
+coef.diss[[1]] <- dissolution_coefs(~offset(edges), duration = 100)
+coef.diss[[2]] <- dissolution_coefs(~offset(edges), duration = 100)
+coef.diss[[3]] <- dissolution_coefs(~offset(edges), duration = 100)
+coef.diss[[4]] <- dissolution_coefs(~offset(edges) + offset(nodematch("pid")), duration = c(80, 100))
 
-est1 <- netest(sw.net, formation, target.stats, coef.diss,
-               set.control.ergm = control.ergm(MCMLE.maxit = 250), edapprox = T)
-est1$fit <- logLik(est1$fit, add = TRUE)
 
-save(est1, file = "est1.rda", compress = "bzip2")
+## estimate dynamic network models
+est.list <- lapply(1:4, function(i) {
+  est <- netest(sw.net, formation[[i]], target.stats[[i]], coef.diss[[i]],
+         set.control.ergm = control.ergm(MCMLE.maxit = 250), edapprox = T)
+  est$fit <- logLik(est$fit, add = TRUE)
+  est
+})
 
 ## network dignostics
-dx <- netdx(est1, nsims = 100, nsteps = max.time,
-            ncores = ncores, verbose = T, keep.tedgelist = T)
-print(dx)
+dx.list <- lapply(est.list, function(i) {
+  dx <- netdx(i, nsims = 100, nsteps = max.time, ncores = ncores, verbose = T, keep.tedgelist = T)
+  dx
+})
 
-pdf("network target statistics.pdf")
-plot(dx, type = "formation", legend = T)
-#title("formation statistics, N = 100")
+## check the dignostic results
+pdf("network target statistics.pdf", paper = 'a4r')
+for (i in seq_len(length(dx.list))) {
+  dx <- dx.list[[i]]
+  plot(dx, type = "formation", legend = T)
+
+  if (i == 4) {
+    ## for heterogenous dissolution model, automatric plot is not available
+    ## manually recover durations
+    require(data.table)
+    setDT(diss <- dx$tedgelist[[1]])
+    dat1 <- diss[pid[diss$tail] != pid[diss$head], .(time = max.time - onset, duration)]
+    dat2 <- diss[pid[diss$tail] == pid[diss$head], .(time = max.time - onset, duration)]
+
+    require(ggplot2)
+    ## heterogenous ties
+    ggplot(dat1, aes(x = time, y = duration)) +
+      geom_smooth(method = "auto", colour = "grey80", fill = "grey80", alpha = 0.2) +
+      geom_hline(yintercept = 80, linetype = 2) + theme_bw() +
+      ## and homogenous ties
+      geom_smooth(data = dat2, method = "auto", colour = "grey20", fill = "grey20", alpha = 0.2) +
+      geom_hline(yintercept = 100, linetype = 2) + theme_bw() +
+      xlab("time") + ylab("Edge Age")
+  } else {
+    plot(dx, type = "duration")
+    plot(dx, type = "dissolution")
+  }
+}
 dev.off()
-## for heterogenous dissolution model, automatric plot is not available
-plot(dx, type = "duration")
-plot(dx, type = "dissolution")
-
-## manually recover durations
-require(data.table)
-setDT(diss <- dx$tedgelist[[1]])
-dat1 <- diss[pid[diss$tail] != pid[diss$head], .(time = max.time - onset, duration)]
-dat2 <- diss[pid[diss$tail] == pid[diss$head], .(time = max.time - onset, duration)]
-
-require(ggplot2)
-pdf("network target statistics_duration.pdf")
-## heterogenous ties
-ggplot(dat1, aes(x = time, y = duration)) +
-  geom_smooth(method = "auto", colour = "grey80", fill = "grey80", alpha = 0.2) +
-  geom_hline(yintercept = 80, linetype = 2) + theme_bw() +
-## and homogenous ties
-  geom_smooth(data = dat2, method = "auto", colour = "grey20", fill = "grey20", alpha = 0.2) +
-  geom_hline(yintercept = 100, linetype = 2) + theme_bw() +
-  xlab("time") + ylab("Edge Age")
 dev.off()
+
+## plot networks and get some basic stats
+require(igraph)
+require(intergraph)
+
+netstats <- vector(mode = "list", length = 4)
+net.title <- list("Bernoulli network", "Tree network", "Realistic network", "Realistic homophilic network")
+names(netstats) <- net.title
+
+pdf("network.plots.pdf")
+for (i in 1:4) {
+  nw <- simulate.ergm(est.list[[i]]$fit, nsim = 1, seed = 12345)
+  cols <- ifelse(network:::get.vertex.attribute(nw, "pid") == "D", "steelblue", "firebrick")
+  netstats[[i]] <- list("degreedist" = table(network:::get.vertex.attribute(nw, "pid"),
+                                    sna:::degree(nw, gmode = "graph", cmode = "freeman")),
+                        "mixingmatrix" = mixingmatrix(asIgraph(nw), "pid"))
+  vertex.cex <- rep(0.4, nw$gal$n)
+  vertex.cex[sna::isolates(nw)] <- 0.1
+  cols[sna::isolates(nw)] <- "gray80"
+  nw <- asIgraph(nw)
+  V(nw)$size <- vertex.cex*6
+  plot(nw, edge.arrow.size = 0, vertex.label = NA, edge.curved = .1,
+       layout = layout_with_kk, edge.width = 1.5,
+       vertex.color = cols, vertex.frame.color = cols, edge.coloer = "grey30")
+  title(net.title[[i]])
+}
+dev.off()
+
+## save lists
+save(est.list, dx.list, netstats, file = "net_and_dx_list.rda", compress = "bzip2")
+
 
 ## standard SI model
 ## set number of those who infected at the start
@@ -195,7 +253,7 @@ cols <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", "gre
 vertex.cex <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", 0.6, 0.4)
 vertex.cex[isolates(nw1)] <- 0.2
 plot(nw1, mode = "fruchtermanreingold", displayisolates = T,
-     vertex.col = cols, vertex.border = "grey60", edge.col = "grey40", vertex.cex = vertex.cex)
+     vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
 title("Prevalence at t1", line = -2)
 
 nw103 <- get_network(sim1, collapse = TRUE, at = 103)
@@ -203,7 +261,7 @@ cols <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", 
 vertex.cex <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", 0.6, 0.4)
 vertex.cex[isolates(nw103)] <- 0.2
 plot(nw103, mode = "fruchtermanreingold", displayisolates = T,
-     vertex.col = cols, vertex.border = "grey60", edge.col = "grey40", vertex.cex = vertex.cex)
+     vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
 title("Prevalence at t103", line = -2)
 
 par(mfrow = c(1,1))
@@ -394,21 +452,48 @@ print(sim2)
 sim2 <- get.exposed.sim(sim2)
 setDT(sim2DT <- as.data.frame(sim2))
 
-plot(sim2, y = c("s.num.pidD", "i.num.pidD"), legend = TRUE,
-     popfrac = TRUE, mean.smooth = TRUE, qnts = 0.95)
+pdf("Prevalence_SEI.model.pdf")
+plot(sim2, y = c("s.num", "e.num", "i.num"),
+     mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
+     legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
+legend("topright", legend = c("Infected: overall", "Suspected: overall", "Exposed: overall"), lwd = 3,
+       col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
 
 plot(sim2, y = c("s.num.pidD", "e.num.pidD", "i.num.pidD"),
      mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
      legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
-#abline(v = 598, lty = 2);  text(630, 0.05, "t = 598", col = "black")
-legend("right", legend = c("Infected: Dem", "Suspected: Dem", "Exposed: Dem"), lwd = 3,
+legend("topright", legend = c("Infected: Dem", "Suspected: Dem", "Exposed: Dem"), lwd = 3,
        col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
 
 plot(sim2, y = c("s.num.pidR", "e.num.pidR", "i.num.pidR"),
      mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
      legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
-legend("right", legend = c("Infected: Rep", "Suspected: Rep", "Exposed: Rep"), lwd = 3,
+legend("topright", legend = c("Infected: Rep", "Suspected: Rep", "Exposed: Rep"), lwd = 3,
        col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+
+par(mfrow = c(1,2), mar = c(0,0,0,0))
+
+nw1 <- get_network(sim2, collapse = TRUE, at = 1)
+cols <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", "grey20", "grey50")
+vertex.cex <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", 0.6, 0.4)
+vertex.cex[isolates(nw1)] <- 0.2
+plot(nw1, mode = "fruchtermanreingold", displayisolates = T,
+     vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
+title("Prevalence at t1", line = -2)
+
+nw103 <- get_network(sim2, collapse = TRUE, at = 103)
+cols <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", "grey20", "grey50")
+vertex.cex <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", 0.6, 0.4)
+vertex.cex[isolates(nw103)] <- 0.2
+plot(nw103, mode = "fruchtermanreingold", displayisolates = T,
+     vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
+title("Prevalence at t103", line = -2)
+
+par(mfrow = c(1,1))
+comp_plot.SEI(sim2, at = 2, digits = 2)
+comp_plot.SEI(sim2, at = 103, digits = 2)
+dev.off()
+
 
 ## for some reason, summry function does not work with custom model
 ## see http://statnet.github.io/nme/d3-s2.html#data_extraction for manual data extraction
@@ -440,6 +525,120 @@ render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
                displaylabels = FALSE,
                vertex.tooltip = function(slice){paste('name:',slice%v%'vertex.names','<br>',
                                                       'status:', slice%v%'testatus')})
+
+
+## additional module for effects of correction (SEIR model)
+## first module assumes single instances of "random" corrections
+## this can be done by supply the parameter setups for "ir.rate" in param.net
+param <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, ir.rate = 0.08, tau = 0.5)
+control <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
+                       ncores = ncores,
+                       infection.FUN = infect,
+                       progress.FUN = progress,
+                       recovery.FUN = NULL, skip.check = TRUE,
+                       depend = F, verbose.int = 1)
+
+sim3 <- netsim(est1, param, init, control)
+save(sim3, file = "sim3.SEIR.model.rda", compress = "bzip2")
+print(sim3)
+
+
+
+
+
+
+## network-based correction assumes that adoption of correcting information (therefore "recovering" from false beliefs)
+## is more likely when mmultiple corrections are provided by one's immediate social contacts
+## (socially contingent correction of false beliefs)
+## param = correction.prob, recover.prob / in progress module, ir.rate should be set to zero unless random recovery is assumed
+
+recovery.correction <- function(dat, at) {
+
+  active <- dat$attr$active
+  status <- dat$attr$status
+
+  idsSus <- which(active == 1 & status == "s")
+  idsExp <- which(active == 1 & status == "e")
+  idsInf <- which(active == 1 & status == "i")
+  idsRec <- which(active == 1 & status == "r")
+
+  ## recover simulated network at time t and relevant parameter
+  nw <- dat$nw
+
+  correction.prob <- dat$param$correction.prob
+  recover.prob <- dat$param$recover.prob
+
+  ## I to R progression
+  nRec <- 0
+  idsEligRec <- which(active == 1 & status == "i")
+  nEligRec <- length(idsEligRec)
+
+  if (nEligRec > 0) {
+
+    ## see http://statnet.csde.washington.edu/workshops/SUNBELT/current/ndtv/ndtv_workshop.html#transmission-trees-and-constructed-animations
+    ## loop through those who are infected ("idsEligRec")
+    ## for every ego "id_EligRec"
+    for (id_EligRec in idsEligRec){
+
+      ## get alters (based on active freindship ties of "infected" ego
+      active_alters <- get.neighborhood.active(nw, v = id_EligRec, at = at)
+
+      ## if active alters are present
+      if (length(active_alters) > 0) {
+
+        ## counts the number of alters who is exposed but not infected (idsExp) or already recovered (idsRec)
+        nCorrect <- length(active_alters[(active_alters %in% idsExp) | active_alters %in% idsRec])
+
+        ## RANDOM DRAW: n. of alters providing corrections, with probability of sending corrections = correction.prob
+        vecCorrect <- which(rbinom(nCorrect, 1, correction.prob) == 1)
+        nvecCorrect <- length(vecCorrect)
+
+        if (nvecCorrect == 1) {
+
+          ## if only one correction received, the final prob. of recovery is: recover.prob
+          recovered <- (rbinom(1, 1, recover.prob) == 1) ## RANDOM DRAW
+
+        } else if (nvecCorrect > 1) {
+
+          ## for each additional alters providing corrections (=k), it additionally increases the prob of recovery by
+          ## recover.prob + 0.06K - 0.018k^2 (THIS NEEDS TO BE JUSTIFIED...)
+          recover.prob.temp <- recover.prob + 0.06*nvecCorrect - 0.018*(nvecCorrect^2)
+          recovered <- (rbinom(1, 1, recover.prob.temp) == 1) ## RANDOM DRAW
+
+        } else {
+          ## receive no corrections, then recovery is not happening...
+          recovered <- FALSE
+        }
+
+        ## if recovered, increase the counter for nRec and  change to "recovered"
+        if (recovered == TRUE) {
+          nRec <- nRec + 1
+          status[id_EligRec] <- "r"
+        }
+
+      } ## if length(active_alters) == 0, there's no changes in the status
+    }
+  }
+
+
+  if (at == 2) {
+    dat$epi$ir.flow <- c(0, nRec)
+    dat$epi$r.num <- c(0, sum(active == 1 & status == "r"))
+  }
+  else {
+    dat$epi$ir.flow[at] <- nRec
+    dat$epi$r.num[at] <- sum(active == 1 & status == "r")
+  }
+
+  return(dat)
+
+  }
+
+
+
+
+
+
 
 
 
