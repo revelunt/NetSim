@@ -196,7 +196,7 @@ save(est.list, dx.list, netstats, file = "results/net_and_dx_list.rda", compress
 ## Step 2: Standard SI model ##
 ## ------------------------- ##
 
-# load("net_and_dx_list.rda")
+# load("results/net_and_dx_list.rda")
 # rm(dx.list, netstats)
 
 ## set number of those who infected at the start
@@ -265,21 +265,22 @@ find.point.to.plot(sim1.SI.model4)
 
 
 ## overall and party-specific prevalence
-print.plots.pdf(sim1.SI.model1, "Bernoulli", "Prevalence_SI.model1")
-print.plots.pdf(sim1.SI.model2, "tree", "Prevalence_SI.model2")
-print.plots.pdf(sim1.SI.model3, "small-world", "Prevalence_SI.model3")
-print.plots.pdf(sim1.SI.model4, "homophilous", "Prevalence_SI.model4")
+print.plots.pdf(sim1.SI.model1, "Bernoulli", "Prevalence_SI.model1", F)
+print.plots.pdf(sim1.SI.model2, "tree", "Prevalence_SI.model2", F)
+print.plots.pdf(sim1.SI.model3, "small-world", "Prevalence_SI.model3", F)
+print.plots.pdf(sim1.SI.model4, "homophilous", "Prevalence_SI.model4", F)
 
 
 ## -------------------------- ##
-## Step 3: Extended SIS model ##
+## Step 3: Extended SEI model ##
 ## -------------------------- ##
 
 rm(list = ls())
 source("dev/helper-functions.R")
 load("results/net_and_dx_list.rda")
+rm(dx.list, netstats)
 
-## extended SIS model with network structure as a moderator of epidemic process
+## extended SE model with network structure as a moderator of epidemic process
 ## infection model, SIMPLE EXPOSURE FROM THOSE ALREADY INFECTED
 ## MODERATION BY INDIVIDUAL CHARACTERISTIC (SEE AGING MODULE FOR REF)
 ## param: pid.diff.rate (NULL or number between 0 and 1)
@@ -290,6 +291,7 @@ infect <- function(dat, at) {
 
   active <- dat$attr$active
   status <- dat$attr$status
+  tea.status <- dat$control$tea.status
   nw <- dat$nw
 
   idsSus <- which(active == 1 & status == "s")
@@ -329,11 +331,20 @@ infect <- function(dat, at) {
       idsNewInf <- unique(del$sus)
       nInf <- length(idsNewInf)
       if (nInf > 0) {
-        dat$attr$status[idsNewInf] <- "e"
+        status[idsNewInf] <- "e"
         dat$attr$infTime[idsNewInf] <- at
+
+        if (tea.status == TRUE) {
+        ## update network dynamic object
+        nw <- activate.vertex.attribute(nw, prefix = "testatus", value = "e",
+                                            onset = at, terminus = Inf, v = idsNewInf)
+        }
       }
     }
   }
+
+  ## update status for attr dataset
+  dat$attr$status <- status
 
   if (at == 2) {
     dat$epi$se.flow <- c(0, nInf)
@@ -350,10 +361,9 @@ infect <- function(dat, at) {
 ## or pass in a vector with a disease status for each of the nodes in the network.
 ## EpiModel stores the individual-level disease status as a vector of lower-case letters:
 ## “s” for susceptible, “i” for infected, and “r” for recovered.
-## Here, we specify that Republicans (R) has a baseline prevalence of 10% (randomly assigned),
+## Here, we specify that Republicans (R) has a baseline prevalence of 15% (n = 184, randomly assigned),
 ## whereas there are no nodes in Democrats (D) infected.
-
-status.vector <- c(rep(0, n/2), rbinom(n/2, 1, 0.1))
+status.vector <- c(rep(0, nD), rbinom(nR, 1, 0.15))
 status.vector <- ifelse(status.vector == 1, "i", "s")
 
 ## PROGRESSION MODEL
@@ -364,13 +374,14 @@ progress <- function(dat, at) {
 
   active <- dat$attr$active
   status <- dat$attr$status
+  tea.status <- dat$control$tea.status
 
   idsSus <- which(active == 1 & status == "s")
   idsInf <- which(active == 1 & status == "i")
+  idsRec <- which(active == 1 & status == "r")
 
   ## recover simulated network at time t
   nw <- dat$nw
-
   ir.rate <- dat$param$ir.rate
 
   ## E to I progression  ## EXPOSED TO INFECTED
@@ -398,42 +409,31 @@ progress <- function(dat, at) {
         if (t > tau) {
           nInf <- nInf + 1 ## increase the counter for nInf
           status[id_EligInf] <- "i"  ## change to "infected"
+          if (tea.status == TRUE) {
+            ## update network dynamic object
+            nw <- activate.vertex.attribute(nw,
+                                            prefix = "testatus", value = "i",
+                                            onset = at, terminus = Inf, v = id_EligInf)
+          }
         }
       }
     }
   }
 
-  ## I to R progression
-  nRec <- 0
-  idsEligRec <- which(active == 1 & status == "i")
-  nEligRec <- length(idsEligRec)
-
-  if (nEligRec > 0) {
-
-    vecRec <- which(rbinom(nEligRec, 1, ir.rate) == 1) ## RANDOM DRAW
-
-    if (length(vecRec) > 0) {
-      idsRec <- idsEligRec[vecRec]
-      nRec <- length(idsRec)
-      status[idsRec] <- "r"
-    }
-  }
-
+  ## update status for attr dataset
   dat$attr$status <- status
 
   if (at == 2) {
     dat$epi$ei.flow <- c(0, nInf)
-    dat$epi$ir.flow <- c(0, nRec)
     dat$epi$e.num <- c(0, sum(active == 1 & status == "e"))
     dat$epi$r.num <- c(0, sum(active == 1 & status == "r"))
   }
   else {
     dat$epi$ei.flow[at] <- nInf
-    dat$epi$ir.flow[at] <- nRec
     dat$epi$e.num[at] <- sum(active == 1 & status == "e")
     dat$epi$r.num[at] <- sum(active == 1 & status == "r")
   }
-
+  dat$nw <- nw
   return(dat)
 }
 
@@ -441,85 +441,80 @@ progress <- function(dat, at) {
 ## assumes no recovery from infection (believing misperceptions),
 ## and progress to infection from exposure occurs when more than half of one's neighbors also
 ## believe the misperception that an ego is exposed to.
-param <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, ir.rate = 0, tau = 0.5)
+param <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5)
 init <- init.net(status.vector = status.vector)
 
-control <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
+control2 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
                        ncores = ncores,
                        infection.FUN = infect,
                        progress.FUN = progress,
                        recovery.FUN = NULL, skip.check = TRUE,
-                       depend = F, verbose.int = 1)
+                       depend = F, verbose.int = 1, save.other = "attr")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim2.SEI.model1 <- netsim(est.list[[1]], param, init, control)
+sim2.SEI.model1 <- netsim(est.list[[1]], param, init, control2)
 save(sim2.SEI.model1, file = "results/sim2.SEI.model1.rda")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim2.SEI.model2 <- netsim(est.list[[2]], param, init, control)
+sim2.SEI.model2 <- netsim(est.list[[2]], param, init, control2)
 save(sim2.SEI.model2, file = "results/sim2.SEI.model2.rda")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim2.SEI.model3 <- netsim(est.list[[3]], param, init, control)
+sim2.SEI.model3 <- netsim(est.list[[3]], param, init, control2)
 save(sim2.SEI.model3, file = "results/sim2.SEI.model3.rda")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim2.SEI.model4 <- netsim(est.list[[4]], param, init, control)
+sim2.SEI.model4 <- netsim(est.list[[4]], param, init, control2)
 save(sim2.SEI.model4, file = "results/sim2.SEI.model4.rda")
 
 
-# load saved objects
-load("sim2.SEI.model.rda")
-print(sim2)
+## load the saved simulations
+load("results/net_and_dx_list.rda")
+load("results/sim2.SEI.model1.rda")
+load("results/sim2.SEI.model2.rda")
+load("results/sim2.SEI.model3.rda")
+load("results/sim2.SEI.model4.rda")
 
-sim2 <- get.exposed.sim(sim2)
-setDT(sim2DT <- as.data.frame(sim2))
+## summary of simulations (using first simulation as an example)
+print(sim2.SEI.model1)
+summary(sim2.SEI.model1, at = 500)
 
-pdf("Prevalence_SEI.model.pdf")
-plot(sim2, y = c("s.num", "e.num", "i.num"),
-     mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
-     legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
-legend("topright", legend = c("Infected: overall", "Suspected: overall", "Exposed: overall"), lwd = 3,
-       col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+## convert to data.frame for further processing
+sim2.SEI.model1 <- get.exposed.sim(sim2.SEI.model1)
+setDT(model1DT <- as.data.frame(sim2.SEI.model1))
+find.point.to.plot(sim2.SEI.model1)
+# overall   timeD   timeR
+# 466       494     430
 
-plot(sim2, y = c("s.num.pidD", "e.num.pidD", "i.num.pidD"),
-     mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
-     legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
-legend("topright", legend = c("Infected: Dem", "Suspected: Dem", "Exposed: Dem"), lwd = 3,
-       col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+sim2.SEI.model2 <- get.exposed.sim(sim2.SEI.model2)
+setDT(model2DT <- as.data.frame(sim2.SEI.model2))
+find.point.to.plot(sim2.SEI.model2)
+# overall  timeD   timeR
+# 458      487     421
 
-plot(sim2, y = c("s.num.pidR", "e.num.pidR", "i.num.pidR"),
-     mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
-     legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
-legend("topright", legend = c("Infected: Rep", "Suspected: Rep", "Exposed: Rep"), lwd = 3,
-       col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+sim2.SEI.model3 <- get.exposed.sim(sim2.SEI.model3)
+setDT(model3DT <- as.data.frame(sim2.SEI.model3))
+find.point.to.plot(sim2.SEI.model3)
+# overall  timeD   timeR
+# 506      537     466
 
-par(mfrow = c(1,2), mar = c(0,0,0,0))
+sim2.SEI.model4 <- get.exposed.sim(sim2.SEI.model4)
+setDT(model4DT <- as.data.frame(sim2.SEI.model4))
+find.point.to.plot(sim2.SEI.model4)
+# overall   timeD   timeR
+# 399       447     334
 
-nw1 <- get_network(sim2, collapse = TRUE, at = 1)
-cols <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", "grey20", "grey50")
-vertex.cex <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", 0.6, 0.4)
-vertex.cex[isolates(nw1)] <- 0.2
-plot(nw1, mode = "fruchtermanreingold", displayisolates = T,
-     vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
-title("Prevalence at t1", line = -2)
+## overall and party-specific prevalence
+print.plots.pdf(sim2.SEI.model1, "Bernoulli", "Prevalence_SEI.model1", include.exposed = T)
+print.plots.pdf(sim2.SEI.model2, "tree", "Prevalence_SEI.model2", T)
+print.plots.pdf(sim2.SEI.model3, "small-world", "Prevalence_SEI.model3", T)
+print.plots.pdf(sim2.SEI.model4, "homophilous", "Prevalence_SEI.model4", T)
 
-nw103 <- get_network(sim2, collapse = TRUE, at = 103)
-cols <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", "grey20", "grey50")
-vertex.cex <- ifelse(get.vertex.attribute.active(nw103, "testatus", at = 103) == "i", 0.6, 0.4)
-vertex.cex[isolates(nw103)] <- 0.2
-plot(nw103, mode = "fruchtermanreingold", displayisolates = T,
-     vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
-title("Prevalence at t103", line = -2)
 
-par(mfrow = c(1,1))
-comp_plot.SEI(sim2, at = 2, digits = 2)
-comp_plot.SEI(sim2, at = 103, digits = 2)
-dev.off()
 
 
 ## for some reason, summry function does not work with custom model
@@ -543,8 +538,8 @@ dev.off()
 
 ## examine simulated networks over time
 require(ndtv)
-nw10 <- get_network(sim2, sim = 10)
-nw10 %n% "slice.par" <- list(start = 1, end = 120, interval = 10, aggregate.dur = 1, rule = 'latest')
+nw10 <- get_network(sim2.SEI.model1, sim = 10)
+nw10 %n% "slice.par" <- list(start = 1, end = 1000, interval = 50, aggregate.dur = 1, rule = 'latest')
 compute.animation(nw10, animation.mode = 'MDSJ', chain.direction = 'reverse', verbose = FALSE)
 render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
                edge.col = "darkgrey",
@@ -556,16 +551,16 @@ render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
 
 ## additional module for effects of correction (SEIR model)
 ## first module assumes single instances of "random" corrections
-## this can be done by supply the parameter setups for "ir.rate" in param.net
-param <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, ir.rate = 0.08, tau = 0.5)
-control <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
+## this can be done by supply the parameter setups for "rec.rate" in param.net and set the model type to SIR
+param <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5, rec.rate = 0.08)
+control <- control.net(type = "SIR", nsteps = max.time, nsims = nsims, epi.by = "pid",
                        ncores = ncores,
                        infection.FUN = infect,
                        progress.FUN = progress,
-                       recovery.FUN = NULL, skip.check = TRUE,
+                       skip.check = TRUE,
                        depend = F, verbose.int = 1)
 
-sim3 <- netsim(est1, param, init, control)
+test <- netsim(est.list[[4]], param, init, control)
 save(sim3, file = "sim3.SEIR.model.rda", compress = "bzip2")
 print(sim3)
 
