@@ -1,5 +1,15 @@
 
 ## helper functions
+## parameters
+nD <- 1258
+nR <- 1142
+n <- nD + nR
+tau <- 2 / 3
+max.time <- 1000 ## time unit is a day
+nsims <- 100 ## no. of replicated simulations
+
+## set no. of cores
+ncores <- parallel::detectCores(logical = F)
 
 ## function to generate normal truncated distribution
 ## given M, SD, min, and max
@@ -168,4 +178,102 @@ mixingmatrix <- function(nw, attr, use.density = TRUE) {
   # if undirected, set lower diagonal to NaN (upper diagonal is the heterophilous ties)
   if (!isTRUE(is_directed(nw))) mm[lower.tri(mm, diag = FALSE)] <- NaN
   mm
+}
+
+
+## function to find the point of which s.num == i.num from object class netsim
+
+find.point.to.plot <- function(netsim) {
+
+  setDT(modelDT <- as.data.frame(netsim))
+  overall <- modelDT[s.num - i.num < 0.05, time][1] - 1
+
+    timeD <- modelDT[s.num.pidD - i.num.pidD < 0.05, time][1] - 1
+    timeR <- modelDT[s.num.pidR - i.num.pidR < 0.05, time][1] - 1
+    time <- c(overall = overall, timeD = timeD, timeR = timeR)
+
+    return(time)
+}
+
+## function to print prevalence, network, and compartment plots from netsim into one pdf
+print.plots.pdf <- function(netsim,
+                        network.type = c("Bernoulli", "tree", "small-world", "homophilous"),
+                        plot.title,
+                        include.exposed = F
+                        ) {
+
+  cutoff <- find.point.to.plot(netsim)
+  titles <- c(paste("Overall prevalence,", network.type, "network", sep = " "),
+              paste("Prevalence among", c("Democrats,", "Republicans,"),  network.type, "network", sep = " "))
+
+  pdf(paste0(plot.title, ".pdf"), width = 8, height = 10)
+  par(mfrow = c(3,1), margin(0, 0, 0, 0))
+
+  if (include.exposed == T) {
+    plot(netsim, y = c("s.num", "e.num", "i.num"),
+         mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
+         legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
+    legend("topright", legend = c("Infected: overall", "Suspected: overall", "Exposed: overall"), lwd = 3,
+           col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+
+    plot(netsim, y = c("s.num.pidD", "e.num.pidD", "i.num.pidD"),
+         mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
+         legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
+    legend("topright", legend = c("Infected: Dem", "Suspected: Dem", "Exposed: Dem"), lwd = 3,
+           col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+
+    plot(netsim, y = c("s.num.pidR", "e.num.pidR", "i.num.pidR"),
+         mean.col = c('grey90', "grey50", "black"), qnts.col = c('grey90', "grey50", "black"),
+         legend = F, popfrac = T, mean.smooth = T, qnts = 0.95)
+    legend("topright", legend = c("Infected: Rep", "Suspected: Rep", "Exposed: Rep"), lwd = 3,
+           col = c("black", "grey90", "grey50"), bg = "white", bty = "n")
+  } else {
+    plot(netsim, mean.col = c('grey', "black"), qnts.col = c('grey', "black"),
+         legend = F, popfrac = T, qnts = 0.95)
+    abline(v = cutoff[1], lty = 2); text(cutoff[1] - 35, 0.05, paste0("t = ", cutoff[1]), col = "black")
+    legend("right", legend = c("Infected: overall", "Suspected: overall"), lwd = 3,
+           col = c("black", "grey"), bg = "white", bty = "n"); title(titles[1])
+
+    plot(netsim, y = c("s.num.pidD", "i.num.pidD"), mean.col = c('grey', "black"), qnts.col = c('grey', "black"),
+         legend = F, popfrac = T, qnts = 0.95)
+    abline(v = cutoff[2], lty = 2);  text(cutoff[2] - 35, 0.05, paste0("t = ", cutoff[2]), col = "black")
+    legend("right", legend = c("Infected: Dem", "Suspected: Dem"), lwd = 3,
+           col = c("black", "grey"), bg = "white", bty = "n"); title(titles[2])
+
+    plot(netsim, y = c("s.num.pidR", "i.num.pidR"), mean.col = c('grey', "black"), qnts.col = c('grey', "black"),
+         legend = F, popfrac = T, qnts = 0.95)
+    abline(v = cutoff[3], lty = 2);  text(cutoff[3] - 35, 0.05, paste0("t = ", cutoff[3]), col = "black")
+    legend("right", legend = c("Infected: Rep", "Suspected: Rep"), lwd = 3,
+           col = c("black", "grey"), bg = "white", bty = "n"); title(titles[3])
+  }
+
+  par(mfrow = c(1,2), mar = c(0,0,0,0))
+
+  nw1 <- get_network(netsim, collapse = TRUE, at = 1)
+  cols <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", "grey20", "grey50")
+  vertex.cex <- ifelse(get.vertex.attribute.active(nw1, "testatus", at = 1) == "i", 0.6, 0.4)
+  vertex.cex[isolates(nw1)] <- 0.2
+  plot(nw1, mode = "fruchtermanreingold", displayisolates = T,
+       vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
+  title("Prevalence at t1", line = -1)
+
+  nw2 <- get_network(netsim, collapse = TRUE, at = cutoff[1])
+  cols <- ifelse(get.vertex.attribute.active(nw2, "testatus", at = cutoff[1]) == "i", "grey20", "grey50")
+  vertex.cex <- ifelse(get.vertex.attribute.active(nw2, "testatus", at = cutoff[1]) == "i", 0.6, 0.4)
+  vertex.cex[isolates(nw2)] <- 0.2
+  plot(nw2, mode = "fruchtermanreingold", displayisolates = T,
+       vertex.col = cols, vertex.border = cols, edge.col = "grey40", vertex.cex = vertex.cex)
+  title(paste0("Prevalence at t", cutoff[1]), line = -1)
+
+  par(mfrow = c(1,1))
+  if (include.exposed == T) {
+    comp_plot.SEI(netsim, at = 2, digits = 2)
+    comp_plot.SEI(netsim, at = cutoff[1], digits = 2)
+  } else {
+    comp_plot(netsim, at = 2, digits = 2)
+    comp_plot(netsim, at = cutoff[1], digits = 2)
+  }
+
+  dev.off()
+  on.exit(par(ops))
 }
