@@ -4,7 +4,7 @@
 nD <- 1258
 nR <- 1142
 n <- nD + nR
-tau <- 2 / 3
+tau <- 0.5
 max.time <- 1000 ## time unit is a day
 nsims <- 100 ## no. of replicated simulations
 
@@ -52,46 +52,6 @@ rep.row <- function(x, n) {
 rep.col <- function(x, n) {
   matrix(rep(x, each = n), ncol = n, byrow = TRUE)
 }
-
-
-## function to get no. of "exposed" from netsim object
-
-get.exposed.sim <- function(netsim) {
-  if(!(class(netsim) == "netsim")) {
-    stop("requires 'netsim' object from EpiModel with custom modules. Check your data...")
-  }
-
-  ninit <- length(netsim$epi)
-  epi.by <- netsim$control$epi.by
-
-  ## add number of those being exposed
-  vars.to.add <- c("e.num")
-
-  ## if there's "epi.by" arguments
-  if(!(is.null(epi.by) == TRUE)) {
-    category <- names(table(get.vertex.attribute.active(netsim$network$sim1,epi.by, at = 1)))
-    ncat <- length(category)
-    vars.to.add <- c(paste(paste(vars.to.add, epi.by, sep = "."), category, sep = ""))
-    base.vars <- names(netsim$epi)[grepl("num\\.[[:alpha:]]+", names(netsim$epi))]
-
-    ## add placeholder
-    for (var in vars.to.add) {
-      netsim$epi[[var]] <- as.data.frame(matrix(nrow = dim(netsim$epi[[1]])[1], ncol = dim(netsim$epi[[1]])[2]))
-    }
-
-    ## total n = suspected + exposed + infected
-    ## exposed = total n - (suspected + infected)
-    for (k in seq_len(ncat)) {
-      netsim$epi[[ninit + k]] <-
-        netsim$epi[[base.vars[k + ncat*2]]] - (netsim$epi[[base.vars[k]]] + netsim$epi[[base.vars[k + ncat]]])
-    }
-
-
-  }
-  ## return dataset
-  return(netsim)
-}
-
 
 
 ## function to create compartment plot for SEI class model

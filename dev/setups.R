@@ -116,7 +116,7 @@ anespanel0809[pid %in% 1:2, mean(n_partisan_alter)] / 3 ## = 0.66
 ## Fake news spread and consumption
 require(haven)
 require(data.table)
-FN.Pew <- read_spss("FNdata_Pew.sav")
+FN.Pew <- read_spss("dev/FNdata_Pew.sav")
 setDT(FN.Pew)
 
 ## get PID of respondents (including leaners)
