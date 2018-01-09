@@ -228,3 +228,15 @@ print.plots.pdf <- function(netsim,
   dev.off()
   on.exit(par(ops))
 }
+
+## function to get mean and 95% CIs as a data.frame
+## param: 'netsim' a object class netsim
+## param: 'qvals' a vector of length 2, quantiles to probe level of CIs
+get.summary.stats <- function(netsim, qvals = c(0.025, 0.975)) {
+  col.names <- colnames(as.data.frame(netsim))[-1]
+  modelDT <- Reduce(function(x, y) merge(x, y, by = "time"), list(as.data.frame(netsim, out = "mean"),
+                                                                   as.data.frame(netsim, out = "qnt", qval = qvals[1]),
+                                                                   as.data.frame(netsim, out = "qnt", qval = qvals[2])))
+  colnames(modelDT) <- c("time", paste(rep(col.names, 3), c("mean", "llci", "ulci"), sep = "."))
+  modelDT
+}

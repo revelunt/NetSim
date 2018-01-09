@@ -222,25 +222,15 @@ param1 <- param.net(inf.prob = 0.16, act.rate = 2)
 control1 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
                        ncores = ncores)
 
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim1.SI.model1 <- netsim(est.list[[1]], param1, init, control1)
-save(sim1.SI.model1, file = "results/sim1.SI.model1.rda")
-
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim1.SI.model2 <- netsim(est.list[[2]], param1, init, control1)
-save(sim1.SI.model2, file = "results/sim1.SI.model2.rda")
-
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim1.SI.model3 <- netsim(est.list[[3]], param1, init, control1)
-save(sim1.SI.model3, file = "results/sim1.SI.model3.rda")
-
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim1.SI.model4 <- netsim(est.list[[4]], param1, init, control1)
-save(sim1.SI.model4, file = "results/sim1.SI.model4.rda")
+require(pbapply)
+pblapply(seq_len(length(est.list)), function(i) {
+  dat.name <- paste0("sim1.SI.model", i)
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(542435)
+  out <- netsim(est.list[[i]], param1, init, control1)
+  assign(dat.name, out)
+  save(dat.name, file = paste0('results/', dat.name, ".rda"))
+})
 
 
 ## load the saved simulations
@@ -255,19 +245,19 @@ print(sim1.SI.model1)
 summary(sim1.SI.model1, at = 500)
 
 ## convert to data.frame for further processing
-setDT(model1DT <- as.data.frame(sim1.SI.model1))
+setDT(model1DT.SI <- get.summary.stats(sim1.SI.model1)); model1DT.SI
 find.point.to.plot(sim1.SI.model1)
 
-setDT(model2DT <- as.data.frame(sim1.SI.model2))
+setDT(model2DT.SI <- get.summary.stats(sim1.SI.model2)); model2DT.SI
 find.point.to.plot(sim1.SI.model2)
 
-setDT(model3DT <- as.data.frame(sim1.SI.model3))
+setDT(model3DT.SI <- get.summary.stats(sim1.SI.model3)); model3DT.SI
 find.point.to.plot(sim1.SI.model3)
 
-setDT(model4DT <- as.data.frame(sim1.SI.model4))
+setDT(model4DT.SI <- get.summary.stats(sim1.SI.model4)); model4DT.SI
 find.point.to.plot(sim1.SI.model4)
 
-
+save(model1DT.SI, model2DT.SI, model3DT.SI, model4DT.SI, file = "results/sim1.SI.data.table.rda")
 ## overall and party-specific prevalence
 print.plots.pdf(sim1.SI.model1, "Bernoulli", "Prevalence_SI.model1", F)
 print.plots.pdf(sim1.SI.model2, "tree", "Prevalence_SI.model2", F)
@@ -551,26 +541,15 @@ control2 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = 
                        skip.check = TRUE,
                        depend = F, verbose.int = 1, save.other = "attr")
 
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim2.SEI.model1 <- netsim(est.list[[1]], param2, init, control2)
-save(sim2.SEI.model1, file = "results/sim2.SEI.model1.rda")
-
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim2.SEI.model2 <- netsim(est.list[[2]], param2, init, control2)
-save(sim2.SEI.model2, file = "results/sim2.SEI.model2.rda")
-
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim2.SEI.model3 <- netsim(est.list[[3]], param2, init, control2)
-save(sim2.SEI.model3, file = "results/sim2.SEI.model3.rda")
-
-RNGkind("L'Ecuyer-CMRG")
-set.seed(542435)
-sim2.SEI.model4 <- netsim(est.list[[4]], param2, init, control2)
-save(sim2.SEI.model4, file = "results/sim2.SEI.model4.rda")
-
+require(pbapply)
+pblapply(seq_len(length(est.list)), function(i) {
+  dat.name <- paste0("test.sim2.SEI.model", i)
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(542435)
+  out <- netsim(est.list[[i]], param2, init, control2)
+  assign(dat.name, out)
+  save(dat.name, file = paste0('results/', dat.name, ".rda"))
+})
 
 ## load the saved simulations
 load("results/net_and_dx_list.rda")
@@ -584,26 +563,27 @@ print(sim2.SEI.model1)
 summary(sim2.SEI.model1, at = 500)
 
 ## convert to data.frame for further processing
-setDT(model1DT <- as.data.frame(sim2.SEI.model1))
+setDT(model1DT.SEI <- get.summary.stats(sim2.SEI.model1)); model1DT.SEI
 find.point.to.plot(sim2.SEI.model1)
 # overall   timeD   timeR
 # 466       494     430
 
-setDT(model2DT <- as.data.frame(sim2.SEI.model2))
+setDT(model2DT.SEI <- get.summary.stats(sim2.SEI.model2)); model2DT.SEI
 find.point.to.plot(sim2.SEI.model2)
 # overall  timeD   timeR
 # 458      487     421
 
-setDT(model3DT <- as.data.frame(sim2.SEI.model3))
+setDT(model3DT.SEI <- get.summary.stats(sim2.SEI.model3)); model3DT.SEI
 find.point.to.plot(sim2.SEI.model3)
 # overall  timeD   timeR
 # 506      537     466
 
-setDT(model4DT <- as.data.frame(sim2.SEI.model4))
+setDT(model4DT.SEI <- get.summary.stats(sim2.SEI.model4)); model4DT.SEI
 find.point.to.plot(sim2.SEI.model4)
 # overall   timeD   timeR
 # 399       447     334
 
+save(model1DT.SEI, model2DT.SEI, model3DT.SEI, model4DT.SEI, file = "results/sim2.SEI.data.table.rda")
 ## overall and party-specific prevalence
 print.plots.pdf(sim2.SEI.model1, "Bernoulli", "Prevalence_SEI.model1", include.exposed = T)
 print.plots.pdf(sim2.SEI.model2, "tree", "Prevalence_SEI.model2", T)
