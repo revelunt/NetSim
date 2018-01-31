@@ -1,7 +1,7 @@
 
 ## simulation with epimodel
 ## install EpiModel and other required libraries if not already installed
-list.of.packages <- c("EpiModel", "Rcpp","ergm","btergm","texreg","rstudioapi","data.table", "haven", "networkDynamic", "intergraph")
+list.of.packages <- c("pbapply","EpiModel", "Rcpp","ergm","btergm","texreg","rstudioapi","data.table", "haven", "networkDynamic", "intergraph", "ape")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, dependencies = T)
 
@@ -302,7 +302,7 @@ infect <- function(dat, at) {
   }
 
   if (nElig > 0 && nElig < nActive) {
-    del <- discord_edgelist(dat, idsInf, idsSus, at)
+    del <- discord_edgelist(dat, at)
     if (!(is.null(del))) {
       ## if partisan differences in infection probabilities are assumed
       if (!is.null(individual.diff.rate)) {
@@ -614,11 +614,13 @@ render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
 ## this can be done by supply the parameter setups for "rec.rate" in param.net and set the model type to SIR
 ## but we need to change the default recovery module to accomodate delayed recovery.
 ## here we assume an arbitrary number of 168 for "when" corrections are introduced in the network (rec.start).
-## The recovery rate implies that the average duration of disease is 168 hours (7 days)
-## (The recovery rate is the reciprocal of the disease duration: 1/168 = 0.005952381)
+## The recovery rate implies that the average duration of disease is 336 hours (14 days),
+## meaning on average, those who are infected are randomly receive corrections after 14 days,
+## and they recover from the infected status
+## (The recovery rate is the reciprocal of the disease duration: 1/336 = 0.00297619)
 param3 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
-                    rec.rate = 0.005952381, rec.start = 168)
-
+                    rec.rate = 0.00297619, rec.start = 168)
+init <- init.net(status.vector = status.vector)
 ## revised module for recovery process
 ## this assumes homogenous recovery after average duration
 recovery.delayed.random <- function (dat, at) {
@@ -671,7 +673,7 @@ recovery.delayed.random <- function (dat, at) {
 
     if (nElig > 0) {
       if (rec.rand == TRUE) {
-        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1)
+        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1) ## randomly recover from the infection status..
         if (length(vecRecov) > 0) {
           idsRecov <- idsElig[vecRecov]
           nRecov <- sum(mode[idsRecov] == 1)
@@ -986,7 +988,7 @@ my.inf.mod <- function(dat, at) {
   if (nElig > 0 && nElig < nActive) {
 
     # Get discordant edgelist
-    del <- discord_edgelist(dat, idsInf, idsSus, at)
+    del <- discord_edgelist(dat, at)
 
     # If some discordant edges, then proceed
     if (!(is.null(del))) {
