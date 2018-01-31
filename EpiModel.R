@@ -586,9 +586,9 @@ find.point.to.plot(sim2.SEI.model4)
 save(model1DT.SEI, model2DT.SEI, model3DT.SEI, model4DT.SEI, file = "results/sim2.SEI.data.table.rda")
 ## overall and party-specific prevalence
 print.plots.pdf(sim2.SEI.model1, "Bernoulli", "Prevalence_SEI.model1", include.exposed = T)
-print.plots.pdf(sim2.SEI.model2, "tree", "Prevalence_SEI.model2", T)
-print.plots.pdf(sim2.SEI.model3, "small-world", "Prevalence_SEI.model3", T)
-print.plots.pdf(sim2.SEI.model4, "homophilous", "Prevalence_SEI.model4", T)
+print.plots.pdf(sim2.SEI.model2, "tree", "Prevalence_SEI.model2", include.exposed = T)
+print.plots.pdf(sim2.SEI.model3, "small-world", "Prevalence_SEI.model3", include.exposed = T)
+print.plots.pdf(sim2.SEI.model4, "homophilous", "Prevalence_SEI.model4", include.exposed = T)
 
 
 ## cf. examine simulated networks over time
@@ -608,6 +608,10 @@ render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
 ## Step 4: SEIR model ##
 ## ------------------ ##
 
+rm(list = ls())
+source("dev/helper-functions.R")
+source("dev/step.4.prep.R")
+
 ## module for effects of correction (SEIR model)
 ## this module assumes single instances of "random" corrections
 ## but introduced later in the time step
@@ -621,6 +625,7 @@ render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
 param3 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
                     rec.rate = 0.00297619, rec.start = 168)
 init <- init.net(status.vector = status.vector)
+
 ## revised module for recovery process
 ## this assumes homogenous recovery after average duration
 recovery.delayed.random <- function (dat, at) {
@@ -749,7 +754,15 @@ control3 <- control.net(type = "SIR", nsteps = max.time, nsims = nsims, epi.by =
                         skip.check = TRUE,
                         depend = F, verbose.int = 1)
 
-
+require(pbapply)
+pblapply(seq_len(length(est.list)), function(i) {
+  dat.name <- paste0("sim4.SEIR.model", i)
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(542435)
+  out <- netsim(est.list[[i]], param3, init, control3)
+  assign(dat.name, out)
+  save(dat.name, file = paste0('results/', dat.name, ".rda"))
+})
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)

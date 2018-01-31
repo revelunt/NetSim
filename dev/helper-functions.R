@@ -240,3 +240,9 @@ get.summary.stats <- function(netsim, qvals = c(0.025, 0.975)) {
   colnames(modelDT) <- c("time", paste(rep(col.names, 3), c("mean", "llci", "ulci"), sep = "."))
   modelDT
 }
+
+
+## sourcing specific lines from the .R syntax
+source_lines <- function(file, lines){
+  source(textConnection(readLines(file)[lines]))
+}
