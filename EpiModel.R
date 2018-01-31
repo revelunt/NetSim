@@ -541,15 +541,27 @@ control2 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = 
                        skip.check = TRUE,
                        depend = F, verbose.int = 1, save.other = "attr")
 
-require(pbapply)
-pblapply(seq_len(length(est.list)), function(i) {
-  dat.name <- paste0("test.sim2.SEI.model", i)
-  RNGkind("L'Ecuyer-CMRG")
-  set.seed(542435)
-  out <- netsim(est.list[[i]], param2, init, control2)
-  assign(dat.name, out)
-  save(dat.name, file = paste0('results/', dat.name, ".rda"))
-})
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim2.SEI.model1 <- netsim(est.list[[1]], param2, init, control2)
+save(sim3.SEI.model1, file = "results/sim2.SEI.model1.rda")
+
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim2.SEI.model2 <- netsim(est.list[[2]], param2, init, control2)
+save(sim3.SEI.model2, file = "results/sim2.SEI.model2.rda")
+
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim2.SEI.model3 <- netsim(est.list[[3]], param2, init, control2)
+save(sim3.SEI.model3, file = "results/sim2.SEI.model3.rda")
+
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim2.SEI.model4 <- netsim(est.list[[4]], param2, init, control2)
+save(sim3.SEI.model4, file = "results/sim2.SEI.model4.rda")
+
+
 
 ## load the saved simulations
 load("results/net_and_dx_list.rda")
@@ -625,7 +637,6 @@ source("dev/step.4.prep.R")
 param3 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
                     rec.rate = 0.00297619, rec.start = 168)
 init <- init.net(status.vector = status.vector)
-
 ## revised module for recovery process
 ## this assumes homogenous recovery after average duration
 recovery.delayed.random <- function (dat, at) {
@@ -753,16 +764,6 @@ control3 <- control.net(type = "SIR", nsteps = max.time, nsims = nsims, epi.by =
                         get_prev.FUN = get_prev.exposed.included,
                         skip.check = TRUE,
                         depend = F, verbose.int = 1)
-
-require(pbapply)
-pblapply(seq_len(length(est.list)), function(i) {
-  dat.name <- paste0("sim4.SEIR.model", i)
-  RNGkind("L'Ecuyer-CMRG")
-  set.seed(542435)
-  out <- netsim(est.list[[i]], param3, init, control3)
-  assign(dat.name, out)
-  save(dat.name, file = paste0('results/', dat.name, ".rda"))
-})
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
