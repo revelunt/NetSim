@@ -234,10 +234,20 @@ print.plots.pdf <- function(netsim,
 ## param: 'qvals' a vector of length 2, quantiles to probe level of CIs
 get.summary.stats <- function(netsim, qvals = c(0.025, 0.975)) {
   col.names <- colnames(as.data.frame(netsim))[-1]
-  modelDT <- Reduce(function(x, y) merge(x, y, by = "time"), list(as.data.frame(netsim, out = "mean"),
-                                                                   as.data.frame(netsim, out = "qnt", qval = qvals[1]),
-                                                                   as.data.frame(netsim, out = "qnt", qval = qvals[2])))
-  colnames(modelDT) <- c("time", paste(rep(col.names, 3), c("mean", "llci", "ulci"), sep = "."))
+
+  dat.mean <- as.data.frame(netsim, out = "mean")
+  colnames(dat.mean) <- c("time", paste(col.names, "mean", sep = "."))
+
+  dat.llci <- as.data.frame(netsim, out = "qnt", qval = qvals[1])
+  colnames(dat.llci) <- c("time", paste(col.names, "llci", sep = "."))
+
+  dat.ulci <- as.data.frame(netsim, out = "qnt", qval = qvals[2])
+  colnames(dat.ulci) <- c("time", paste(col.names, "ulci", sep = "."))
+
+  modelDT <- Reduce(function(x, y) merge(x, y, by = "time"), list(dat.mean,
+                                                                  dat.llci,
+                                                                  dat.ulci))
+  data.table::setDT(modelDT)
   modelDT
 }
 

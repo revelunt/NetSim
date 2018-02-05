@@ -790,20 +790,44 @@ save(sim3.SEI.model4, file = "results/sim3.SEIR.model4.rda")
 ## network-based correction assumes that adoption of correcting information (therefore "recovering" from false beliefs)
 ## is more likely when mmultiple corrections are provided by one's immediate social contacts
 ## (socially contingent correction of false beliefs)
-## set param = "correction.prob", "recover.prob" in param for progress module,
-## and "rec.rate" should be set to NULL unless (additional) random recovery is assumed
+## set param = "correction.prob", "rec.rate" in param for progress module,
+## and "rec.rate" should be set to baseline, which then modified by the number of alters who sends correction
 
 recovery.correction <- function(dat, at) {
 
   active <- dat$attr$active
   status <- dat$attr$status
+  infTime <- dat$attr$infTime
   tea.status <- dat$control$tea.status
-  nw <- dat$nw
+  modes <- dat$param$modes
+  mode <- idmode(dat$nw)
+  type <- dat$control$type
+  recovState <- ifelse(type == "SIR", "r", "s")
+  rec.rand <- dat$control$rec.rand
+  rec.rate <- dat$param$rec.rate
+  rec.rate.m2 <- dat$param$rec.rate.m2
+  nRecov <- nRecovM2 <- 0
+  idsElig <- which(active == 1 & status == "i")
+  nElig <- length(idsElig)
+  infDur <- at - infTime[active == 1 & status == "i"]
+  infDur[infDur == 0] <- 1
+  lrec.rate <- length(rec.rate)
 
-  if (is.null(dat$param$rec.rate)) {
-    rec.rate <- 0
+  if (lrec.rate == 1) {
+    mElig <- mode[idsElig]
+    rates <- c(rec.rate, rec.rate.m2)
+    ratesElig <- rates[mElig]
   } else {
-    rec.rate <- dat$param$rec.rate
+    mElig <- mode[idsElig]
+    if (is.null(rec.rate.m2)) {
+      rates <- ifelse(infDur <= lrec.rate, rec.rate[infDur],
+                      rec.rate[lrec.rate])
+    }  else {
+      rates <- ifelse(mElig == 1, ifelse(infDur <= lrec.rate,
+                                         rec.rate[infDur], rec.rate[lrec.rate]), ifelse(infDur <=
+                                                                                          lrec.rate, rec.rate.m2[infDur], rec.rate.m2[lrec.rate]))
+    }
+    ratesElig <- rates
   }
 
   idsSus <- which(active == 1 & status == "s")
@@ -811,107 +835,169 @@ recovery.correction <- function(dat, at) {
   idsInf <- which(active == 1 & status == "i")
   idsRec <- which(active == 1 & status == "r")
 
-  ## recover simulated network at time t and relevant parameter
-  nw <- dat$nw
-
   correction.prob <- dat$param$correction.prob
-  recover.prob <- dat$param$recover.prob
 
   ## I to R progression
   nRec <- 0
   idsEligRec <- which(active == 1 & status == "i")
   nEligRec <- length(idsEligRec)
 
+  ## revise rates based on social surroundings of an infected alters!
   if (nEligRec > 0) {
-
-    vecRecov <- NULL
 
     ## see http://statnet.csde.washington.edu/workshops/SUNBELT/current/ndtv/ndtv_workshop.html#transmission-trees-and-constructed-animations
     ## loop through those who are infected ("idsEligRec")
     ## for every ego "id_EligRec"
-    for (id_EligRec in idsEligRec){
 
-      ## get alters (based on active freindship ties of "infected" ego
+    ratesElig.modified <- sapply(1:nEligRec, function(k) {
+
+      ## get persistent ids
+      id_EligRec <- idsEligRec[k]
+      ## get alters of an ego who is not yet infected (based on active freindship ties of "infected" ego)
       active_alters <- get.neighborhood.active(nw, v = id_EligRec, at = at)
 
-      ## if active alters are present
-      if (length(active_alters) > 0) {
+      ## if active alters are not present
+      if (length(active_alters) == 0) {
+        rate.return <- ratesElig[k] ## copy the rates (nothing happens)
 
-        ## counts the number of alters who is exposed but not infected (idsExp) or already recovered (idsRec)
-        nCorrect <- length(active_alters[(active_alters %in% idsExp) | active_alters %in% idsRec])
-
+        ## if active alters are present
+      } else {
+        ## counts the number of alters who is not yet infected
+        nCorrect <- length(active_alters[!(active_alters %in% idsInf)])
         ## RANDOM DRAW: n. of alters providing corrections, with probability of sending corrections = correction.prob
         vecCorrect <- which(rbinom(nCorrect, 1, correction.prob) == 1)
         nvecCorrect <- length(vecCorrect)
 
-        if (nvecCorrect == 1) {
+        ## if nvecCorrect > 0
+        if (nvecCorrect > 1) {
+          ## for each additional alters providing corrections (=nvecCorrect), it additionally increases the prob of recovery
+          j <- (nvecCorrect-1)
+          rate.return <- ratesElig[k]*(2 / (1+exp(-j)) )  ## this increases baseline rates
+          ## since the recovery rate is the reciprocal of the disease duration,
+          ## the increase in rate results to decrease in duration (-> fater recovery overall)
+        } else { ## if nvecCorrect == 0
+          rate.return <- ratesElig[k] ## copy the rates (nothing happens)
+        }
 
-          ## if only one correction received, the final prob. of recovery is: recover.prob
-          recovered <- (rbinom(1, 1, recover.prob) == 1) ## RANDOM DRAW
+      } ## end of presence of active alters
+      ## return vector of revised rates
+      return(rate.return)
 
-        } else if (nvecCorrect > 1) {
+    }, simplify = TRUE)
 
-          ## for each additional alters providing corrections (=k), it additionally increases the prob of recovery by
-          ## following logistic-like function
-          recover.prob.temp <- recover.prob*((1+exp(-1))/(1+exp(-nvecCorrect)))
-          if (recover.prob.temp > 1) {
-            recovered <- TRUE ## if greater than 1, change to recovered
-          } else {
-            recovered <- (rbinom(1, 1, recover.prob.temp) == 1) ## RANDOM DRAW
+    ratesElig <- ratesElig.modified
+  }
+
+
+  ## we simply add this setup in order to bypass recovery when at is less than rec.start...
+  if (at >= rec.start) {
+
+    if (nElig > 0) {
+      if (rec.rand == TRUE) {
+        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1) ## randomly recover from the infection status..
+        if (length(vecRecov) > 0) {
+          idsRecov <- idsElig[vecRecov]
+          nRecov <- sum(mode[idsRecov] == 1)
+          nRecovM2 <- sum(mode[idsRecov] == 2)
+          status[idsRecov] <- recovState
+          if (tea.status == TRUE) {
+            dat$nw <- activate.vertex.attribute(dat$nw,
+                                                prefix = "testatus", value = recovState,
+                                                onset = at, terminus = Inf, v = idsRecov)
           }
-
         } else {
-          ## receive no corrections, then recovery is not happening...
-          recovered <- FALSE
+          nRecov <- nRecovM2 <- 0
         }
-
-        ## if recovered, increase the counter for nRec and  change to "recovered"
-
-        if (recovered == TRUE) {
-          nRec <- nRec + 1
-          status[id_EligRec] <- "r"
-          vecRecov <- c(vecRecov, id_EligRec)
+      }
+      else {
+        idsRecov <- idsRecovM2 <- NULL
+        nRecov <- min(round(sum(ratesElig[mElig == 1])),
+                      sum(mElig == 1))
+        if (nRecov > 0) {
+          idsRecov <- ssample(idsElig[mElig == 1], nRecov)
+          status[idsRecov] <- recovState
         }
-      } ## if length(active_alters) == 0, there's no changes in the status
-    }
-
-    ## ir.progression, if rec.rate is supplied
-    if (rec.rate != 0 ) {
-      vecRecov <- unique(c(vecRecov, which(rbinom(nEligRec, 1, rec.rate) == 1)))
-      idsRecov <- idsEligRec[vecRecov]
-    }
-
-    if (tea.status == TRUE) {
-      ## update network dynamic object
-      nw <- activate.vertex.attribute(nw,
-                                      prefix = "testatus", value = "r",
-                                      onset = at, terminus = Inf, v = idsRecov)
+        if (modes == 2) {
+          nRecovM2 <- min(round(sum(ratesElig[mElig ==
+                                                2])), sum(mElig == 2))
+          if (nRecovM2 > 0) {
+            idsRecovM2 <- ssample(idsElig[mElig == 2],
+                                  nRecovM2)
+            status[idsRecovM2] <- recovState
+          }
+        }
+        totRecov <- nRecov + nRecovM2
+        if (tea.status == TRUE & totRecov > 0) {
+          allids <- c(idsRecov, idsRecovM2)
+          dat$nw <- activate.vertex.attribute(dat$nw, prefix = "testatus",
+                                              value = recovState, onset = at, terminus = Inf,
+                                              v = allids)
+        }
+      }
     }
   }
 
-  ## update status for attr dataset
   dat$attr$status <- status
-
+  form <- get_nwparam(dat)$formation
+  fterms <- get_formula_terms(form)
+  if ("status" %in% fterms) {
+    dat$nw <- set.vertex.attribute(dat$nw, "status", dat$attr$status)
+  }
+  outName <- ifelse(type == "SIR", "ir.flow", "is.flow")
+  outName[2] <- paste0(outName, ".m2")
   if (at == 2) {
-    dat$epi$ir.flow <- c(0, nRec)
-    dat$epi$r.num <- c(0, sum(active == 1 & status == "r"))
+    dat$epi[[outName[1]]] <- c(0, nRecov)
   }
   else {
-    dat$epi$ir.flow[at] <- nRec
-    dat$epi$r.num[at] <- sum(active == 1 & status == "r")
+    dat$epi[[outName[1]]][at] <- nRecov
   }
-
+  if (modes == 2) {
+    if (at == 2) {
+      dat$epi[[outName[2]]] <- c(0, nRecovM2)
+    }
+    else {
+      dat$epi[[outName[2]]][at] <- nRecovM2
+    }
+  }
   return(dat)
-
 }
 
+param4 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
+                    rec.rate = 0.00297619, rec.start = 1, correction.prob = 0.5)
+init <- init.net(status.vector = status.vector)
+
+## control settings
+control4 <- control.net(type = "SIR", nsteps = 100, nsims = 10, epi.by = "pid",
+                        ncores = ncores,
+                        infection.FUN = infect,
+                        progress.FUN = progress,
+                        recovery.FUN = recovery.correction,
+                        get_prev.FUN = get_prev.exposed.included,
+                        skip.check = TRUE,
+                        depend = F, verbose.int = 1)
 
 
 
+sim4.SEI.model4 <- netsim(est.list[[4]], param4, init, control4)
+
+model4DT.SEIR2 <- get.summary.stats(sim4.SEI.model4)
 
 
+p1 <- ggplot(model4DT.SEIR, aes(x = time, y = r.num.mean)) +
+  geom_line(color = "grey") +
+  geom_line(aes(x = time, y = r.num.pidD.mean), color = "blue") +
+  geom_ribbon(aes(x = time, ymin = r.num.pidD.llci, ymax = r.num.pidD.ulci), alpha = 0.2, fill = "blue") +
+  geom_line(aes(x = time, y = r.num.pidR.mean), color = "red") +
+  geom_ribbon(aes(x = time, ymin = r.num.pidR.llci, ymax = r.num.pidR.ulci), alpha = 0.2, fill = "red")
 
+p2 <- ggplot(model4DT.SEIR2, aes(x = time, y = r.num.mean)) +
+  geom_line(color = "grey") +
+  geom_line(aes(x = time, y = r.num.pidD.mean), color = "blue") +
+  geom_ribbon(aes(x = time, ymin = r.num.pidD.llci, ymax = r.num.pidD.ulci), alpha = 0.2, fill = "blue") +
+  geom_line(aes(x = time, y = r.num.pidR.mean), color = "red") +
+  geom_ribbon(aes(x = time, ymin = r.num.pidR.llci, ymax = r.num.pidR.ulci), alpha = 0.2, fill = "red")
 
+p1 + p2 + plot_layout(nrow = 1)
 
 ### TO DO LIST : FITTING EPIDEMIC MODELS ON OBSERVED NETWORK
 ## SEE http://statnet.github.io/gal/empnet.html
