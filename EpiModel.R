@@ -793,7 +793,16 @@ save(sim3.SEI.model4, file = "results/sim3.SEIR.model4.rda")
 ## set param = "correction.prob", "rec.rate" in param for progress module,
 ## and "rec.rate" should be set to baseline, which then modified by the number of alters who sends correction
 
+rm(list = ls())
+source("dev/helper-functions.R")
+source("dev/step.4.prep.R")
+
+
 recovery.correction <- function(dat, at) {
+
+  # nw <- dat$nw ## recover networks
+  ## control parameter...
+  rec.start <- dat$param$rec.start
 
   active <- dat$attr$active
   status <- dat$attr$status
@@ -854,7 +863,7 @@ recovery.correction <- function(dat, at) {
       ## get persistent ids
       id_EligRec <- idsEligRec[k]
       ## get alters of an ego who is not yet infected (based on active freindship ties of "infected" ego)
-      active_alters <- get.neighborhood.active(nw, v = id_EligRec, at = at)
+      active_alters <- get.neighborhood.active(dat$nw, v = id_EligRec, at = at)
 
       ## if active alters are not present
       if (length(active_alters) == 0) {
@@ -872,7 +881,7 @@ recovery.correction <- function(dat, at) {
         if (nvecCorrect > 1) {
           ## for each additional alters providing corrections (=nvecCorrect), it additionally increases the prob of recovery
           j <- (nvecCorrect-1)
-          rate.return <- ratesElig[k]*(2 / (1+exp(-j)) )  ## this increases baseline rates
+          rate.return <- ratesElig[k]*exp(log(j+1)*1.1435)  ## this increases baseline rates. Numbers taken from Margolin et al. 2017 (mutual friendship coef, average of two values from Table 1/2, final models)
           ## since the recovery rate is the reciprocal of the disease duration,
           ## the increase in rate results to decrease in duration (-> fater recovery overall)
         } else { ## if nvecCorrect == 0
@@ -963,11 +972,11 @@ recovery.correction <- function(dat, at) {
 }
 
 param4 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
-                    rec.rate = 0.00297619, rec.start = 1, correction.prob = 0.5)
+                    rec.rate = 0.00297619, rec.start = 1, correction.prob = 0.5, rec.start = 168)
 init <- init.net(status.vector = status.vector)
 
 ## control settings
-control4 <- control.net(type = "SIR", nsteps = 100, nsims = 10, epi.by = "pid",
+control4 <- control.net(type = "SIR", nsteps = max.time, nsims = nsims, epi.by = "pid",
                         ncores = ncores,
                         infection.FUN = infect,
                         progress.FUN = progress,
@@ -976,6 +985,25 @@ control4 <- control.net(type = "SIR", nsteps = 100, nsims = 10, epi.by = "pid",
                         skip.check = TRUE,
                         depend = F, verbose.int = 1)
 
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim4.SEIR.model1 <- netsim(est.list[[1]], param4, init, control4)
+save(sim4.SEIR.model1, file = "results/sim4.SEIR.model1.rda")
+
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim4.SEIR.model2 <- netsim(est.list[[2]], param4, init, control4)
+save(sim4.SEIR.model2, file = "results/sim4.SEIR.model2.rda")
+
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim4.SEIR.model3 <- netsim(est.list[[3]], param4, init, control4)
+save(sim4.SEIR.model3, file = "results/sim4.SEIR.model3.rda")
+
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim4.SEIR.model4 <- netsim(est.list[[4]], param4, init, control4)
+save(sim4.SEIR.model4, file = "results/sim4.SEIR.model4.rda")
 
 
 sim4.SEI.model4 <- netsim(est.list[[4]], param4, init, control4)

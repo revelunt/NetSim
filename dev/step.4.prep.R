@@ -11,8 +11,12 @@ require(data.table)
 source("dev/helper-functions.R")
 
 ## re-load all required files
+## initial status vector
 source_lines("~/Dropbox/GitHub/NetSim/EpiModel.R", 39)
 source_lines("~/Dropbox/GitHub/NetSim/EpiModel.R", 208:211)
+
+## load network simulations
 source_lines("~/Dropbox/GitHub/NetSim/EpiModel.R", 274:275)
-source_lines("~/Dropbox/GitHub/NetSim/EpiModel.R", 208:211)
-source_lines("~/Dropbox/GitHub/NetSim/EpiModel.R", 284:533)
+
+## define custom modules
+source_lines("~/Dropbox/GitHub/NetSim/EpiModel.R", 284:526)
