@@ -1,43 +1,43 @@
-\documentclass[12pt]{article}
+
+\documentclass[man, 12pt, a4paper]{apa6}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage[margin=2.5cm]{geometry}
-\usepackage{setspace}
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{url}
 \usepackage{times}
 
-\usepackage[
-backend=biber,
-style=apa,
-citestyle=authoryear 
-]{biblatex}
+% Biblatex
+\usepackage[backend = biber, style = apa, citestyle = authoryear, uniquename = false, natbib = true]{biblatex}
+\usepackage[colorlinks=true]{hyperref}
 
-\usepackage{csquotes}
- 
 \addbibresource{abm_misinformation_lit.bib}
-
-\title{\vspace{.5cm }
-  \LARGE{If you see something, say something (to others):} \\
-  \large{The effects of socially-contingent corrections on spreads of misinformation on social networks}
-  }
+\DeclareLanguageMapping{american}{american-apa}
+ 
+\title{If you see something, say something (to others): A spread of misinformation and socially-contingent corrections within social networks}
+\shorttitle{The socially-contingent corrections}
 
 \author{Hyunjin Song}
-\date{\today}
 
-%\doublespacing
+\affiliation{Department of Communication, University of Vienna, Austria}
+
+\abstract{Citizens across the worlds are experiencing major changes in their news environment with the development of digital media. As the citizens' news consumption is increasingly driven by online sources, the propagation of misinformation and so-called "fake news" on those platforms become an increasing concern for the public and policy makers. Yet what we know about the spread of misinformation and fake news is largely based on anecdotal evidence despite increasing academic interest and research effort on this topic. Our goal in this contribution is to offer a more systematic assessment of underlying mechanisms of misinformation spreading and its correction, combining a macro supply factor and individuals' cognitive basis of adopting misinformation into a more integrated, dynamic system model perspective. We review individuals' cognitive basis of adopting such misinformation, focusing motivated reasoning and accuracy motivations, as well as the trust in media, as the underlying basis of exposure to and adoption of misinformation at an individual level. Next, adopting a well-known class of an epidemic model of virus infection and recovery, we combine micro and macro dynamics into comprehensive, integrated model of misinformation diffusion on social networks. Relying on Agent-based simulations, we further explore various boundary conditions of such dynamics, aiming to uncover how and when such misinformation propagates into the public, as well as what factors facilitate or hinder such diffusion process.}
+
+%\keywords{}
+\authornote{Draft in progress. Please do not cite without permission. Please direct any questions and inquires to \href{mailto:hyunjin.song@univie.ac.at}{hyunjin.song@univie.ac.at}}
 
 \begin{document}
 
 \maketitle
+Citizens across the worlds are experiencing major changes in their news environment with the development of digital media. One of the most dramatic changes in the news environment involves the role social networking sites (SNS) such as Facebook and Twitter play as news outlets. As the citizens' news consumption is increasingly driven by online sources, the propagation of misinformation and so-called "fake news" on those platforms become an increasing concern for the public and policy makers. There are abundant, yet still sketchy, evidence of viral spread of misinformation and "fake news" that potentially affecting millions of citizens across the globe. Yet what we know about the spread of misinformation and fake news is largely based on anecdotal evidence despite increasing academic interest and research effort on this topic. Our goal in this contribution is to offer a more systematic assessment of underlying mechanisms of misinformation spreading and its correction, combining a macro supply factor and individuals' cognitive basis of adopting misinformation into a more integrated, dynamic system model perspective. Following Allcott and Gentzkow's (2017) definition, we define misinformation and fake news as "distorted signals uncorrelated with the truth" (p. 212). Based on this definition, we further discuss the supply logic of misinformation and "fake news" at the system-level. Next, we review individuals' cognitive basis of adopting such misinformation, focusing motivated reasoning and accuracy motivations, as well as the trust in media, as the underlying basis of exposure to and adoption of misinformation at an individual level. Lastly, adopting a well-known class of an epidemic model of virus infection and recovery, we combine micro and macro dynamics into comprehensive, integrated model of misinformation diffusion on social networks. Relying on Agent-based simulations, we further explore various boundary conditions of such dynamics, aiming to uncover how and when such misinformation propagates into the public, as well as what factors facilitate or hinder such diffusion process.
 
-\section{Introduction}
-
-There has been an explosive interest among public and academics alike on how people directionally process and maintain factually false (or at least factually dubious) information (\cite{LEWANDOWSKY_JARMC2017}), and further, how corrections to such false information is received under various scenarios (\cites{LEWANDOWSKY_JARMC2017}; \cites{thorson_2016}). Research on political misinformation and motivated reasoning generally suggests that fact-checking (or corrections) on false information has only limited effects due to inherent tendency of humans to directionally process the (politically) relevant information. However, a small line of research suggests that the effect of political fact-checking on social network may be socially contingent.
+There has been an explosive interest among public and academics alike on how people directionally process and maintain factually false (or at least factually dubious) information \parencite{LEWANDOWSKY_JARMC2017, garrett2016driving}. Further, these studies have generated a valuable insights of how corrections to such false information is received under various scenarios \parencite{LEWANDOWSKY_JARMC2017, thorson_2016}. Largely based on \citeauthor{kunda1990}'s (\citeyear{kunda1990}) or on \citeauthor{taber2006}'s (\citeyear{taber2006}) motivated reasoning framework, a general consensus among research on political misinformation is that fact-checking messages on false information (or corrections thereof) have only limited effects due to inherent tendency of humans to directionally process (politically) relevant information \parencite{thorson_2016}. Yet a small body of literature suggests more complex pictures, suggesting that citizens can indeed adhere factual information despite of partisan bias \parencite[e.g.,][]{Wood2018, Garrett_Weeks_2013}. However, a small line of research suggests that the effect of political fact-checking on social network may be socially contingent. 
 
 \section{Theoretical framework}
 
-
-
-
-
-
+\printbibliography
 \end{document}
