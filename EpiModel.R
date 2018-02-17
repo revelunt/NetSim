@@ -31,8 +31,13 @@ ncores <- parallel::detectCores(logical = F)
 
 ### Step 1: Construct network ###
 # Construct a random network
+require(igraph)
 set.seed(12345)
-sw.net <- network.initialize(n = n, directed = FALSE) ## or as.network(rgraph(n, 1, 0.5, mode = "graph"), directed = F)
+sw.net <- list()
+sw.net[[1]] <- igraph::sample_gnm(n = n, m = 792) %>%  intergraph::asNetwork(.) ## n = node, m = edge
+sw.net[[2]] <- igraph::sample_smallworld(1, n, p = 0, nei = 1, loops = FALSE, multiple = FALSE) %>%  intergraph::asNetwork(.) ## lattice network, since rewiring prob is zero
+sw.net[[3]] <- igraph::sample_smallworld(1, n, p = .3, nei = 2, loops = FALSE, multiple = FALSE) %>%  intergraph::asNetwork(.) ## small-world
+sw.net[[4]] <- igraph::sample_smallworld(1, n, p = .3, nei = 2, loops = FALSE, multiple = FALSE) %>%  intergraph::asNetwork(.) ## small-world
 
 # set some initial attributes
 ## partisanship -- one of the core mechanisms of directional motivation
@@ -61,9 +66,11 @@ accuracy_motive <- rescale(accuracy_motive, to = c(0,1))
 sophistication <- rescale(sophistication, to = c(0,1))
 
 ## set network attributes
-sw.net <- network::set.vertex.attribute(sw.net, "pid", pid)
-sw.net <- network::set.vertex.attribute(sw.net, "accuracy_motive", accuracy_motive)
-sw.net <- network::set.vertex.attribute(sw.net, "sophistication", sophistication)
+for (i in 1:4) {
+  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "pid", pid)
+  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "accuracy_motive", accuracy_motive)
+  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "sophistication", sophistication)
+}
 
 ## ---------------------------- ##
 ## Step 1: fit network dynamics ##
@@ -77,15 +84,15 @@ coef.diss <- list()
 formation[[1]] <- ~ edges + nodefactor("pid")
 
 ## formation model for tree-like network (absence of triangles)
-formation[[2]] <- ~ edges + nodefactor("pid") + concurrent + degree1.5
+formation[[2]] <- ~ edges + nodefactor("pid") + concurrentties + degrange(3:12)
 
 ## formation model for scale-free network
-formation[[3]] <- ~ edges + nodefactor("pid") + degrange(0) + concurrent + triangle
+formation[[3]] <- ~ edges + nodefactor("pid") + degrange(0) + concurrentties + triangle
 
 ## formation model for more realistic network, conditioned by party identification
 ## crucial difference of this model is nodematch("pid"),
 ## which assumes partisan homophily in network formations
-formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + degrange(0) + concurrent + triangle
+formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + degrange(0) + concurrentties + triangle
 
 ## for nodematch target statistics: from ANES 2008-2009 Panel Study
 ## see setups.R file for detail.
@@ -100,9 +107,9 @@ formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + degrange(0) +
 ## and degrange (no. of nodes with more than 5 edges, there's none, so 0)
 ## get.target.stats(nD, nR, 0.66, 0.73, 0.66, 0.26)
 target.stats[[1]] <- c(792, 753.72)
-target.stats[[2]] <- c(792, 753.72, 438, 2025)
-target.stats[[3]] <- c(792, 753.72, 205.92, 518.76, 2)
-target.stats[[4]] <- c(792, 578.16, 753.72, 205.92, 518.76, 2)
+target.stats[[2]] <- c(792, 753.72, 438, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+target.stats[[3]] <- c(792, 753.72, 205.92, 500, 4)
+target.stats[[4]] <- c(792, 578.16, 753.72, 205.92, 500, 3.5)
 
 ## dissolution model
 coef.diss[[1]] <- dissolution_coefs(~offset(edges), duration = 100)
@@ -113,7 +120,7 @@ coef.diss[[4]] <- dissolution_coefs(~offset(edges) + offset(nodematch("pid")), d
 
 ## estimate dynamic network models
 est.list <- lapply(1:4, function(i) {
-  est <- netest(sw.net, formation[[i]], target.stats[[i]], coef.diss[[i]],
+  est <- netest(sw.net[[i]], formation[[i]], target.stats[[i]], coef.diss[[i]],
                 set.control.ergm = control.ergm(MCMLE.maxit = 250), edapprox = T)
   #est$fit <- logLik(est$fit, add = TRUE)
   est
@@ -159,25 +166,27 @@ dev.off()
 dev.off()
 
 ## plot networks and get some basic stats
-require(igraph)
 require(intergraph)
 
 netstats <- vector(mode = "list", length = 4)
-net.title <- list("E-R", "Tree", "No Homophily", "S-W Homophily")
+net.title <- list("E-R", "Chain", " SW No-Homophily", "SW Homophily")
 names(netstats) <- net.title
 
 table1 <- matrix(NA, ncol = 4, nrow = 7)
 
+layout <- list(layout_with_kk, layout_with_graphopt, layout_with_kk, layout_with_kk)
+
+
 for (i in 1:4) {
-  nw <- simulate.ergm(est.list[[i]]$fit, nsim = 1, seed = 345764)
+  nw <- simulate.ergm(est.list[[i]]$fit, nsim = 1, seed = 12345)
 
   table1[1,i] <- format(sna::gden(nw), digits = 3, nsmall = 3)
   table1[2,i] <- format(summary(sna::degree(nw, gmode = "directed", cmode = "freeman"))[4], digits = 3, nsmall = 3)
   table1[3,i] <- format(summary(sna::degree(nw, gmode = "directed", cmode = "freeman"))[6], digits = 1, nsmall = 1)
   table1[4,i] <- format(igraph::transitivity(asIgraph(nw)), digits = 1, nsmall = 1)
   table1[5,i] <- format(igraph::mean_distance(asIgraph(nw), directed = T, unconnected = T), digits = 1, nsmall = 1)
-  table1[6,i] <- sprintf("%.1f %%", 100*(sum(diag(mixingmatrix(asIgraph(nw), "pid")))/sum(mixingmatrix(asIgraph(nw), "pid"), na.rm = T)))
-  table1[7,i] <- sprintf("%.1f %%", 100*(mixingmatrix(asIgraph(nw), "pid")[1,2]/sum(mixingmatrix(asIgraph(nw), "pid"), na.rm = T)))
+  table1[6,i] <- sprintf("%.1f%%", 100*(sum(diag(mixingmatrix(asIgraph(nw), "pid")))/sum(mixingmatrix(asIgraph(nw), "pid"), na.rm = T)))
+  table1[7,i] <- sprintf("%.1f%%", 100*(mixingmatrix(asIgraph(nw), "pid")[1,2]/sum(mixingmatrix(asIgraph(nw), "pid"), na.rm = T)))
 
   cols <- ifelse(network:::get.vertex.attribute(nw, "pid") == "D", "steelblue", "firebrick")
   netstats[[i]] <- list("degreedist" = table(network:::get.vertex.attribute(nw, "pid"),
@@ -185,23 +194,27 @@ for (i in 1:4) {
                         "mixingmatrix" = mixingmatrix(asIgraph(nw), "pid"))
   vertex.cex <- rep(0.4, nw$gal$n)
   vertex.cex[sna::isolates(nw)] <- 0.1
-  cols[sna::isolates(nw)] <- "gray80"
+  cols[sna::isolates(nw)] <- "white"
   nw <- asIgraph(nw)
   V(nw)$size <- vertex.cex*6
 
-  pdf(paste("draft/network.plots",i,".pdf",sep=""))
+  #nw.com <- delete.vertices(nw, degree(nw)==0)
+  #cols <- cols[cols != "gray80"]
+  pdf(paste("draft/network_plots",i,".pdf",sep=""))
   plot(nw, edge.arrow.size = 0, vertex.label = NA, edge.curved = .1,
-       layout = layout_with_kk, edge.width = 1.5,
+       layout = layout[[i]],
+       edge.width = 1.5,
        vertex.color = cols, vertex.frame.color = cols, edge.coloer = "grey30")
   dev.off()
 }
 
 colnames(table1) <- net.title
-rownames(table1) <- c("Density", "Mean degree", "Max degree", "Clustering coefficient",
-                      "mean distance", "Homophilous ties", "Heterophilous ties")
-require(xtable)
-print.xtable(xtable(table1, caption = "Descriptive statistics of cross-sectional network from simulated networks"),
-             comment = FALSE, caption.placement = "top")
+rownames(table1) <- c("Density", "Mean degree", "Max degree", "Clustering coefficients",
+                      "Mean distance", "Homophilous ties", "Heterophilous ties")
+require(stargazer)
+stargazer(table1, title = "Descriptive statistics of cross-sectional network from simulated networks")
+#notes = "E-R: Erdos-Renyi random network. Chain: Chain network. SW No-Homophily: Small-world network absent of homophily. SW Homophily: Small-world network with partisan homophily"
+
 
 ## save lists
 save(est.list, dx.list, netstats, file = "results/net_and_dx_list.rda", compress = "bzip2")
