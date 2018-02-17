@@ -80,19 +80,19 @@ formation[[1]] <- ~ edges + nodefactor("pid")
 formation[[2]] <- ~ edges + nodefactor("pid") + concurrent + degree1.5
 
 ## formation model for scale-free network
-formation[[3]] <- ~ edges + nodefactor("pid") + concurrent + degrange(2:8)
+formation[[3]] <- ~ edges + nodefactor("pid") + degrange(0) + concurrent + triangle
 
 ## formation model for more realistic network, conditioned by party identification
 ## crucial difference of this model is nodematch("pid"),
 ## which assumes partisan homophily in network formations
-formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + concurrent + degrange(2:8)
+formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + degrange(0) + concurrent + triangle
 
 ## for nodematch target statistics: from ANES 2008-2009 Panel Study
 ## see setups.R file for detail.
 
 ## target stats for formation statistics, each imply for
 ## edge (density 0.66 * n/2 = 1500),
-## nodefactor (mean degree of 0.3 vs 0.3 in Dem vs. Rep group = 0.3*nR),
+## nodefactor (mean degree of 0.66 vs 0.66 in Dem vs. Rep group = 0.3*nR),
 ## nodematch (assuming 70% within the same pid group,
 ## the product of the number of edges and the probability of a same-group edge = 1500*0.7 = 1050),
 ## for concurrent (separately by pid), assume 35% of ties would have more than two edges,
@@ -101,13 +101,10 @@ formation[[4]] <- ~ edges + nodematch("pid") + nodefactor("pid") + concurrent + 
 ## get.target.stats(nD, nR, 0.66, 0.73, 0.66, 0.26)
 target.stats[[1]] <- c(792, 753.72)
 target.stats[[2]] <- c(792, 753.72, 438, 2025)
-target.stats[[3]] <- c(792, 753.72, 285, 280, 72.675, 38.745, 27.605, 17.5, 11.38, 5.3)
-target.stats[[4]] <- c(792, 578.16, 799.4, 285, 280, 72.675, 38.745, 27.605, 17.5, 11.38, 5.3)
+target.stats[[3]] <- c(792, 753.72, 205.92, 518.76, 2)
+target.stats[[4]] <- c(792, 578.16, 753.72, 205.92, 518.76, 2)
 
 ## dissolution model
-## see http://www.sciencedirect.com/science/article/pii/S0747563216309086#bib55
-## almost 20% of the respondents reported that they have either hidden other people's comments
-## or unfriended others because they do not share political views
 coef.diss[[1]] <- dissolution_coefs(~offset(edges), duration = 100)
 coef.diss[[2]] <- dissolution_coefs(~offset(edges), duration = 100)
 coef.diss[[3]] <- dissolution_coefs(~offset(edges), duration = 100)
@@ -166,12 +163,22 @@ require(igraph)
 require(intergraph)
 
 netstats <- vector(mode = "list", length = 4)
-net.title <- list("Bernoulli network", "Tree network", "Realistic network", "Realistic homophilic network")
+net.title <- list("E-R", "Tree", "No Homophily", "S-W Homophily")
 names(netstats) <- net.title
 
-pdf("draft/network.plots.pdf")
+table1 <- matrix(NA, ncol = 4, nrow = 7)
+
 for (i in 1:4) {
   nw <- simulate.ergm(est.list[[i]]$fit, nsim = 1, seed = 345764)
+
+  table1[1,i] <- format(sna::gden(nw), digits = 3, nsmall = 3)
+  table1[2,i] <- format(summary(sna::degree(nw, gmode = "directed", cmode = "freeman"))[4], digits = 3, nsmall = 3)
+  table1[3,i] <- format(summary(sna::degree(nw, gmode = "directed", cmode = "freeman"))[6], digits = 1, nsmall = 1)
+  table1[4,i] <- format(igraph::transitivity(asIgraph(nw)), digits = 1, nsmall = 1)
+  table1[5,i] <- format(igraph::mean_distance(asIgraph(nw), directed = T, unconnected = T), digits = 1, nsmall = 1)
+  table1[6,i] <- sprintf("%.1f %%", 100*(sum(diag(mixingmatrix(asIgraph(nw), "pid")))/sum(mixingmatrix(asIgraph(nw), "pid"), na.rm = T)))
+  table1[7,i] <- sprintf("%.1f %%", 100*(mixingmatrix(asIgraph(nw), "pid")[1,2]/sum(mixingmatrix(asIgraph(nw), "pid"), na.rm = T)))
+
   cols <- ifelse(network:::get.vertex.attribute(nw, "pid") == "D", "steelblue", "firebrick")
   netstats[[i]] <- list("degreedist" = table(network:::get.vertex.attribute(nw, "pid"),
                                              sna:::degree(nw, gmode = "graph", cmode = "freeman")),
@@ -181,12 +188,20 @@ for (i in 1:4) {
   cols[sna::isolates(nw)] <- "gray80"
   nw <- asIgraph(nw)
   V(nw)$size <- vertex.cex*6
+
+  pdf(paste("draft/network.plots",i,".pdf",sep=""))
   plot(nw, edge.arrow.size = 0, vertex.label = NA, edge.curved = .1,
        layout = layout_with_kk, edge.width = 1.5,
        vertex.color = cols, vertex.frame.color = cols, edge.coloer = "grey30")
-  title(net.title[[i]])
+  dev.off()
 }
-dev.off()
+
+colnames(table1) <- net.title
+rownames(table1) <- c("Density", "Mean degree", "Max degree", "Clustering coefficient",
+                      "mean distance", "Homophilous ties", "Heterophilous ties")
+require(xtable)
+print.xtable(xtable(table1, caption = "Descriptive statistics of cross-sectional network from simulated networks"),
+             comment = FALSE, caption.placement = "top")
 
 ## save lists
 save(est.list, dx.list, netstats, file = "results/net_and_dx_list.rda", compress = "bzip2")

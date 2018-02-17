@@ -7,7 +7,7 @@
 
 require(haven)
 require(data.table)
-anespanel0809 <- read_spss("anes2008_2009panel.sav")
+anespanel0809 <- read_spss("dev/anes2008_2009panel.sav")
 setDT(anespanel0809)
 
 ## "w9l1" and "w9l3" = ego partisanship
