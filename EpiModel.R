@@ -22,7 +22,6 @@ source("dev/helper-functions.R")
 # nD <- 1258
 # nR <- 1142
 # n <- nD + nR
-# tau <- 2 / 3
 # max.time <- 1000 ## time unit is a day
 # nsims <- 100 ## no. of replicated simulations
 
@@ -41,35 +40,28 @@ sw.net[[4]] <- igraph::sample_smallworld(1, n, p = .3, nei = 2, loops = FALSE, m
 
 # set some initial attributes
 ## partisanship -- one of the core mechanisms of directional motivation
-pid <- c(rep("D", nD), rep("R", nR)) ## D == Democrats (50%), R == Republicans (50%)
-#pid <- sample(pid, n, replace = F) ## randomly distribute pid values
+source_lines("dev/setups.R", 1:100)
+pid <- anespanel0809[pid %in% c(1,2), ifelse(pid == 1, "D", "R")]
+pidst <- as.vector(anespanel0809[pid %in% c(1,2), pidst])
 
-## accuracy motivation
-## accuracy_motive is ranged from 1 to 5
-accuracy_motive <- sample(1:5, n, replace = T)
+## accuracy motivation: NFC
+## NFC is ranged from -2 to 2
+## with mean and sd by pid is:
+## Dem: mean = 0.3526269, sd = 0.9299722
+## Rep: mean = 0.3240918, sd = 0.8939632
+nfc <- anespanel0809[pid %in% c(1,2), nfc]
+nfc[is.na(nfc)] <- 0
+## normalize the nfc values
+nfc <- as.vector(range01(nfc))
 
-## Political sophistication
-## important moderator: high sophistication tend to exhibit more direcitonal reasoning
-
-## we set correlation of 0.5 for this sophistication vector
-sophistication <- corr.vector(accuracy_motive, rho = 0.5)
-## since there's some negative values, we round them to nearest integers
-## and convert them to positive integers
-sophistication <- round(sophistication, digits = 0)
-sophistication <- sophistication - min(sophistication)
-## check correlation (r = 0.49)
-cor(accuracy_motive,sophistication)
-
-## scale them to 0 - 1 range
-library("scales")
-accuracy_motive <- rescale(accuracy_motive, to = c(0,1))
-sophistication <- rescale(sophistication, to = c(0,1))
+attr <- data.frame(pid = pid, pidst = pidst, nfc = nfc)
+attr <- attr[order(attr$pid), ]
 
 ## set network attributes
 for (i in 1:4) {
-  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "pid", pid)
-  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "accuracy_motive", accuracy_motive)
-  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "sophistication", sophistication)
+  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "pid", as.character(attr$pid))
+  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "pidst", as.vector(attr$pidst))
+  sw.net[[i]] <- network::set.vertex.attribute(sw.net[[i]], "nfc", as.vector(attr$nfc))
 }
 
 ## ---------------------------- ##
@@ -209,7 +201,7 @@ for (i in 1:4) {
 }
 
 colnames(table1) <- net.title
-rownames(table1) <- c("Density", "Mean degree", "Max degree", "Clustering coefficients",
+rownames(table1) <- c("Graph density", "Mean degree", "Max degree", "Clustering coefficients",
                       "Mean distance", "Homophilous ties", "Heterophilous ties")
 require(stargazer)
 stargazer(table1, title = "Descriptive statistics of cross-sectional network from simulated networks")
@@ -220,77 +212,75 @@ stargazer(table1, title = "Descriptive statistics of cross-sectional network fro
 save(est.list, dx.list, netstats, file = "results/net_and_dx_list.rda", compress = "bzip2")
 
 
-## ------------------------- ##
-## Step 2: Standard SI model ##
-## ------------------------- ##
-
+# ## ------------------------- ##
+# ## Step 2: Standard SI model ##
+# ## ------------------------- ##
+#
+# # load("results/net_and_dx_list.rda")
+# # rm(dx.list, netstats)
+#
+# ## set number of those who infected at the start
+# ## For initial conditions, one can use the i.num to set the initial number infected at the start,
+# ## or pass in a vector with a disease status for each of the nodes in the network.
+# ## EpiModel stores the individual-level disease status as a vector of lower-case letters:
+# ## “s” for susceptible, “i” for infected, and “r” for recovered.
+# ## we assume random 15% of Republicans are initially infected (n = 184)
+# status.vector <- c(rep(0, nD), rbinom(nR, 1, 0.15))
+# status.vector <- ifelse(status.vector == 1, "i", "s")
+# table(status.vector, pid)
+# init <- init.net(status.vector = status.vector)
+#
+# ## infection probability (risk of transmission), act rate (mean number of acts)
+# ## PEW data suggests approximately 16% of all partisans share FN news stories on their social networks,
+# ## while Guess et al. and Allcott & Gentzkow report 0.060 / 0.268 shares per unit time
+# ## (0.060 + 0.268) / 2 = 0.164
+# param1 <- param.net(inf.prob = 0.16, act.rate = 0.164)
+#
+# ## set control param. (model type and no of stpes, with n of replications)
+# control1 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
+#                        ncores = ncores)
+#
+# require(pbapply)
+# pblapply(seq_len(length(est.list)), function(i) {
+#   dat.name <- paste0("sim1.SI.model", i)
+#   RNGkind("L'Ecuyer-CMRG")
+#   set.seed(542435)
+#   out <- netsim(est.list[[i]], param1, init, control1)
+#   assign(dat.name, out)
+#   save(dat.name, file = paste0('results/', dat.name, ".rda"))
+# })
+#
+#
+# ## load the saved simulations
 # load("results/net_and_dx_list.rda")
-# rm(dx.list, netstats)
-
-## set number of those who infected at the start
-## For initial conditions, one can use the i.num to set the initial number infected at the start,
-## or pass in a vector with a disease status for each of the nodes in the network.
-## EpiModel stores the individual-level disease status as a vector of lower-case letters:
-## “s” for susceptible, “i” for infected, and “r” for recovered.
-## we assume random 15% of Republicans are initially infected (n = 184)
-status.vector <- c(rep(0, nD), rbinom(nR, 1, 0.15))
-status.vector <- ifelse(status.vector == 1, "i", "s")
-table(status.vector, pid)
-init <- init.net(status.vector = status.vector)
-
-## infection probability (risk of transmission), act rate (mean number of acts)
-## THIS NEEDS TO BE JUSTIFIED
-## PEW data suggests approximately 16% of all partisans share FN news stories on their social networks,
-## OSU political misperception data suggests "every day" or "almost every day" to "several times a week"
-## is the modal value for the information sharing on social media
-## we set arbitrary number of 2 here...
-param1 <- param.net(inf.prob = 0.16, act.rate = 2)
-
-## set control param. (model type and no of stpes, with n of replications)
-control1 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
-                       ncores = ncores)
-
-require(pbapply)
-pblapply(seq_len(length(est.list)), function(i) {
-  dat.name <- paste0("sim1.SI.model", i)
-  RNGkind("L'Ecuyer-CMRG")
-  set.seed(542435)
-  out <- netsim(est.list[[i]], param1, init, control1)
-  assign(dat.name, out)
-  save(dat.name, file = paste0('results/', dat.name, ".rda"))
-})
-
-
-## load the saved simulations
-load("results/net_and_dx_list.rda")
-load("results/sim1.SI.model1.rda")
-load("results/sim1.SI.model2.rda")
-load("results/sim1.SI.model3.rda")
-load("results/sim1.SI.model4.rda")
-
-## summary of simulations (using first simulation as an example)
-print(sim1.SI.model1)
-summary(sim1.SI.model1, at = 500)
-
-## convert to data.frame for further processing
-setDT(model1DT.SI <- get.summary.stats(sim1.SI.model1)); model1DT.SI
-find.point.to.plot(sim1.SI.model1)
-
-setDT(model2DT.SI <- get.summary.stats(sim1.SI.model2)); model2DT.SI
-find.point.to.plot(sim1.SI.model2)
-
-setDT(model3DT.SI <- get.summary.stats(sim1.SI.model3)); model3DT.SI
-find.point.to.plot(sim1.SI.model3)
-
-setDT(model4DT.SI <- get.summary.stats(sim1.SI.model4)); model4DT.SI
-find.point.to.plot(sim1.SI.model4)
-
-save(model1DT.SI, model2DT.SI, model3DT.SI, model4DT.SI, file = "results/sim1.SI.data.table.rda")
-## overall and party-specific prevalence
-print.plots.pdf(sim1.SI.model1, "Bernoulli", "Prevalence_SI.model1", F)
-print.plots.pdf(sim1.SI.model2, "tree", "Prevalence_SI.model2", F)
-print.plots.pdf(sim1.SI.model3, "small-world", "Prevalence_SI.model3", F)
-print.plots.pdf(sim1.SI.model4, "homophilous", "Prevalence_SI.model4", F)
+# load("results/sim1.SI.model1.rda")
+# load("results/sim1.SI.model2.rda")
+# load("results/sim1.SI.model3.rda")
+# load("results/sim1.SI.model4.rda")
+#
+# ## summary of simulations (using first simulation as an example)
+# print(sim1.SI.model1)
+# summary(sim1.SI.model1, at = 500)
+#
+# ## convert to data.frame for further processing
+# setDT(model1DT.SI <- get.summary.stats(sim1.SI.model1)); model1DT.SI
+# find.point.to.plot(sim1.SI.model1)
+#
+# setDT(model2DT.SI <- get.summary.stats(sim1.SI.model2)); model2DT.SI
+# find.point.to.plot(sim1.SI.model2)
+#
+# setDT(model3DT.SI <- get.summary.stats(sim1.SI.model3)); model3DT.SI
+# find.point.to.plot(sim1.SI.model3)
+#
+# setDT(model4DT.SI <- get.summary.stats(sim1.SI.model4)); model4DT.SI
+# find.point.to.plot(sim1.SI.model4)
+#
+# save(model1DT.SI, model2DT.SI, model3DT.SI, model4DT.SI, file = "results/sim1.SI.data.table.rda")
+# ## overall and party-specific prevalence
+# print.plots.pdf(sim1.SI.model1, "Bernoulli", "Prevalence_SI.model1", F)
+# print.plots.pdf(sim1.SI.model2, "tree", "Prevalence_SI.model2", F)
+# print.plots.pdf(sim1.SI.model3, "small-world", "Prevalence_SI.model3", F)
+# print.plots.pdf(sim1.SI.model4, "homophilous", "Prevalence_SI.model4", F)
 
 
 ## -------------------------- ##
@@ -307,7 +297,7 @@ rm(dx.list, netstats)
 ## MODERATION BY INDIVIDUAL CHARACTERISTIC (SEE AGING MODULE FOR REF)
 ## param: pid.diff.rate (NULL or number between 0 and 1)
 ## this assumes Republicans have a higher infection prob than Democrats
-## such that Inf_R.rate - Inf_D.rate = pid.diff.rate
+## such that Inf_R.rate - Inf_D.rate = pid.diff.rate (partisan differential infection probability)
 
 infect <- function(dat, at) {
 
@@ -384,73 +374,53 @@ status.vector <- c(rep(0, nD), rbinom(nR, 1, 0.15))
 status.vector <- ifelse(status.vector == 1, "i", "s")
 
 ## PROGRESSION MODEL
-## HOW TO MAKE THIS CONDITIONAL ON NETWORK?
-## param: tau (proportion of already infected/susceptable alters as an infection threshold)
+## This is a constant hazard function (individual-level stochastic process)
+## Republicans have a higher transition rates than Democrats
+## and those who have higher accuracy motivations have a lower transition rates
 
-progress <- function(dat, at) {
+exposed.to.infectious.progress <- function(dat, at) {
 
   active <- dat$attr$active
   status <- dat$attr$status
-  tea.status <- dat$control$tea.status
-  tau <- dat$param$tau
-
-  idsSus <- which(active == 1 & status == "s")
-  idsInf <- which(active == 1 & status == "i")
-  idsRec <- which(active == 1 & status == "r")
-
-  ## recover simulated network at time t
   nw <- dat$nw
 
-  ## E to I progression  ## EXPOSED TO INFECTED
+  r.ei.rate <- dat$param$r.ei.rate
+  d.ei.rate <- dat$param$d.ei.rate
+
+  ## E to I progression
   nInf <- 0
-
-  ## get ids of those who are active and eligible for infection ("exposed")
-  ## as well as already infectious ("infected")
-
   idsEligInf <- which(active == 1 & status == "e")
   nEligInf <- length(idsEligInf)
 
   if (nEligInf > 0) {
 
-    ## see http://statnet.csde.washington.edu/workshops/SUNBELT/current/ndtv/ndtv_workshop.html#transmission-trees-and-constructed-animations
-    ## loop through those who are exposed ("idsEligInf")
-    ## for every ego "id_EligInf"
-    for (id_EligInf in idsEligInf){
-      ## get alters (based on active freindship ties of "exposed" ego
-      active_alters <- get.neighborhood.active(nw, v = id_EligInf, at = at)
-      ## counts the number of connected alters who are already infected
-      ## and compare with the no. of total connected alters
-      if (length(active_alters) > 0) {
-        t <- length(active_alters[active_alters %in% idsInf]) / length(active_alters)
-        ## if this is greater than certain proportion,
-        if (t > tau) {
-          nInf <- nInf + 1 ## increase the counter for nInf
-          status[id_EligInf] <- "i"  ## change to "infected"
-          if (tea.status == TRUE) {
-            ## update network dynamic object
-            nw <- activate.vertex.attribute(nw,
-                                            prefix = "testatus", value = "i",
-                                            onset = at, terminus = Inf, v = id_EligInf)
-          }
-        }
-      }
+    Infpid <- (nw %v% "pid")[idsEligInf] ## get pid of those who are eligible for progression to infectious status
+    ei.rate <- ifelse(Infpid == "D", d.ei.rate, r.ei.rate)
+
+    ## discount the progression rates by accuracy (i.e., nfc)
+    Infnfc <- (nw %v% "nfc")[idsEligInf]
+    ## when nfc is 0.5, this gives identical ei.rate, and as nfc goes higher, ei.rate goes lower.
+    ei.rate <- ei.rate^(Infnfc/0.5)
+    vecInf <- which(rbinom(nEligInf, 1, ei.rate) == 1)
+    if (length(vecInf) > 0) {
+      idsInf <- idsEligInf[vecInf]
+      nInf <- length(idsInf)
+      status[idsInf] <- "i"
     }
   }
 
-  ## update status for attr dataset
   dat$attr$status <- status
 
   if (at == 2) {
     dat$epi$ei.flow <- c(0, nInf)
     dat$epi$e.num <- c(0, sum(active == 1 & status == "e"))
-    dat$epi$i.num <- c(0, sum(active == 1 & status == "i"))
+
   }
   else {
     dat$epi$ei.flow[at] <- nInf
     dat$epi$e.num[at] <- sum(active == 1 & status == "e")
-    dat$epi$i.num[at] <- sum(active == 1 & status == "i")
   }
-  dat$nw <- nw
+
   return(dat)
 }
 
@@ -557,14 +527,15 @@ get_prev.exposed.included <- function (dat, at) {
 ## assumes no recovery from infection (believing misperceptions),
 ## and progress to infection from exposure occurs when more than half of one's neighbors also
 ## believe the misperception that an ego is exposed to.
-param2 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5)
+param2 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 0.164,
+                    r.ei.rate = 0.3, d.ei.rate = 0.07)
 init <- init.net(status.vector = status.vector)
 
 control2 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = "pid",
                        ncores = ncores,
                        infection.FUN = infect,
-                       progress.FUN = progress,
-                       recovery.FUN = NULL,
+                       progress.FUN = exposed.to.infectious.progress,
+                       recovery.FUN = NULL, ## assumes no recovery process
                        get_prev.FUN = get_prev.exposed.included,
                        skip.check = TRUE,
                        depend = F, verbose.int = 1, save.other = "attr")

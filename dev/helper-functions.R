@@ -29,9 +29,14 @@ corr.vector <- function(y, rho, x = NULL) {
   return(z)
 }
 
+## function to normalize the range to 0 - 1
+range01 <- function(x){
+  normx <- (x-min(x)) / (max(x) - min(x))
+  normx
+  }
+
 
 ## function to derive target statistics
-
 get.target.stats <- function(nD, nR, target.gden,
                              target.nodematch,
                              target.nodefactor.nR,

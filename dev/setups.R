@@ -64,37 +64,40 @@ pid_mixing.prob <- pid_mixing/sum(pid_mixing)
 ## proportion of cross-partisan ties ( = .23)
 sum(pid_mixing.prob[lower.tri(pid_mixing.prob)|upper.tri(pid_mixing.prob)])
 
-## this number is similar to Eveland et al (2017) where
-## they report 19.5% of respondents reporting exposure to difference in standard name generator
-## yet their data suggests that this number might underestimate the true exposure
-## see http://www.sciencedirect.com/science/article/pii/S0378873317302113#bib0215
-## if we assume we just add one more alter for those who report no cross-partisan discussion ties,
-## and additional 39% of ties are cross-partisan ties (by their calculation),
-## this would increase the observed proportion a bit.
-## there are a total of 2400 individuals either R or D.
-anespanel0809[pid %in% c(1,2), .N]
-## among them, 1258 are democrats and 1142 are republicans
-anespanel0809[pid %in% c(1:2), table(pid)]
+# ## this number is similar to Eveland et al (2017) where
+# ## they report 19.5% of respondents reporting exposure to difference in standard name generator
+# ## yet their data suggests that this number might underestimate the true exposure
+# ## see http://www.sciencedirect.com/science/article/pii/S0378873317302113#bib0215
+# ## if we assume we just add one more alter for those who report no cross-partisan discussion ties,
+# ## and additional 39% of ties are cross-partisan ties (by their calculation),
+# ## this would increase the observed proportion a bit.
+# ## there are a total of 2400 individuals either R or D.
+# anespanel0809[pid %in% c(1,2), .N]
+# ## among them, 1258 are democrats and 1142 are republicans
+# anespanel0809[pid %in% c(1:2), table(pid)]
+#
+# ## among 2400, 626 individuals do not have any R or D discussants as their primary discussants (first alter)
+# ## (that does not facter into pid_mixing matrix above)
+# anespanel0809[pid %in% c(1,2) & is.na(alter1pid), .N] ## 626
+# ## among 1774 individuals who have at least one of either D or R alters,
+# ## 148 have only one discussants with the same preference
+# anespanel0809[pid == alter1pid & is.na(alter2pid), .N] ## 148
+# ## 110 have two discussants with same preferences
+# anespanel0809[pid == alter1pid & pid == alter2pid & is.na(alter3pid), .N] # 110
+# ## and 775 has three discussants with same preferences
+# anespanel0809[pid == alter1pid & pid == alter2pid & pid == alter3pid, .N] # 775
+# ## therefore 34.4% of respondents reporting at least one exposure to difference
+#
+# ## including those who have no R/D discussants at all (n = 626), there are 1659 potential dyadic cases to be added.
+# ## out of that, 647 dyadic interactions would be cross-party ties (39%, by Eveland et al's calculation),
+# ## therefore ((585 + 571) + 647) / (5001 + 1659) = 27.07% are cross-party heterogenous dyads, and
+# ## ((2079 + 1766) + 1012) / (5001 + 1659) = 72.92% are in-party homogenous dyads
 
-## among 2400, 626 individuals do not have any R or D discussants as their primary discussants (first alter)
-## (that does not facter into pid_mixing matrix above)
-anespanel0809[pid %in% c(1,2) & is.na(alter1pid), .N] ## 626
-## among 1774 individuals who have at least one of either D or R alters,
-## 148 have only one discussants with the same preference
-anespanel0809[pid == alter1pid & is.na(alter2pid), .N] ## 148
-## 110 have two discussants with same preferences
-anespanel0809[pid == alter1pid & pid == alter2pid & is.na(alter3pid), .N] # 110
-## and 775 has three discussants with same preferences
-anespanel0809[pid == alter1pid & pid == alter2pid & pid == alter3pid, .N] # 775
-## therefore 34.4% of respondents reporting at least one exposure to difference
-
-## including those who have no R/D discussants at all (n = 626), there are 1659 potential dyadic cases to be added.
-## out of that, 647 dyadic interactions would be cross-party ties (39%, by Eveland et al's calculation),
-## therefore ((585 + 571) + 647) / (5001 + 1659) = 27.07% are cross-party heterogenous dyads, and
-## ((2079 + 1766) + 1012) / (5001 + 1659) = 72.92% are in-party homogenous dyads
-
-
-
+## need for cognition (w11ze4, w11ze6)
+anespanel0809[w11ze4 %in% c(1,2,3) & w11ze6 %in% c(1,2), nfc := car::recode(w11ze4, "1 = 1; 3 = 0; 2 = -1")]
+anespanel0809[w11ze4 %in% c(1,2,3) & w11ze6 %in% c(1,2), nfc := nfc + car::recode(w11ze6, "1 = 1; 2 = -1")]
+anespanel0809[pid %in% c(1,2), .(mean = mean(nfc, na.rm = T), sd = sd(nfc, na.rm = T),
+                                 min = min(nfc, na.rm = T), max = max(nfc, na.rm = T)), by = pid]
 
 ## for nodefactor target statistics
 ## we look at the mean number of alters by pid group
