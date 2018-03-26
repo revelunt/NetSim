@@ -1291,27 +1291,26 @@ PIA.stats <- lapply(seq_len(length(files)), function(i) {
   load(paste0(getwd(), "/results/", fl))
   fl <- get(gsub(".rda", "", fl)) ## pointer to a loaded file
 
-  # if (i %in% c(1:4)) {
-  #   cf <- counterfactuals[1]
-  # } else if (i %in% c(5:8)) {
-  #   cf <- counterfactuals[2]
-  # } else if (i %in% c(9:12)) {
-  #   cf <- counterfactuals[3]
-  # } else {
-  #   cf <- counterfactuals[4]
-  # }
-  #
-  # ## get counterfactual model (no recovery model)
-  # load(paste0(getwd(), "/results/", cf))
-  # cf <- get(gsub(".rda", "", cf))
+  if (i %in% c(1:4)) {
+    cf <- counterfactuals[1]
+  } else if (i %in% c(5:8)) {
+    cf <- counterfactuals[2]
+  } else if (i %in% c(9:12)) {
+    cf <- counterfactuals[3]
+  } else {
+    cf <- counterfactuals[4]
+  }
+
+  ## get counterfactual model (no recovery model)
+  load(paste0(getwd(), "/results/", cf))
+  cf <- get(gsub(".rda", "", cf))
 
   ## without intervensions minus with intervensions, divided by baseline (so proportion), over time by models
-  out.overall <- sapply(1:1000, function(j) fl$epi$r.num[j,]/(fl$epi$r.num[j,] + fl$epi$i.num[j,]), simplify = T)
-  out.dem <- sapply(1:1000, function(j) fl$epi$r.num.pidD[j,]/(fl$epi$r.num.pidD[j,] + fl$epi$i.num.pidD[j,]), simplify = T)
-  out.rep <- sapply(1:1000, function(j) fl$epi$r.num.pidR[j,]/(fl$epi$r.num.pidR[j,] + fl$epi$i.num.pidR[j,]), simplify = T)
+  out.overall <- sapply(1:1000, function(j) fl$epi$i.num[j,]/cf$epi$i.num[j,], simplify = T)
+  out.dem <- sapply(1:1000, function(j) fl$epi$i.num.pidD[j,]/cf$epi$i.num.pidD[j,], simplify = T)
+  out.rep <- sapply(1:1000, function(j) fl$epi$i.num.pidR[j,]/cf$epi$i.num.pidR[j,], simplify = T)
 
-  rm(list = ls(pattern = "^sim[0-9]")); #rm(cf, fl)
-  rm(fl)
+  rm(list = ls(pattern = "^sim[0-9]")); rm(cf, fl)
   return(list(out.overall = as.vector(out.overall),
            out.dem = as.vector(out.dem),
            out.rep = as.vector(out.rep)))
