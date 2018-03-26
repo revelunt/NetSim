@@ -1,137 +1,161 @@
 
-## EpiModel with observed social network
+##
+### TO DO LIST : FITTING EPIDEMIC MODELS ON OBSERVED NETWORK
+## SEE http://statnet.github.io/gal/empnet.html
+## and SEE
+## http://statnet.csde.washington.edu/workshops/SUNBELT/current/ndtv/ndtv_workshop.html#importing-data-and-constructing-networkdynamic-objects
 
-## we first need a panel of observations, and convert them to a networkDynamic object.
-## after converting them to a list of static network objects,
+source("observednet.R")
 
-library(foreign)
-library(plyr)
+# The first module that must be updated is the initialization module.
+# The default module contained in the function initialize.net serves as our starting point for writing our own new module, net.init.mod.
+# The default module does lots of work, such as simulating an initial network from the model fit,
+# that we do not need to do with an observed network.
+# Here, there are three key steps for the initialization module:
+#   set up the master data list, dat, including its core data structures;
+#   initialize infection among the nodes in the network;
+#   and use the get_prev.net function to record summary epidemiological statistics.
+# With this modules, whereas x would ordinarily be the fitted network model from netest,
+# now it will just be the networkDynamic object detailed above.
 
-if(!("haven" %in% installed.packages()[,"Package"])) install.packages("haven")
-if(!("data.table" %in% installed.packages()[,"Package"])) install.packages("data.table")
-library(haven)
-library(data.table)
-require(igraph)
-require(sna)
-require(car)
-require(parallel)
+net.init.mod <- function(x, param, init, control, s) {
 
-file_path <- "/Users/songh95/Dropbox/GitHub/Korean2012ElectionProject"
+  # Master Data List
+  dat <- list()
+  dat$param <- param
+  dat$init <- init
+  dat$control <- control
 
-## load the dataset from SPSS and set as data.table object
-dat <- haven::read_spss(paste(file_path, "/Dat/DiscussionForumThreeWavePanel(N=341).sav", sep = ""))
-setDT(dat)
+  dat$attr <- list()
+  dat$stats <- list()
+  dat$temp <- list()
 
-## load the node dataset for subsetting the network
-dat2 <- haven::read_spss(paste(file_path, "/Dat/Survey Data for Network Matrix Data.sav", sep = ""))
-setDT(dat2)
-dat2 <- na.omit(dat2[, c('r_id', 'p_image', 'm_image', 'ide_self', 'evalcrit1', 'evalcrit2',
-                         'policy_c', 'policy_l', 'knowtotal', 'talk', 'interest', "female", "edu", "age", "opleader", "follower", "income")])
+  # Network Parameters
+  dat$nw <- x
+  dat$param$modes <- 1
 
-## this yeilds a total of 312 cases
-lengthn <- dat2[, .N]
-lengthn
-vids <- dat2$r_id
+  # Initialization
 
-## remove "NaN" in data -- W1
-dat[is.na(pv311), pv311 := 0 ]
-dat[is.na(pv313), pv313 := 0 ]
-dat[is.na(pv317), pv317 := 0 ]
-## remove "NaN" in data -- W2
-dat[is.na(kv194), kv194 := 0 ]
-dat[is.na(kv196), kv196 := 0 ]
-dat[is.na(kv200), kv200 := 0 ]
-## remove "NaN" in data -- W3
-dat[is.na(hv253), hv253 := 0 ]
-dat[is.na(hv255), hv255 := 0 ]
-dat[is.na(hv259), hv259 := 0 ]
+  ## Infection Status and Time Modules
+  n <- network.size(dat$nw)
+  dat$attr$status <- init$status.vector
 
-## motivation for using online forum
-consistency.motivation <- dat[vids, .(as.numeric(pv18),
-                                      as.numeric(pv19),
-                                      as.numeric(pv20),
-                                      as.numeric(pv21),
-                                      as.numeric(pv23),
-                                      as.numeric(pv24))]
-understanding.motivation <- dat[vids, pv13:pv16]
-hedomic.motivation <- dat[vids, pv27:pv29]
+  dat$attr$active <- rep(1, n)
+  dat$attr$entrTime <- rep(1, n)
+  dat$attr$exitTime <- rep(NA, n)
 
-##---------------------------------##
-## create a dependent network list ##
-##---------------------------------##
+  dat$attr$infTime <- rep(NA, n)
+  dat$attr$infTime[dat$attr$status == "i"] <- 1
 
-## pre-wave: Nov 13 to Nov 26; Wave 1 survey: Nov 27 to Nov 29,
-## Wave 2 survey: Dec 11th to 13th, and Wave 3 survey: Dec 21th to 23th
+  ## Get initial prevalence
+  dat <- get_prev.net(dat, at = 1)
 
-net <- read.csv(paste(file_path, "/Dat/Reading_1113-1126_Participants(N=341)_Count(N=160836).csv", sep = ""))
-net2 <- read.csv(paste(file_path, "/Dat/Reading_1127-1219_Participants(N=341)_Count(N=160836).csv", sep = ""))
-net2 <- data.frame(reading.time = net2$Reading.Time, reader.id = net2$Reader.Id, poster.id = net2$Poster.Id)
-net <- rbind(net, net2)
-setDT(net)
-net[, reading.date := as.Date(reading.time, format = "%Y-%m-%d %H:%M:%S")]
-
-date.range <- unique(sort(net[, reading.date]))
-
-thresholds <- sapply(1:length(date.range), function(i) {
-  g[[i]] <- net[reading.date %in% date.range[i],]
-  g[[i]] <- data.frame(g[[i]][,2], g[[i]][,3])
-  setDT(g[[i]]); g[[i]][, count :=1]
-  g[[i]][, sum(count), by = c("poster.id", "reader.id")][poster.id %in% vids & reader.id %in% vids, mean(V1)]
-})
-
-g <- list()
-for (i in 1:length(date.range)) {
-
-  g[[i]] <- net[reading.date %in% date.range[i],]
-  g[[i]] <- data.frame(g[[i]][,2], g[[i]][,3])
-  g[[i]] <- graph.data.frame(g[[i]], directed = TRUE, vertices = 1:341)
-  g[[i]] <- induced_subgraph(g[[i]], vids = vids)
-  g[[i]] <- as.matrix(as_adj(g[[i]]))
-  rownames(g[[i]]) <- colnames(g[[i]]) <- vids
-  g[[i]] <- sna::event2dichot(g[[i]], method = "absolute", thresh = thresholds[i])
-  g[[i]] <- as.network(g[[i]])
-
+  return(dat)
 }
 
-## convert the list to the networkDynamic object
-## this takes some time....
-require(networkDynamic)
-g <- networkDynamic(network.list = g)
 
-## outputs ##
-# Neither start or onsets specified, assuming start = 0
-# Onsets and termini not specified, assuming each network in network.list should have a discrete spell of length 1
-# Argument base.net not specified, using first element of network.list instead
-# Created net.obs.period to describe network
-# Network observation period info:
-# Number of observation spells: 1
-# Maximal time range observed: 0 until 27
-# Temporal mode: discrete
-# Time unit: step
-# Suggested time increment: 1
+# The infection module must also be changed because of some features
+# within the default function that depend on having a fitted network model.
+# So the default module function, infection.net, serves as the basis of our new module, my.inf.mod.
+# It is a stripped down version of the default that provides a much clearer picture of the processes within the module,
+# but it is not general enough to handle all the epidemic modeling cases
+# supported within EpiModel (e.g., time-vary infection probabilities or simulating epidemics over bipartite networks).
+# The key element within both the default and this updated module is the discord_edgelist function
+# that examines the current state of the network at 'at',
+# and returns a matrix of disease discordant pairs (dyads over which disease may be transmitted).
 
-## set some network attributes
-g %n% 'net.obs.period' <- list(
-  observations = list(c(0,27)),
-  mode = "discrete",
-  time.increment = 1,
-  time.unit = "day")
+my.inf.mod <- function(dat, at) {
 
-## time-invariant covariates
-activate.vertex.attribute(g, "interest", value = dat[vids, pv165:pv166][, rowMeans(.SD), by = vids][,V1])
-activate.vertex.attribute(g, "internal.efficacy", value = dat[vids, pv126:pv129][, rowMeans(.SD), by = vids])
-activate.vertex.attribute(g, "consistency.motivation", value = apply(consistency.motivation, 1, mean))
-activate.vertex.attribute(g, "understanding.motivation", value = apply(understanding.motivation, 1, mean))
-activate.vertex.attribute(g, "age", value = dat[vids, as.numeric(age)/10])
-activate.vertex.attribute(g, "gender", value = dat[vids, as.numeric(sex) - 1])
-activate.vertex.attribute(g, "edu", value = dat[vids, as.numeric(edu)])
+  ## Variables ##
+  active <- dat$attr$active
+  status <- dat$attr$status
 
-## time-variying covariates
-activate.vertex.attribute(g, "partyid", value = split(
-  partyid <- cbind(
-    rep.col(dat[vids, as.numeric(canpref1)], 7),
-    rep.col(dat[vids, as.numeric(canpref2)], 14),
-    rep.col(dat[vids, as.numeric(canpref3)], 7)),  seq(nrow(partyid))))
+  inf.prob <- dat$param$inf.prob
+  act.rate <- dat$param$act.rate
+
+  nw <- dat$nw
+
+  # Vector of infected and susceptible IDs
+  idsSus <- which(active == 1 & status == "s")
+  idsInf <- which(active == 1 & status == "i")
+  nActive <- sum(active == 1)
+  nElig <- length(idsInf)
+
+  # Initialize vectors
+  nInf <- totInf <- 0
+
+  ## Processes ##
+  # If some infected AND some susceptible, then proceed
+  if (nElig > 0 && nElig < nActive) {
+
+    # Get discordant edgelist
+    del <- discord_edgelist(dat, at)
+
+    # If some discordant edges, then proceed
+    if (!(is.null(del))) {
+
+      # Infection probabilities
+      del$transProb <- inf.prob
+
+      # Act rates
+      del$actRate <- act.rate
+
+      # Calculate final transmission probability per timestep
+      del$finalProb <- 1 - (1 - del$transProb) ^ del$actRate
+
+      # Randomize transmissions and subset df
+      transmit <- rbinom(nrow(del), 1, del$finalProb)
+      del <- del[which(transmit == 1), ]
+
+      # Set new infections vector
+      idsNewInf <- unique(del$sus)
+      totInf <- length(idsNewInf)
+
+      # Update attributes
+      if (totInf > 0) {
+        dat$attr$status[idsNewInf] <- "i"
+        dat$attr$infTime[idsNewInf] <- at
+      }
+
+    }
+  }
+
+  ## Summary statistics ##
+  if (at == 2) {
+    dat$epi$si.flow <- c(0, totInf)
+  } else {
+    dat$epi$si.flow[at] <- totInf
+  }
+
+  dat$nw <- nw
+  return(dat)
+}
 
 
+# There are many other modules that could potentially run, and one in particular is the resim_nets.FUN module
+# that handles the temporal network resimulation; we do not want network resimulation in this case.
+# The  module.order argument, then, is a listing of the modules within the time loop that should be run at each time step.
+# Since our model includes no demography (births or deaths), disease recovery, or network simulation,
+# the only modules we need to run within the time loop are the infection module and the prevalence tracker module.
+# Finally, the skip.check argument is set to false to bypass some standard error checking for built-in modules,
+# and saving the network and network statistics are turned off
+# (these are already contained in the networkDynamic object anyway).
 
+control <- control.net(type = "SI", nsteps = 27, nsims = 100, ncores = 8,
+                       initialize.FUN = net.init.mod, infection.FUN = my.inf.mod,
+                       module.order = c("infection.FUN", "get_prev.FUN"),
+                       skip.check = TRUE, save.nwstats = F, save.network = T)
+
+
+# parameterization
+param <- param.net(inf.prob = 0.9)
+
+status.vector <- init.status.vector <- get.vertex.attribute.active(g, "partyid", at = 1)
+status.vector[status.vector == 1] <- "s"
+status.vector[status.vector == 0] <- sample(c("i", "s"), replace = T,
+                                            size = length(status.vector[status.vector == 0]),
+                                            prob = c(0.15, 0.85))
+init <- init.net(status.vector = status.vector) ## total 15 infected, among Republican (coded as zero)
+
+## simulation
+sim3 <- netsim(g, param, init, control)

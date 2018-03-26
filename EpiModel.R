@@ -11,6 +11,7 @@ library("sna")
 library('magrittr')
 require(data.table)
 source("dev/helper-functions.R")
+require(stargazer)
 
 # In this case, we will focus on a "complex contagion", meaning something you
 # have to hear about from multiple people before you will adopt it.
@@ -161,7 +162,7 @@ dev.off()
 require(intergraph)
 
 netstats <- vector(mode = "list", length = 4)
-net.title <- list("E-R", "Chain", " SW No-Homophily", "SW Homophily")
+net.title <- list("E-R", "Chain", "SW No-Homophily", "SW Homophily")
 names(netstats) <- net.title
 
 table1 <- matrix(NA, ncol = 4, nrow = 7)
@@ -543,22 +544,22 @@ control2 <- control.net(type = "SI", nsteps = max.time, nsims = nsims, epi.by = 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
 sim2.SEI.model1 <- netsim(est.list[[1]], param2, init, control2)
-save(sim3.SEI.model1, file = "results/sim2.SEI.model1.rda")
+save(sim2.SEI.model1, file = "results/sim2.SEI.model1.rda")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
 sim2.SEI.model2 <- netsim(est.list[[2]], param2, init, control2)
-save(sim3.SEI.model2, file = "results/sim2.SEI.model2.rda")
+save(sim2.SEI.model2, file = "results/sim2.SEI.model2.rda")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
 sim2.SEI.model3 <- netsim(est.list[[3]], param2, init, control2)
-save(sim3.SEI.model3, file = "results/sim2.SEI.model3.rda")
+save(sim2.SEI.model3, file = "results/sim2.SEI.model3.rda")
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
 sim2.SEI.model4 <- netsim(est.list[[4]], param2, init, control2)
-save(sim3.SEI.model4, file = "results/sim2.SEI.model4.rda")
+save(sim2.SEI.model4, file = "results/sim2.SEI.model4.rda")
 
 
 
@@ -601,12 +602,185 @@ print.plots.pdf(sim2.SEI.model2, "tree", "Prevalence_SEI.model2", include.expose
 print.plots.pdf(sim2.SEI.model3, "small-world", "Prevalence_SEI.model3", include.exposed = T)
 print.plots.pdf(sim2.SEI.model4, "homophilous", "Prevalence_SEI.model4", include.exposed = T)
 
+## get mean prevalence over entire time period
+## those who are being exposed are: exposed + (infected|exposed)
+dat.plot <- data.table(time = 1:1000,
+                       model1 = model1DT.SEI[, (e.num.mean + i.num.mean)/num.mean],
+                       model2 = model2DT.SEI[, (e.num.mean + i.num.mean)/num.mean],
+                       model3 = model3DT.SEI[, (e.num.mean + i.num.mean)/num.mean],
+                       model4 = model4DT.SEI[, (e.num.mean + i.num.mean)/num.mean],
+
+                       model1.llci = model1DT.SEI[, (e.num.llci + i.num.llci)/num.mean],
+                       model2.llci = model2DT.SEI[, (e.num.llci + i.num.llci)/num.mean],
+                       model3.llci = model3DT.SEI[, (e.num.llci + i.num.llci)/num.mean],
+                       model4.llci = model4DT.SEI[, (e.num.llci + i.num.llci)/num.mean],
+
+                       model1.ulci = model1DT.SEI[, (e.num.ulci + i.num.ulci)/num.mean],
+                       model2.ulci = model2DT.SEI[, (e.num.ulci + i.num.ulci)/num.mean],
+                       model3.ulci = model3DT.SEI[, (e.num.ulci + i.num.ulci)/num.mean],
+                       model4.ulci = model4DT.SEI[, (e.num.ulci + i.num.ulci)/num.mean],
+
+                       model1.suspect = model1DT.SEI[, s.num.mean/num.mean],
+                       model2.suspect = model2DT.SEI[, s.num.mean/num.mean],
+                       model3.suspect = model3DT.SEI[, s.num.mean/num.mean],
+                       model4.suspect = model4DT.SEI[, s.num.mean/num.mean])
+
+dat.plot2 <- data.table(time = 1:1000,
+                        model1.D = model1DT.SEI[, (e.num.pidD.mean + i.num.pidD.mean)/num.mean],
+                        model1.R = model1DT.SEI[, (e.num.pidR.mean + i.num.pidR.mean)/num.mean],
+                        model2.D = model2DT.SEI[, (e.num.pidD.mean + i.num.pidD.mean)/num.mean],
+                        model2.R = model2DT.SEI[, (e.num.pidR.mean + i.num.pidR.mean)/num.mean],
+                        model3.D = model3DT.SEI[, (e.num.pidD.mean + i.num.pidD.mean)/num.mean],
+                        model3.R = model3DT.SEI[, (e.num.pidR.mean + i.num.pidR.mean)/num.mean],
+                        model4.D = model4DT.SEI[, (e.num.pidD.mean + i.num.pidD.mean)/num.mean],
+                        model4.R = model4DT.SEI[, (e.num.pidR.mean + i.num.pidR.mean)/num.mean],
+
+                        model1.D.llci = model1DT.SEI[, (e.num.pidD.llci + i.num.pidD.llci)/num.mean],
+                        model1.R.llci = model1DT.SEI[, (e.num.pidR.llci + i.num.pidR.llci)/num.mean],
+                        model2.D.llci = model2DT.SEI[, (e.num.pidD.llci + i.num.pidD.llci)/num.mean],
+                        model2.R.llci = model2DT.SEI[, (e.num.pidR.llci + i.num.pidR.llci)/num.mean],
+                        model3.D.llci = model3DT.SEI[, (e.num.pidD.llci + i.num.pidD.llci)/num.mean],
+                        model3.R.llci = model3DT.SEI[, (e.num.pidR.llci + i.num.pidR.llci)/num.mean],
+                        model4.D.llci = model4DT.SEI[, (e.num.pidD.llci + i.num.pidD.llci)/num.mean],
+                        model4.R.llci = model4DT.SEI[, (e.num.pidR.llci + i.num.pidR.llci)/num.mean],
+
+                        model1.D.ulci = model1DT.SEI[, (e.num.pidD.ulci + i.num.pidD.ulci)/num.mean],
+                        model1.R.ulci = model1DT.SEI[, (e.num.pidR.ulci + i.num.pidR.ulci)/num.mean],
+                        model2.D.ulci = model2DT.SEI[, (e.num.pidD.ulci + i.num.pidD.ulci)/num.mean],
+                        model2.R.ulci = model2DT.SEI[, (e.num.pidR.ulci + i.num.pidR.ulci)/num.mean],
+                        model3.D.ulci = model3DT.SEI[, (e.num.pidD.ulci + i.num.pidD.ulci)/num.mean],
+                        model3.R.ulci = model3DT.SEI[, (e.num.pidR.ulci + i.num.pidR.ulci)/num.mean],
+                        model4.D.ulci = model4DT.SEI[, (e.num.pidD.ulci + i.num.pidD.ulci)/num.mean],
+                        model4.R.ulci = model4DT.SEI[, (e.num.pidR.ulci + i.num.pidR.ulci)/num.mean])
+
+# p2_1 <- ggplot(dat.plot2, aes(time, model1.D)) + geom_line(color = "steelblue") + ## model1 no. of exposed
+#   geom_ribbon(aes(ymin = model1.D.llci, ymax = model1.D.ulci), fill = "steelblue", alpha = 0.1) +
+#   geom_line(aes(time, model1.R), linetype = "dotted", color = "firebrick") +
+#   geom_ribbon(aes(ymin = model1.R.llci, ymax = model1.R.ulci), fill = "firebrick", alpha = 0.1) +
+#   theme_bw() + ylab("prevalence over time (proportions)") + xlab("time") +
+#   ggtitle("E-R random network")
+#
+# p2_2 <- ggplot(dat.plot2, aes(time, model2.D)) + geom_line(color = "steelblue") + ## model1 no. of exposed
+#   geom_ribbon(aes(ymin = model2.D.llci, ymax = model2.D.ulci), fill = "steelblue", alpha = 0.1) +
+#   geom_line(aes(time, model2.R), linetype = "dotted", color = "firebrick") +
+#   geom_ribbon(aes(ymin = model2.R.llci, ymax = model2.R.ulci), fill = "firebrick", alpha = 0.1) +
+#   theme_bw() + ylab("prevalence over time (proportions)") + xlab("time") +
+#   ggtitle("Chain network")
+#
+# p2_3 <- ggplot(dat.plot2, aes(time, model3.D)) + geom_line(color = "steelblue") + ## model1 no. of exposed
+#   geom_ribbon(aes(ymin = model3.D.llci, ymax = model3.D.ulci), fill = "steelblue", alpha = 0.1) +
+#   geom_line(aes(time, model3.R), linetype = "dotted", color = "firebrick") +
+#   geom_ribbon(aes(ymin = model3.R.llci, ymax = model3.R.ulci), fill = "firebrick", alpha = 0.1) +
+#   theme_bw() + ylab("prevalence over time (proportions)") + xlab("time") +
+#   ggtitle("SW absent homophily")
+#
+# p2_4 <- ggplot(dat.plot2, aes(time, model4.D)) + geom_line(color = "steelblue") + ## model1 no. of exposed
+#   geom_ribbon(aes(ymin = model4.D.llci, ymax = model4.D.ulci), fill = "steelblue", alpha = 0.1) +
+#   geom_line(aes(time, model4.R), linetype = "dotted", color = "firebrick") +
+#   geom_ribbon(aes(ymin = model4.R.llci, ymax = model4.R.ulci), fill = "firebrick", alpha = 0.1) +
+#   theme_bw() + ylab("prevalence over time (proportions)") + xlab("time") +
+#   ggtitle("SW homophily")
+
+pdf("draft/Figure 2. Prevalence.pdf", paper = 'a4r', width = 12, height = 7)
+ggplot(dat.plot, aes(time, model1)) + geom_line() + ## model1 no. of exposed
+  #geom_ribbon(aes(ymin = model1.llci, ymax = model1.ulci), alpha = 0.1) +
+  geom_line(aes(time, model1.suspect), linetype = "dotted") +
+  geom_line(aes(time, model2), color = "grey") +
+  #geom_ribbon(aes(x = time, ymin = model2.llci, ymax = model2.ulci), fill = "grey", alpha = 0.1) +
+  geom_line(aes(time, model2.suspect), color = "grey", linetype = "dotted") +
+  geom_line(aes(time, model3), color = "steelblue") +
+  #geom_ribbon(aes(ymin = model3.llci, ymax = model3.ulci), fill = "blue", alpha = 0.1) +
+  geom_line(aes(time, model3.suspect), color = "steelblue", linetype = "dotted") +
+  geom_line(aes(time, model4), color = "firebrick") +
+  #geom_ribbon(aes(ymin = model4.llci, ymax = model4.ulci), fill = "red", alpha = 0.1) +
+  geom_line(aes(time, model4.suspect), color = "firebrick", linetype = "dotted") +
+  theme_bw() + ylab("Cumulative Fraction Exposed to Misinformation") + xlab("Time (Hours)")
+
+## adoption rates:
+ggplot(model1DT.SEI, aes(time, se.flow.mean)) +
+  geom_smooth(fill = "black", colour = "black", method = "loess", alpha = 0.1) +
+  geom_smooth(data = model2DT.SEI, aes(time, se.flow.mean),
+              fill = "grey", colour = "grey", method = "loess", alpha = 0.1) +
+  geom_smooth(data = model3DT.SEI, aes(time, se.flow.mean),
+              fill = "steelblue", colour = "steelblue", method = "loess", alpha = 0.1) +
+  geom_smooth(data = model4DT.SEI, aes(time, se.flow.mean),
+              fill = "firebrick", colour = "firebrick", method = "loess", alpha = 0.1) +
+  theme_bw() + ylab("Suspected to Exposed Flow") + xlab("Time (Hours)")
+dev.off()
+
+
+
+## prevalence table
+tb3 <- matrix(NA, nrow = 6, ncol = 4)
+rownames(tb3) <- c("overall", "95% CIs", "Among Dem", "95% CIs", "Among Rep", "95% CIs")
+colnames(tb3) <- c("E-R", "Chain", "SW No-Homophily", "SW Homophily")
+
+datlist <- list(model1DT.SEI, model2DT.SEI, model3DT.SEI, model4DT.SEI)
+for (i in 1:4) {
+dat <- datlist[[i]]
+tb3[,i] <- c(format(dat[, mean((e.num.mean + i.num.mean)/num.mean)],
+                    trim = T, digits = 3, nsmall = 3, justify = "centre"),
+             paste0("[", format(dat[, mean((e.num.llci + i.num.llci)/num.mean)],
+                                trim = T, digits = 3, nsmall = 3),
+                 ", ", format(dat[, mean((e.num.ulci + i.num.ulci)/num.mean)],
+                              trim = T, digits = 3, nsmall = 3), "]"),
+             format(dat[, mean((e.num.pidD.mean + i.num.pidD.mean)/num.mean, na.rm = T)],
+                    trim = T, digits = 3, nsmall = 3, justify = "centre"),
+             paste0("[", format(dat[, mean((e.num.pidD.llci + i.num.pidD.llci)/num.mean, na.rm = T)],
+                                trim = T, digits = 3, nsmall = 3),
+                    ", ", format(dat[, mean((e.num.pidD.ulci + i.num.pidD.ulci)/num.mean, na.rm = T)],
+                                 trim = T, digits = 3, nsmall = 3), "]"),
+             format(dat[, mean((e.num.pidR.mean + i.num.pidR.mean)/num.mean, na.rm = T)],
+                    trim = T, digits = 3, nsmall = 3, justify = "centre"),
+             paste0("[", format(dat[, mean((e.num.pidR.llci + i.num.pidR.llci)/num.mean, na.rm = T)],
+                                trim = T, digits = 3, nsmall = 3),
+                    ", ", format(dat[, mean((e.num.pidR.ulci + i.num.pidR.ulci)/num.mean, na.rm = T)],
+                                 trim = T, digits = 3, nsmall = 3), "]"))
+}
+
+WRS.test <- function(dat1, dat2) {
+
+  ## find min of distribution that do not different from each other
+  test.min <- sapply(1:1000, function(i) {
+    index <- seq(1, i)
+    test <- suppressWarnings(wilcox.test(dat1[index, se.flow.mean/s.num.mean], dat2[index, se.flow.mean/s.num.mean]))
+    test$p.value
+  }, simplify = T)
+
+  min <- min(which(test.min < 0.05))
+
+  test.max <- sapply(min:1000, function(i) {
+    index <- seq(min, i)
+    test <- suppressWarnings(wilcox.test(dat1[index, se.flow.mean/s.num.mean], dat2[index, se.flow.mean/s.num.mean]))
+    test$p.value
+  }, simplify = T)
+
+  max <- min + max(which(test.max < 0.05)) - 1
+
+  return(c(min = min, max = max))
+}
+
+tb4 <- matrix(NA, nrow = 3, ncol = 4)
+rownames(tb4) <- c("Chain", "SW No-Homophily", "SW Homophily")
+colnames(tb4) <- c("E-R", "Chain", "SW No-Homophily", "SW Homophily")
+tb4[,1] <- c(paste(WRS.test(model1DT.SEI, model2DT.SEI), collapse = ":"),
+             paste(WRS.test(model1DT.SEI, model3DT.SEI), collapse = ":"),
+             paste(WRS.test(model1DT.SEI, model4DT.SEI), collapse = ":"))
+tb4[,2] <- c("-",
+             paste(WRS.test(model2DT.SEI, model3DT.SEI), collapse = ":"),
+             paste(WRS.test(model2DT.SEI, model4DT.SEI), collapse = ":"))
+tb4[,3] <- c(NA,
+             "-",
+             paste(WRS.test(model3DT.SEI, model4DT.SEI), collapse = ":"))
+tb4[,4] <- c(NA, NA, "-")
+stargazer(tb4)
+
 
 ## cf. examine simulated networks over time
 require(ndtv)
 nw10 <- get_network(sim2.SEI.model1, sim = 10)
-nw10 %n% "slice.par" <- list(start = 1, end = 1000, interval = 50, aggregate.dur = 1, rule = 'latest')
-compute.animation(nw10, animation.mode = 'MDSJ', chain.direction = 'reverse', verbose = FALSE)
+nw10 %n% "slice.par" <- list(start = 1, end = 1000, interval = 100, aggregate.dur = 1, rule = 'latest')
+compute.animation(nw10, animation.mode = 'kamadakawai', chain.direction = 'reverse', verbose = FALSE)
 render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
                edge.col = "darkgrey",
                vertex.border = "lightgrey",
@@ -619,10 +793,6 @@ render.d3movie(nw10, vertex.cex = 0.9, vertex.col = "pid",
 ## Step 4: SEIR model ##
 ## ------------------ ##
 
-rm(list = ls())
-source("dev/helper-functions.R")
-source("dev/step.4.prep.R")
-
 ## module for effects of correction (SEIR model)
 ## this module assumes single instances of "random" corrections
 ## but introduced later in the time step
@@ -630,11 +800,15 @@ source("dev/step.4.prep.R")
 ## but we need to change the default recovery module to accomodate delayed recovery.
 ## here we assume an arbitrary number of 168 for "when" corrections are introduced in the network (rec.start).
 ## The recovery rate implies that the average duration of disease is 336 hours (14 days),
-## meaning on average, those who are infected are randomly receive corrections after 14 days,
+## meaning on average, those who are infected are randomly receive corrections after 14 days (two weeks),
 ## and they recover from the infected status
 ## (The recovery rate is the reciprocal of the disease duration: 1/336 = 0.00297619)
-param3 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
-                    rec.rate = 0.00297619, rec.start = 168)
+## this is multiplied by hypothetical correction.prob (0.5)
+## since recovery rate of 0.00297619 here means correction.prob is always 1, so we need to discount this number by
+## the probability of recieving correction (correction.prob) that is not explicitly accounted for.
+param3 <-  param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 0.164,
+                     r.ei.rate = 0.3, d.ei.rate = 0.07,
+                     rec.rate = 0.001488095, rec.start = 168)
 init <- init.net(status.vector = status.vector)
 ## revised module for recovery process
 ## this assumes homogenous recovery after average duration
@@ -758,32 +932,34 @@ recovery.delayed.random <- function (dat, at) {
 control3 <- control.net(type = "SIR", nsteps = max.time, nsims = nsims, epi.by = "pid",
                         ncores = ncores,
                         infection.FUN = infect,
-                        progress.FUN = progress,
+                        progress.FUN = exposed.to.infectious.progress,
                         recovery.FUN = recovery.delayed.random,
                         get_prev.FUN = get_prev.exposed.included,
                         skip.check = TRUE,
-                        depend = F, verbose.int = 1)
+                        depend = F, verbose.int = 1, save.other = "attr")
 
+## See Table 2 of the main manuscript for details regarding numbering of the scenarios.
+## This batch represents asocial correction (random recovery) in Table 2
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim3.SEI.model1 <- netsim(est.list[[1]], param3, init, control3)
-save(sim3.SEI.model1, file = "results/sim3.SEIR.model1.rda")
-
+sim3.SEIR.model1 <- netsim(est.list[[1]], param3, init, control3) ## model 1 in Table 2
+save(sim3.SEIR.model1, file = "results/sim3.SEIR.model1.rda")
+rm(sim3.SEIR.model1)
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim3.SEI.model2 <- netsim(est.list[[2]], param3, init, control3)
-save(sim3.SEI.model2, file = "results/sim3.SEIR.model2.rda")
-
+sim3.SEIR.model5 <- netsim(est.list[[2]], param3, init, control3) ## model 5 in Table 2
+save(sim3.SEIR.model5, file = "results/sim3.SEIR.model5.rda")
+rm(sim3.SEIR.model5)
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim3.SEI.model3 <- netsim(est.list[[3]], param3, init, control3)
-save(sim3.SEI.model3, file = "results/sim3.SEIR.model3.rda")
-
+sim3.SEIR.model9 <- netsim(est.list[[3]], param3, init, control3) ## model 9 in Table 2
+save(sim3.SEIR.model9, file = "results/sim3.SEIR.model9.rda")
+rm(sim3.SEIR.model9)
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim3.SEI.model4 <- netsim(est.list[[4]], param3, init, control3)
-save(sim3.SEI.model4, file = "results/sim3.SEIR.model4.rda")
-
+sim3.SEIR.model13 <- netsim(est.list[[4]], param3, init, control3) ## model 13 in Table 2
+save(sim3.SEIR.model13, file = "results/sim3.SEIR.model13.rda")
+rm(sim3.SEIR.model13)
 
 
 ## network-based correction assumes that adoption of correcting information (therefore "recovering" from false beliefs)
@@ -791,11 +967,6 @@ save(sim3.SEI.model4, file = "results/sim3.SEIR.model4.rda")
 ## (socially contingent correction of false beliefs)
 ## set param = "correction.prob", "rec.rate" in param for progress module,
 ## and "rec.rate" should be set to baseline, which then modified by the number of alters who sends correction
-
-rm(list = ls())
-source("dev/helper-functions.R")
-source("dev/step.4.prep.R")
-
 
 recovery.correction <- function(dat, at) {
 
@@ -838,12 +1009,11 @@ recovery.correction <- function(dat, at) {
     ratesElig <- rates
   }
 
-  idsSus <- which(active == 1 & status == "s")
-  idsExp <- which(active == 1 & status == "e")
   idsInf <- which(active == 1 & status == "i")
   idsRec <- which(active == 1 & status == "r")
 
   correction.prob <- dat$param$correction.prob
+  rho <- dat$param$rho
 
   ## I to R progression
   nRec <- 0
@@ -876,8 +1046,11 @@ recovery.correction <- function(dat, at) {
         vecCorrect <- which(rbinom(nCorrect, 1, correction.prob) == 1)
         nvecCorrect <- length(vecCorrect)
 
-        ## if nvecCorrect > 0
-        if (nvecCorrect > 1) {
+        ## if proportion of alters sending corrections relative to total neighbor is greater than (rho)
+        if (nvecCorrect/length(active_alters) >= rho) {
+          rate.return <- 1 - ratesElig[k] ## this person recovers from infection status (yet stochastically)
+
+        } else if (nvecCorrect > 1) { ## if below rho and nvecCorrect > 0
           ## for each additional alters providing corrections (=nvecCorrect), it additionally increases the prob of recovery
           j <- (nvecCorrect-1)
           rate.return <- ratesElig[k]*exp(log(j+1)*1.1435)  ## this increases baseline rates. Numbers taken from Margolin et al. 2017 (mutual friendship coef, average of two values from Table 1/2, final models)
@@ -896,13 +1069,12 @@ recovery.correction <- function(dat, at) {
     ratesElig <- ratesElig.modified
   }
 
-
   ## we simply add this setup in order to bypass recovery when at is less than rec.start...
   if (at >= rec.start) {
 
     if (nElig > 0) {
       if (rec.rand == TRUE) {
-        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1) ## randomly recover from the infection status..
+        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1) ## stochastically recover from the infection status..
         if (length(vecRecov) > 0) {
           idsRecov <- idsElig[vecRecov]
           nRecov <- sum(mode[idsRecov] == 1)
@@ -970,39 +1142,235 @@ recovery.correction <- function(dat, at) {
   return(dat)
 }
 
-param4 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 2, tau = 0.5,
-                    rec.rate = 0.00297619, rec.start = 1, correction.prob = 0.5, rec.start = 168)
-init <- init.net(status.vector = status.vector)
-
 ## control settings
+init <- init.net(status.vector = status.vector)
 control4 <- control.net(type = "SIR", nsteps = max.time, nsims = nsims, epi.by = "pid",
                         ncores = ncores,
                         infection.FUN = infect,
-                        progress.FUN = progress,
+                        progress.FUN = exposed.to.infectious.progress,
                         recovery.FUN = recovery.correction,
                         get_prev.FUN = get_prev.exposed.included,
                         skip.check = TRUE,
-                        depend = F, verbose.int = 1)
+                        depend = F, verbose.int = 1, save.other = "attr")
+
+## thresholds (rho) of 0.25 batch -- model 2, 6, 10, 14
+param4_1 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 0.164,
+                    r.ei.rate = 0.3, d.ei.rate = 0.07, rec.rand = TRUE,
+                    rec.rate = 0.00297619, rec.start = 168, correction.prob = 0.5, rho = 0.25)
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim4.SEIR.model1 <- netsim(est.list[[1]], param4, init, control4)
-save(sim4.SEIR.model1, file = "results/sim4.SEIR.model1.rda")
+sim3.SEIR.model2 <- netsim(est.list[[1]], param4_1, init, control4)
+save(sim3.SEIR.model2, file = "results/sim3.SEIR.model2.rda")
+rm(sim3.SEI.model2)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model6 <- netsim(est.list[[2]], param4_1, init, control4)
+save(sim3.SEIR.model6, file = "results/sim3.SEIR.model6.rda")
+rm(sim3.SEIR.model6)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model10 <- netsim(est.list[[3]], param4_1, init, control4)
+save(sim3.SEIR.model10, file = "results/sim3.SEIR.model10.rda")
+rm(sim3.SEIR.model10)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model14 <- netsim(est.list[[4]], param4_1, init, control4)
+save(sim3.SEIR.model14, file = "results/sim3.SEIR.model14.rda")
+rm(sim3.SEIR.model14)
+
+## thresholds (rho) of 0.5 batch -- model 3, 7, 11, 15
+param4_2 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 0.164,
+                      r.ei.rate = 0.3, d.ei.rate = 0.07, rec.rand = TRUE,
+                      rec.rate = 0.00297619, rec.start = 168, correction.prob = 0.5, rho = 0.5)
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim4.SEIR.model2 <- netsim(est.list[[2]], param4, init, control4)
-save(sim4.SEIR.model2, file = "results/sim4.SEIR.model2.rda")
+sim3.SEIR.model3 <- netsim(est.list[[1]], param4_2, init, control4)
+save(sim3.SEIR.model3, file = "results/sim3.SEIR.model3.rda")
+rm(sim3.SEIR.model3)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model7 <- netsim(est.list[[2]], param4_2, init, control4)
+save(sim3.SEIR.model7, file = "results/sim3.SEIR.model7.rda")
+rm(sim3.SEIR.model7)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model11 <- netsim(est.list[[3]], param4_2, init, control4)
+save(sim3.SEIR.model11, file = "results/sim3.SEIR.model11.rda")
+rm(sim3.SEIR.model11)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model15 <- netsim(est.list[[4]], param4_2, init, control4)
+save(sim3.SEIR.model15, file = "results/sim3.SEIR.model15.rda")
+rm(sim3.SEIR.model15)
+
+## thresholds (rho) of 0.75 batch -- model 4, 8, 12, 16
+param4_3 <- param.net(inf.prob = 0.16, pid.diff.rate = 0.04, act.rate = 0.164,
+                      r.ei.rate = 0.3, d.ei.rate = 0.07, rec.rand = TRUE,
+                      rec.rate = 0.00297619, rec.start = 168, correction.prob = 0.5, rho = 0.75)
 
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim4.SEIR.model3 <- netsim(est.list[[3]], param4, init, control4)
-save(sim4.SEIR.model3, file = "results/sim4.SEIR.model3.rda")
-
+sim3.SEIR.model4 <- netsim(est.list[[1]], param4_3, init, control4)
+save(sim3.SEIR.model4, file = "results/sim3.SEIR.model4.rda")
+rm(sim3.SEIR.model4)
 RNGkind("L'Ecuyer-CMRG")
 set.seed(542435)
-sim4.SEIR.model4 <- netsim(est.list[[4]], param4, init, control4)
-save(sim4.SEIR.model4, file = "results/sim4.SEIR.model4.rda")
+sim3.SEIR.model8 <- netsim(est.list[[2]], param4_3, init, control4)
+save(sim3.SEIR.model8, file = "results/sim3.SEIR.model8.rda")
+rm(sim3.SEIR.model8)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model12 <- netsim(est.list[[3]], param4_3, init, control4)
+save(sim3.SEIR.model12, file = "results/sim3.SEIR.model12.rda")
+rm(sim3.SEIR.model12)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(542435)
+sim3.SEIR.model16 <- netsim(est.list[[4]], param4_3, init, control4)
+save(sim3.SEIR.model16, file = "results/sim3.SEIR.model16.rda")
+rm(sim3.SEIR.model16)
+
+
+## trends in overall efficacy
+## In E-R network
+files.ER <- paste0("results/", "sim3.SEIR.model", 1:4, ".rda")
+for (i in files.ER) {
+  load(i, .GlobalEnv)
+}
+
+library(gridGraphics)
+library(grid)
+
+plot(sim3.SEIR.model1, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "firebrick", qnts.col = "firebrick", qnts.alpha = 0.2, ylim = c(0, 0.4), ylab = "Number of Recovered (Proportions)")
+plot(sim3.SEIR.model2, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "steelblue", qnts.col = "steelblue", qnts.alpha = 0.2, add = T, ylim = c(0, 0.4))
+plot(sim3.SEIR.model3, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "#41AB5D", qnts.col = "#41AB5D", qnts.alpha = 0.2, add = T, ylim = c(0, 0.4))
+plot(sim3.SEIR.model4, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "#AA4488", qnts.col = "#AA4488", qnts.alpha = 0.2, add = T, ylim = c(0, 0.4))
+abline(v = 168, lty = 2, col = "red") ## start of the recovery
+grid.echo()
+p1 <- grid.grab() ## grid.draw(p1)
+rm(list = ls(pattern = "^sim3.SEIR.model[0-9]"))
+
+
+files.chain <- paste0("results/", "sim3.SEIR.model", 5:8, ".rda")
+for (i in files.chain) {
+  load(i, .GlobalEnv)
+}
+
+plot(sim3.SEIR.model5, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "firebrick", qnts.col = "firebrick", qnts.alpha = 0.2, ylim = c(0, 0.4), ylab = "Number of Recovered (Proportions)")
+plot(sim3.SEIR.model6, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "steelblue", qnts.col = "steelblue", qnts.alpha = 0.2, add = T, ylim = c(0, 0.4))
+plot(sim3.SEIR.model7, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "#41AB5D", qnts.col = "#41AB5D", qnts.alpha = 0.2, add = T, ylim = c(0, 0.4))
+plot(sim3.SEIR.model8, popfrac = T, y = "r.num", qnts = 0.9, mean.smooth = F, qnts.smooth = F,
+     mean.col = "#AA4488", qnts.col = "#AA4488", qnts.alpha = 0.2, add = T, ylim = c(0, 0.4))
+abline(v = 168, lty = 2, col = "red") ## start of the recovery
+grid.echo()
+p2 <- grid.grab() ## grid.draw(p1)
+rm(list = ls(pattern = "^sim3.SEIR.model[0-9]"))
+
+
+## load all saves simulations
+files <- list.files("results/", "sim3.*")
+#files <- c(files, list.files("results/", "sim2.SEI.model*"))
+
+require(gtools)
+files <- mixedsort(files)
+
+counterfactuals <- list.files("results/", "sim2.SEI.model*")
+
+## get percent infections averted (compared to no-recovery cases)
+require(parallel)
+PIA.stats <- lapply(seq_len(length(files)), function(i) {
+  fl <- files[i]
+  load(paste0(getwd(), "/results/", fl))
+  fl <- get(gsub(".rda", "", fl)) ## pointer to a loaded file
+
+  # if (i %in% c(1:4)) {
+  #   cf <- counterfactuals[1]
+  # } else if (i %in% c(5:8)) {
+  #   cf <- counterfactuals[2]
+  # } else if (i %in% c(9:12)) {
+  #   cf <- counterfactuals[3]
+  # } else {
+  #   cf <- counterfactuals[4]
+  # }
+  #
+  # ## get counterfactual model (no recovery model)
+  # load(paste0(getwd(), "/results/", cf))
+  # cf <- get(gsub(".rda", "", cf))
+
+  ## without intervensions minus with intervensions, divided by baseline (so proportion), over time by models
+  out.overall <- sapply(1:1000, function(j) fl$epi$r.num[j,]/(fl$epi$r.num[j,] + fl$epi$i.num[j,]), simplify = T)
+  out.dem <- sapply(1:1000, function(j) fl$epi$r.num.pidD[j,]/(fl$epi$r.num.pidD[j,] + fl$epi$i.num.pidD[j,]), simplify = T)
+  out.rep <- sapply(1:1000, function(j) fl$epi$r.num.pidR[j,]/(fl$epi$r.num.pidR[j,] + fl$epi$i.num.pidR[j,]), simplify = T)
+
+  rm(list = ls(pattern = "^sim[0-9]")); #rm(cf, fl)
+  rm(fl)
+  return(list(out.overall = as.vector(out.overall),
+           out.dem = as.vector(out.dem),
+           out.rep = as.vector(out.rep)))
+})
+names(PIA.stats) <- paste0("Model", 1:16)
+save(PIA.stats, file = "results/PIA.stats.Rdata")
+
+out.overall <- out.dem <- out.rep <- vector()
+for (i in 1:16) {
+  out.overall <- cbind(out.overall, apply(t(PIA.stats[[i]]$out.overall)[168:1000,],
+                                          2, function(j) median(unlist(j)))) ## median across all time points
+  out.dem <- cbind(out.dem, apply(t(PIA.stats[[i]]$out.dem)[168:1000,],
+                                          2, function(j) median(unlist(j))))
+  out.rep <- cbind(out.rep, apply(t(PIA.stats[[i]]$out.rep)[168:1000,],
+                                          2, function(j) median(unlist(j))))
+}
+
+colnames(out.overall) <- paste0("Model", 1:16)
+ggplot(data = melt(out.overall), aes(x = Var2, y = value)) + geom_boxplot() + ## across all simulations, plot medians
+  xlab("") + ylab("Proportion Infections Averted, Overall") +
+  theme_bw()
+
+colnames(out.dem) <- paste0("Model", 1:16)
+ggplot(data = melt(out.dem), aes(x = Var2, y = value)) + geom_boxplot() +
+  xlab("") + ylab("Percent Infections Averted, Among Democrats") +
+  theme_bw()
+
+colnames(out.rep) <- paste0("Model", 1:16)
+ggplot(data = melt(out.rep), aes(x = Var2, y = value)) + geom_boxplot() +
+  xlab("") + ylab("Percent Infections Averted, Among Republicans") +
+  theme_bw()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 sim4.SEI.model4 <- netsim(est.list[[4]], param4, init, control4)
@@ -1026,162 +1394,3 @@ p2 <- ggplot(model4DT.SEIR2, aes(x = time, y = r.num.mean)) +
 
 p1 + p2 + plot_layout(nrow = 1)
 
-### TO DO LIST : FITTING EPIDEMIC MODELS ON OBSERVED NETWORK
-## SEE http://statnet.github.io/gal/empnet.html
-## and SEE
-## http://statnet.csde.washington.edu/workshops/SUNBELT/current/ndtv/ndtv_workshop.html#importing-data-and-constructing-networkdynamic-objects
-
-source("observednet.R")
-
-# The first module that must be updated is the initialization module.
-# The default module contained in the function initialize.net serves as our starting point for writing our own new module, net.init.mod.
-# The default module does lots of work, such as simulating an initial network from the model fit,
-# that we do not need to do with an observed network.
-# Here, there are three key steps for the initialization module:
-#   set up the master data list, dat, including its core data structures;
-#   initialize infection among the nodes in the network;
-#   and use the get_prev.net function to record summary epidemiological statistics.
-# With this modules, whereas x would ordinarily be the fitted network model from netest,
-# now it will just be the networkDynamic object detailed above.
-
-net.init.mod <- function(x, param, init, control, s) {
-
-  # Master Data List
-  dat <- list()
-  dat$param <- param
-  dat$init <- init
-  dat$control <- control
-
-  dat$attr <- list()
-  dat$stats <- list()
-  dat$temp <- list()
-
-  # Network Parameters
-  dat$nw <- x
-  dat$param$modes <- 1
-
-  # Initialization
-
-  ## Infection Status and Time Modules
-  n <- network.size(dat$nw)
-  dat$attr$status <- init$status.vector
-
-  dat$attr$active <- rep(1, n)
-  dat$attr$entrTime <- rep(1, n)
-  dat$attr$exitTime <- rep(NA, n)
-
-  dat$attr$infTime <- rep(NA, n)
-  dat$attr$infTime[dat$attr$status == "i"] <- 1
-
-  ## Get initial prevalence
-  dat <- get_prev.net(dat, at = 1)
-
-  return(dat)
-}
-
-
-# The infection module must also be changed because of some features
-# within the default function that depend on having a fitted network model.
-# So the default module function, infection.net, serves as the basis of our new module, my.inf.mod.
-# It is a stripped down version of the default that provides a much clearer picture of the processes within the module,
-# but it is not general enough to handle all the epidemic modeling cases
-# supported within EpiModel (e.g., time-vary infection probabilities or simulating epidemics over bipartite networks).
-# The key element within both the default and this updated module is the discord_edgelist function
-# that examines the current state of the network at 'at',
-# and returns a matrix of disease discordant pairs (dyads over which disease may be transmitted).
-
-my.inf.mod <- function(dat, at) {
-
-  ## Variables ##
-  active <- dat$attr$active
-  status <- dat$attr$status
-
-  inf.prob <- dat$param$inf.prob
-  act.rate <- dat$param$act.rate
-
-  nw <- dat$nw
-
-  # Vector of infected and susceptible IDs
-  idsSus <- which(active == 1 & status == "s")
-  idsInf <- which(active == 1 & status == "i")
-  nActive <- sum(active == 1)
-  nElig <- length(idsInf)
-
-  # Initialize vectors
-  nInf <- totInf <- 0
-
-  ## Processes ##
-  # If some infected AND some susceptible, then proceed
-  if (nElig > 0 && nElig < nActive) {
-
-    # Get discordant edgelist
-    del <- discord_edgelist(dat, at)
-
-    # If some discordant edges, then proceed
-    if (!(is.null(del))) {
-
-      # Infection probabilities
-      del$transProb <- inf.prob
-
-      # Act rates
-      del$actRate <- act.rate
-
-      # Calculate final transmission probability per timestep
-      del$finalProb <- 1 - (1 - del$transProb) ^ del$actRate
-
-      # Randomize transmissions and subset df
-      transmit <- rbinom(nrow(del), 1, del$finalProb)
-      del <- del[which(transmit == 1), ]
-
-      # Set new infections vector
-      idsNewInf <- unique(del$sus)
-      totInf <- length(idsNewInf)
-
-      # Update attributes
-      if (totInf > 0) {
-        dat$attr$status[idsNewInf] <- "i"
-        dat$attr$infTime[idsNewInf] <- at
-      }
-
-    }
-  }
-
-  ## Summary statistics ##
-  if (at == 2) {
-    dat$epi$si.flow <- c(0, totInf)
-  } else {
-    dat$epi$si.flow[at] <- totInf
-  }
-
-  dat$nw <- nw
-  return(dat)
-}
-
-
-# There are many other modules that could potentially run, and one in particular is the resim_nets.FUN module
-# that handles the temporal network resimulation; we do not want network resimulation in this case.
-# The  module.order argument, then, is a listing of the modules within the time loop that should be run at each time step.
-# Since our model includes no demography (births or deaths), disease recovery, or network simulation,
-# the only modules we need to run within the time loop are the infection module and the prevalence tracker module.
-# Finally, the skip.check argument is set to false to bypass some standard error checking for built-in modules,
-# and saving the network and network statistics are turned off
-# (these are already contained in the networkDynamic object anyway).
-
-control <- control.net(type = "SI", nsteps = 27, nsims = 100, ncores = 8,
-                       initialize.FUN = net.init.mod, infection.FUN = my.inf.mod,
-                       module.order = c("infection.FUN", "get_prev.FUN"),
-                       skip.check = TRUE, save.nwstats = F, save.network = T)
-
-
-# parameterization
-param <- param.net(inf.prob = 0.9)
-
-status.vector <- init.status.vector <- get.vertex.attribute.active(g, "partyid", at = 1)
-status.vector[status.vector == 1] <- "s"
-status.vector[status.vector == 0] <- sample(c("i", "s"), replace = T,
-                                            size = length(status.vector[status.vector == 0]),
-                                            prob = c(0.15, 0.85))
-init <- init.net(status.vector = status.vector) ## total 15 infected, among Republican (coded as zero)
-
-## simulation
-sim3 <- netsim(g, param, init, control)
