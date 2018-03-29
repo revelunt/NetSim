@@ -8,6 +8,10 @@ tau <- 0.5
 max.time <- 1000 ## time unit is a day
 nsims <- 100 ## no. of replicated simulations
 
+## initial status
+status.vector <- c(rep(0, nD), rbinom(nR, 1, 0.15))
+status.vector <- ifelse(status.vector == 1, "i", "s")
+
 ## set no. of cores
 ncores <- parallel::detectCores(logical = F)
 
@@ -260,4 +264,541 @@ get.summary.stats <- function(netsim, qvals = c(0.025, 0.5, 0.975)) {
 ## sourcing specific lines from the .R syntax
 source_lines <- function(file, lines){
   source(textConnection(readLines(file)[lines]))
+}
+
+## W Rank-Sum test
+WRS.test <- function(dat1, dat2) {
+
+  ## find min of distribution that do not different from each other
+  test.min <- sapply(1:1000, function(i) {
+    index <- seq(1, i)
+    test <- suppressWarnings(wilcox.test(dat1[index, se.flow.mean/s.num.mean], dat2[index, se.flow.mean/s.num.mean]))
+    test$p.value
+  }, simplify = T)
+
+  min <- min(which(test.min < 0.05))
+
+  test.max <- sapply(min:1000, function(i) {
+    index <- seq(min, i)
+    test <- suppressWarnings(wilcox.test(dat1[index, se.flow.mean/s.num.mean], dat2[index, se.flow.mean/s.num.mean]))
+    test$p.value
+  }, simplify = T)
+
+  max <- min + max(which(test.max < 0.05)) - 1
+
+  return(c(min = min, max = max))
+}
+
+## ---------------------- FUNCTIONS FOR SIMULATIONS ----------------- ##
+
+## infection module
+
+infect <- function(dat, at) {
+
+  active <- dat$attr$active
+  status <- dat$attr$status
+  tea.status <- dat$control$tea.status
+  nw <- dat$nw
+
+  idsSus <- which(active == 1 & status == "s")
+  idsInf <- which(active == 1 & status == "i")
+  nActive <- sum(active == 1)
+
+  nElig <- length(idsInf)
+  nInf <- 0
+
+  if(!is.null(dat$param$pid.diff.rate)) {
+    individual.diff.rate <- (dat$param$pid.diff.rate)/2
+  } else {
+    individual.diff.rate <- NULL
+  }
+
+  if (nElig > 0 && nElig < nActive) {
+    del <- discord_edgelist(dat, at)
+    if (!(is.null(del))) {
+      ## if partisan differences in infection probabilities are assumed
+      if (!is.null(individual.diff.rate)) {
+        ## get individualized infection probabilities by adjusting from the baseline
+        ## get pid vector of those who are infected
+        Infpid <- (nw %v% "pid")[del$inf]
+        del$transProb <- dat$param$inf.prob *
+          ## if Republican, increase by the half of the size of pid.diff.rate,
+          ## and if Democrat, decrease by the half of the szie of pid.diff.rate
+          ifelse(Infpid == "R", (1 + individual.diff.rate), (1 - individual.diff.rate))
+      } else {
+        del$transProb <- dat$param$inf.prob
+      }
+
+      del$actRate <- dat$param$act.rate
+      del$finalProb <- 1 - (1 - del$transProb)^del$actRate
+      transmit <- rbinom(nrow(del), 1, del$finalProb)
+
+      del <- del[which(transmit == 1), ]
+      idsNewInf <- unique(del$sus)
+      nInf <- length(idsNewInf)
+      if (nInf > 0) {
+        status[idsNewInf] <- "e"
+        dat$attr$infTime[idsNewInf] <- at
+
+        if (tea.status == TRUE) {
+          ## update network dynamic object
+          nw <- activate.vertex.attribute(nw, prefix = "testatus", value = "e",
+                                          onset = at, terminus = Inf, v = idsNewInf)
+        }
+      }
+    }
+  }
+
+  ## update status for attr dataset
+  dat$attr$status <- status
+
+  if (at == 2) {
+    dat$epi$se.flow <- c(0, nInf)
+  }
+  else {
+    dat$epi$se.flow[at] <- nInf
+  }
+  dat$nw <- nw
+  return(dat)
+}
+
+## Progression module
+exposed.to.infectious.progress <- function(dat, at) {
+
+  active <- dat$attr$active
+  status <- dat$attr$status
+  nw <- dat$nw
+
+  r.ei.rate <- dat$param$r.ei.rate
+  d.ei.rate <- dat$param$d.ei.rate
+
+  ## E to I progression
+  nInf <- 0
+  idsEligInf <- which(active == 1 & status == "e")
+  nEligInf <- length(idsEligInf)
+
+  if (nEligInf > 0) {
+
+    Infpid <- (nw %v% "pid")[idsEligInf] ## get pid of those who are eligible for progression to infectious status
+    ei.rate <- ifelse(Infpid == "D", d.ei.rate, r.ei.rate)
+
+    ## discount the progression rates by accuracy (i.e., nfc)
+    Infnfc <- (nw %v% "nfc")[idsEligInf]
+    ## when nfc is 0.5, this gives identical ei.rate, and as nfc goes higher, ei.rate goes lower.
+    ei.rate <- ei.rate^(Infnfc/0.5)
+    vecInf <- which(rbinom(nEligInf, 1, ei.rate) == 1)
+    if (length(vecInf) > 0) {
+      idsInf <- idsEligInf[vecInf]
+      nInf <- length(idsInf)
+      status[idsInf] <- "i"
+    }
+  }
+
+  dat$attr$status <- status
+
+  if (at == 2) {
+    dat$epi$ei.flow <- c(0, nInf)
+    dat$epi$e.num <- c(0, sum(active == 1 & status == "e"))
+
+  }
+  else {
+    dat$epi$ei.flow[at] <- nInf
+    dat$epi$e.num[at] <- sum(active == 1 & status == "e")
+  }
+
+  return(dat)
+}
+
+## Get_prev Module
+get_prev.exposed.included <- function (dat, at) {
+
+  active <- dat$attr$active
+  l <- lapply(1:length(dat$attr), function(x) dat$attr[[x]][active ==
+                                                              1])
+  names(l) <- names(dat$attr)
+  l$active <- l$infTime <- NULL
+  status <- l$status
+  eb <- !is.null(dat$control$epi.by)
+  if (eb == TRUE) {
+    ebn <- dat$control$epi.by
+    ebv <- dat$temp$epi.by.vals
+    ebun <- paste0(".", ebn, ebv)
+    assign(ebn, l[[ebn]])
+  }
+
+  if (at == 1) {
+    dat$epi <- list()
+    dat$epi$s.num <- sum(status == "s")
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("s.num", ebun[i])]] <- sum(status ==
+                                                     "s" & get(ebn) == ebv[i])
+      }
+    }
+    dat$epi$e.num <- sum(status == "e")
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("e.num", ebun[i])]] <- sum(status ==
+                                                     "e" & get(ebn) == ebv[i])
+      }
+    }
+    dat$epi$i.num <- sum(status == "i")
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("i.num", ebun[i])]] <- sum(status ==
+                                                     "i" & get(ebn) == ebv[i])
+      }
+    }
+    if (dat$control$type == "SIR") {
+      dat$epi$r.num <- sum(status == "r")
+      if (eb == TRUE) {
+        for (i in 1:length(ebun)) {
+          dat$epi[[paste0("r.num", ebun[i])]] <- sum(status ==
+                                                       "r" & get(ebn) == ebv[i])
+        }
+      }
+    }
+    dat$epi$num <- length(status)
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("num", ebun[i])]] <- sum(get(ebn) ==
+                                                   ebv[i])
+      }
+    }
+  }
+  else {
+    dat$epi$s.num[at] <- sum(status == "s")
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("s.num", ebun[i])]][at] <- sum(status ==
+                                                         "s" & get(ebn) == ebv[i])
+      }
+    }
+    dat$epi$e.num[at] <- sum(status == "e")
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("e.num", ebun[i])]][at] <- sum(status ==
+                                                         "e" & get(ebn) == ebv[i])
+      }
+    }
+    dat$epi$i.num[at] <- sum(status == "i")
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("i.num", ebun[i])]][at] <- sum(status ==
+                                                         "i" & get(ebn) == ebv[i])
+      }
+    }
+    if (dat$control$type == "SIR") {
+      dat$epi$r.num[at] <- sum(status == "r")
+      if (eb == TRUE) {
+        for (i in 1:length(ebun)) {
+          dat$epi[[paste0("r.num", ebun[i])]][at] <- sum(status ==
+                                                           "r" & get(ebn) == ebv[i])
+        }
+      }
+    }
+    dat$epi$num[at] <- length(status)
+    if (eb == TRUE) {
+      for (i in 1:length(ebun)) {
+        dat$epi[[paste0("num", ebun[i])]][at] <- sum(get(ebn) ==
+                                                       ebv[i])
+      }
+    }
+  }
+
+  return(dat)
+}
+
+
+## revised module for recovery process
+## this assumes homogenous recovery after average duration
+recovery.delayed.random <- function (dat, at) {
+
+  if (!(dat$control$type %in% c("SIR", "SIS"))) {
+    return(dat)
+  }
+
+  ## control parameter...
+  rec.start <- dat$param$rec.start
+
+  active <- dat$attr$active
+  status <- dat$attr$status
+  infTime <- dat$attr$infTime
+  tea.status <- dat$control$tea.status
+  modes <- dat$param$modes
+  mode <- idmode(dat$nw)
+  type <- dat$control$type
+  recovState <- ifelse(type == "SIR", "r", "s")
+  rec.rand <- dat$control$rec.rand
+  rec.rate <- dat$param$rec.rate
+  rec.rate.m2 <- dat$param$rec.rate.m2
+  nRecov <- nRecovM2 <- 0
+  idsElig <- which(active == 1 & status == "i")
+  nElig <- length(idsElig)
+  infDur <- at - infTime[active == 1 & status == "i"]
+  infDur[infDur == 0] <- 1
+  lrec.rate <- length(rec.rate)
+  if (lrec.rate == 1) {
+    mElig <- mode[idsElig]
+    rates <- c(rec.rate, rec.rate.m2)
+    ratesElig <- rates[mElig]
+  }
+  else {
+    mElig <- mode[idsElig]
+    if (is.null(rec.rate.m2)) {
+      rates <- ifelse(infDur <= lrec.rate, rec.rate[infDur],
+                      rec.rate[lrec.rate])
+    }
+    else {
+      rates <- ifelse(mElig == 1, ifelse(infDur <= lrec.rate,
+                                         rec.rate[infDur], rec.rate[lrec.rate]), ifelse(infDur <=
+                                                                                          lrec.rate, rec.rate.m2[infDur], rec.rate.m2[lrec.rate]))
+    }
+    ratesElig <- rates
+  }
+
+  ## we simply add this setup in order to bypass recovery when at is less than rec.start...
+  if (at >= rec.start) {
+
+    if (nElig > 0) {
+      if (rec.rand == TRUE) {
+        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1) ## randomly recover from the infection status..
+        if (length(vecRecov) > 0) {
+          idsRecov <- idsElig[vecRecov]
+          nRecov <- sum(mode[idsRecov] == 1)
+          nRecovM2 <- sum(mode[idsRecov] == 2)
+          status[idsRecov] <- recovState
+          if (tea.status == TRUE) {
+            dat$nw <- activate.vertex.attribute(dat$nw,
+                                                prefix = "testatus", value = recovState,
+                                                onset = at, terminus = Inf, v = idsRecov)
+          }
+        }
+      }
+      else {
+        idsRecov <- idsRecovM2 <- NULL
+        nRecov <- min(round(sum(ratesElig[mElig == 1])),
+                      sum(mElig == 1))
+        if (nRecov > 0) {
+          idsRecov <- ssample(idsElig[mElig == 1], nRecov)
+          status[idsRecov] <- recovState
+        }
+        if (modes == 2) {
+          nRecovM2 <- min(round(sum(ratesElig[mElig ==
+                                                2])), sum(mElig == 2))
+          if (nRecovM2 > 0) {
+            idsRecovM2 <- ssample(idsElig[mElig == 2],
+                                  nRecovM2)
+            status[idsRecovM2] <- recovState
+          }
+        }
+        totRecov <- nRecov + nRecovM2
+        if (tea.status == TRUE & totRecov > 0) {
+          allids <- c(idsRecov, idsRecovM2)
+          dat$nw <- activate.vertex.attribute(dat$nw, prefix = "testatus",
+                                              value = recovState, onset = at, terminus = Inf,
+                                              v = allids)
+        }
+      }
+    }
+  }
+
+  dat$attr$status <- status
+  form <- get_nwparam(dat)$formation
+  fterms <- get_formula_terms(form)
+  if ("status" %in% fterms) {
+    dat$nw <- set.vertex.attribute(dat$nw, "status", dat$attr$status)
+  }
+  outName <- ifelse(type == "SIR", "ir.flow", "is.flow")
+  outName[2] <- paste0(outName, ".m2")
+  if (at == 2) {
+    dat$epi[[outName[1]]] <- c(0, nRecov)
+  }
+  else {
+    dat$epi[[outName[1]]][at] <- nRecov
+  }
+  if (modes == 2) {
+    if (at == 2) {
+      dat$epi[[outName[2]]] <- c(0, nRecovM2)
+    }
+    else {
+      dat$epi[[outName[2]]][at] <- nRecovM2
+    }
+  }
+  return(dat)
+}
+
+## threhold-based corrections
+recovery.correction <- function(dat, at) {
+
+  # nw <- dat$nw ## recover networks
+  ## control parameter...
+  rec.start <- dat$param$rec.start
+
+  active <- dat$attr$active
+  status <- dat$attr$status
+  infTime <- dat$attr$infTime
+  tea.status <- dat$control$tea.status
+  modes <- dat$param$modes
+  mode <- idmode(dat$nw)
+  type <- dat$control$type
+  recovState <- ifelse(type == "SIR", "r", "s")
+  rec.rand <- dat$control$rec.rand
+  rec.rate <- dat$param$rec.rate
+  rec.rate.m2 <- dat$param$rec.rate.m2
+  nRecov <- nRecovM2 <- 0
+  idsElig <- which(active == 1 & status == "i")
+  nElig <- length(idsElig)
+  infDur <- at - infTime[active == 1 & status == "i"]
+  infDur[infDur == 0] <- 1
+  lrec.rate <- length(rec.rate)
+
+  if (lrec.rate == 1) {
+    mElig <- mode[idsElig]
+    rates <- c(rec.rate, rec.rate.m2)
+    ratesElig <- rates[mElig]
+  } else {
+    mElig <- mode[idsElig]
+    if (is.null(rec.rate.m2)) {
+      rates <- ifelse(infDur <= lrec.rate, rec.rate[infDur],
+                      rec.rate[lrec.rate])
+    }  else {
+      rates <- ifelse(mElig == 1, ifelse(infDur <= lrec.rate,
+                                         rec.rate[infDur], rec.rate[lrec.rate]), ifelse(infDur <=
+                                                                                          lrec.rate, rec.rate.m2[infDur], rec.rate.m2[lrec.rate]))
+    }
+    ratesElig <- rates
+  }
+
+  idsInf <- which(active == 1 & status == "i")
+  idsRec <- which(active == 1 & status == "r")
+
+  correction.prob <- dat$param$correction.prob
+  rho <- dat$param$rho
+
+  ## I to R progression
+  nRec <- 0
+  idsEligRec <- which(active == 1 & status == "i")
+  nEligRec <- length(idsEligRec)
+
+  ## revise rates based on social surroundings of an infected alters!
+  if (nEligRec > 0) {
+
+    ## see http://statnet.csde.washington.edu/workshops/SUNBELT/current/ndtv/ndtv_workshop.html#transmission-trees-and-constructed-animations
+    ## loop through those who are infected ("idsEligRec")
+    ## for every ego "id_EligRec"
+
+    ratesElig.modified <- sapply(1:nEligRec, function(k) {
+
+      ## get persistent ids
+      id_EligRec <- idsEligRec[k]
+      ## get alters of an ego who is not yet infected (based on active freindship ties of "infected" ego)
+      active_alters <- get.neighborhood.active(dat$nw, v = id_EligRec, at = at)
+
+      ## if active alters are not present
+      if (length(active_alters) == 0) {
+        rate.return <- ratesElig[k] ## copy the rates (nothing happens)
+
+        ## if active alters are present
+      } else {
+        ## counts the number of alters who is not yet infected
+        nCorrect <- length(active_alters[!(active_alters %in% idsInf)])
+        ## RANDOM DRAW: n. of alters providing corrections, with probability of sending corrections = correction.prob
+        vecCorrect <- which(rbinom(nCorrect, 1, correction.prob) == 1)
+        nvecCorrect <- length(vecCorrect)
+
+        ## if proportion of alters sending corrections relative to total neighbor is greater than (rho)
+        if (nvecCorrect/length(active_alters) >= rho) {
+          rate.return <- 1 - ratesElig[k] ## this person recovers from infection status (yet stochastically)
+
+        } else if (nvecCorrect > 1) { ## if below rho and nvecCorrect > 0
+          ## for each additional alters providing corrections (=nvecCorrect), it additionally increases the prob of recovery
+          j <- (nvecCorrect-1)
+          rate.return <- ratesElig[k]*exp(log(j+1)*1.1435)  ## this increases baseline rates. Numbers taken from Margolin et al. 2017 (mutual friendship coef, average of two values from Table 1/2, final models)
+          ## since the recovery rate is the reciprocal of the disease duration,
+          ## the increase in rate results to decrease in duration (-> fater recovery overall)
+        } else { ## if nvecCorrect == 0
+          rate.return <- ratesElig[k] ## copy the rates (nothing happens)
+        }
+
+      } ## end of presence of active alters
+      ## return vector of revised rates
+      return(rate.return)
+
+    }, simplify = TRUE)
+
+    ratesElig <- ratesElig.modified
+  }
+
+  ## we simply add this setup in order to bypass recovery when at is less than rec.start...
+  if (at >= rec.start) {
+
+    if (nElig > 0) {
+      if (rec.rand == TRUE) {
+        vecRecov <- which(rbinom(nElig, 1, ratesElig) == 1) ## stochastically recover from the infection status..
+        if (length(vecRecov) > 0) {
+          idsRecov <- idsElig[vecRecov]
+          nRecov <- sum(mode[idsRecov] == 1)
+          nRecovM2 <- sum(mode[idsRecov] == 2)
+          status[idsRecov] <- recovState
+          if (tea.status == TRUE) {
+            dat$nw <- activate.vertex.attribute(dat$nw,
+                                                prefix = "testatus", value = recovState,
+                                                onset = at, terminus = Inf, v = idsRecov)
+          }
+        } else {
+          nRecov <- nRecovM2 <- 0
+        }
+      }
+      else {
+        idsRecov <- idsRecovM2 <- NULL
+        nRecov <- min(round(sum(ratesElig[mElig == 1])),
+                      sum(mElig == 1))
+        if (nRecov > 0) {
+          idsRecov <- ssample(idsElig[mElig == 1], nRecov)
+          status[idsRecov] <- recovState
+        }
+        if (modes == 2) {
+          nRecovM2 <- min(round(sum(ratesElig[mElig ==
+                                                2])), sum(mElig == 2))
+          if (nRecovM2 > 0) {
+            idsRecovM2 <- ssample(idsElig[mElig == 2],
+                                  nRecovM2)
+            status[idsRecovM2] <- recovState
+          }
+        }
+        totRecov <- nRecov + nRecovM2
+        if (tea.status == TRUE & totRecov > 0) {
+          allids <- c(idsRecov, idsRecovM2)
+          dat$nw <- activate.vertex.attribute(dat$nw, prefix = "testatus",
+                                              value = recovState, onset = at, terminus = Inf,
+                                              v = allids)
+        }
+      }
+    }
+  }
+
+  dat$attr$status <- status
+  form <- get_nwparam(dat)$formation
+  fterms <- get_formula_terms(form)
+  if ("status" %in% fterms) {
+    dat$nw <- set.vertex.attribute(dat$nw, "status", dat$attr$status)
+  }
+  outName <- ifelse(type == "SIR", "ir.flow", "is.flow")
+  outName[2] <- paste0(outName, ".m2")
+  if (at == 2) {
+    dat$epi[[outName[1]]] <- c(0, nRecov)
+  }
+  else {
+    dat$epi[[outName[1]]][at] <- nRecov
+  }
+  if (modes == 2) {
+    if (at == 2) {
+      dat$epi[[outName[2]]] <- c(0, nRecovM2)
+    }
+    else {
+      dat$epi[[outName[2]]][at] <- nRecovM2
+    }
+  }
+  return(dat)
 }

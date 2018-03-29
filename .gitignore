@@ -37,3 +37,4 @@ Lits/
 *.ttt
 *.Rdata
 results/PIA.stats.Rdata
+*.Rdata
