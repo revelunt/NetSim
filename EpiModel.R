@@ -825,7 +825,7 @@ for (i in 1:16) {
 }
 
 fig4.dat <- melt(out.overall)
-fig4.dat$type <- "overall"
+fig4.dat$type <- "Overall"
 colnames(fig4.dat) <- c("sim", "Model", "PIA", "type")
 
 fig4.dat <- rbind(fig4.dat, data.frame(
@@ -843,9 +843,13 @@ fig4.dat <- rbind(fig4.dat, data.frame(
 ))
 
 setDT(fig4.dat)
+fig4.dat$Model <- paste0("Model", fig4.dat$Model)
+fig4.dat$Model <- factor(fig4.dat$Model, levels = mixedsort(unique(fig4.dat$Model)))
+
 ## In E-R network
 p4_1 <- ggplot(fig4.dat[Model %in% c("Model1", "Model2", "Model3", "Model4"), ],
                aes(x = Model, y = PIA, fill = factor(type))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("#619CFF", "#00BA38", "#F8766D")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("Model1" = "Model 1 \n(Asocial)",
                                            "Model2" = "Model 2 \n(Thresholds = 0.25)",
@@ -859,6 +863,7 @@ p4_1 <- ggplot(fig4.dat[Model %in% c("Model1", "Model2", "Model3", "Model4"), ],
 ## in Chain network
 p4_2 <- ggplot(fig4.dat[Model %in% c("Model5", "Model6", "Model7", "Model8"), ],
                aes(x = Model, y = PIA, fill = factor(type))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("#619CFF", "#00BA38", "#F8766D")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("Model5" = "Model 5 \n(Asocial)",
                                            "Model6" = "Model 6 \n(Thresholds = 0.25)",
@@ -873,6 +878,7 @@ p4_2 <- ggplot(fig4.dat[Model %in% c("Model5", "Model6", "Model7", "Model8"), ],
 ## in SW Network without homophily
 p4_3 <- ggplot(fig4.dat[Model %in% c("Model9", "Model10", "Model11", "Model12"), ],
                aes(x = Model, y = PIA, fill = factor(type))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("#619CFF", "#00BA38", "#F8766D")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("Model9" = "Model 9 \n(Asocial)",
                                            "Model10" = "Model 10 \n(Thresholds = 0.25)",
@@ -886,6 +892,7 @@ p4_3 <- ggplot(fig4.dat[Model %in% c("Model9", "Model10", "Model11", "Model12"),
 ## in SW Network with homophily (baseline)
 p4_4 <- ggplot(fig4.dat[Model %in% c("Model13", "Model14", "Model15", "Model16"), ],
                aes(x = Model, y = PIA, fill = factor(type))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("#619CFF", "#00BA38", "#F8766D")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("Model13" = "Model 13 \n(Asocial)",
                                            "Model14" = "Model 14 \n(Thresholds = 0.25)",
@@ -1062,6 +1069,10 @@ PIA.stats2 <- lapply(seq_len(length(files)), function(i) {
               out.dem = as.vector(out.dem),
               out.rep = as.vector(out.rep)))
 })
+
+save(PIA.stats2, file = "results/PIA.stats2.Rdata")
+
+
 out.overall2 <- out.dem2 <- out.rep2 <- vector()
 for (i in 1:36) {
   out.overall2 <- cbind(out.overall2, apply(PIA.stats2[[i]]$out.overall,
@@ -1103,6 +1114,7 @@ fig5.dat[, Model := gsub(".correction.prob.0.[0-9]*", "", Model)]
 ## E-R network
 p5_1 <- ggplot(fig5.dat[Model %in% c("model2", "model3", "model4"), ],
        aes(x = Model, y = PIA, fill = factor(correction.prob))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("grey70", "grey50", "grey30")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("model2" = "Model 2 \n(Thresholds = 0.25)",
                                            "model3" = "Model 3 \n(Thresholds = 0.50)",
@@ -1115,6 +1127,7 @@ p5_1 <- ggplot(fig5.dat[Model %in% c("model2", "model3", "model4"), ],
 ## Chain network
 p5_2 <- ggplot(fig5.dat[Model %in% c("model6", "model7", "model8"), ],
        aes(x = Model, y = PIA, fill = factor(correction.prob))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("grey70", "grey50", "grey30")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("model6" = "Model 6 \n(Thresholds = 0.25)",
                                            "model7" = "Model 7 \n(Thresholds = 0.50)",
@@ -1127,6 +1140,7 @@ p5_2 <- ggplot(fig5.dat[Model %in% c("model6", "model7", "model8"), ],
 ## SW No-homophily
 p5_3 <- ggplot(fig5.dat[Model %in% c("model10", "model11", "model12"), ],
        aes(x = Model, y = PIA, fill = factor(correction.prob))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("grey70", "grey50", "grey30")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("model10" = "Model 10 \n(Thresholds = 0.25)",
                                            "model11" = "Model 11 \n(Thresholds = 0.50)",
@@ -1139,6 +1153,7 @@ p5_3 <- ggplot(fig5.dat[Model %in% c("model10", "model11", "model12"), ],
 ## SW Homophily
 p5_4 <- ggplot(fig5.dat[Model %in% c("model14", "model15", "model16"), ],
        aes(x = Model, y = PIA, fill = factor(correction.prob))) + geom_boxplot() + ## across all simulations, plot medians
+  scale_fill_manual(values = c("grey70", "grey50", "grey30")) +
   xlab("") + ylab("Proportion Infections Averted") +
   theme_bw() + scale_x_discrete(labels = c("model14" = "Model 14 \n(Thresholds = 0.25)",
                                            "model15" = "Model 15 \n(Thresholds = 0.50)",
