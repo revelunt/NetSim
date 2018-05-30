@@ -1,0 +1,20 @@
+[0] Config.pm:302> INFO - This is Biber 2.11
+[0] Config.pm:305> INFO - Logfile is 'manuscript_1.0.blg'
+[47] biber-darwin:313> INFO - === Wed May 16, 2018, 10:53:29
+[82] Biber.pm:371> INFO - Reading 'manuscript_1.0.bcf'
+[201] Biber.pm:857> INFO - Found 69 citekeys in bib section 0
+[215] Biber.pm:3976> INFO - Processing section 0
+[226] Biber.pm:4136> INFO - Looking for bibtex format file 'abm_misinformation_lit.bib' for section 0
+[234] bibtex.pm:1500> INFO - LaTeX decoding ...
+[362] bibtex.pm:1316> INFO - Found BibTeX data source 'abm_misinformation_lit.bib'
+[383] Utils.pm:193> WARN - month field 'September' in entry 'shearer2017news' is not an integer - this will probably not sort properly.
+[481] Utils.pm:193> WARN - month field 'September' in entry 'jana_sophie_fn' is not an integer - this will probably not sort properly.
+[589] Utils.pm:193> WARN - month field 'June' in entry 'larson2016social' is not an integer - this will probably not sort properly.
+[682] Utils.pm:193> WARN - month field 'December' in entry 'pewfakenews' is not an integer - this will probably not sort properly.
+[861] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[861] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[861] Biber.pm:3804> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[861] Biber.pm:3810> INFO - No sort tailoring available for locale 'en-US'
+[939] bbl.pm:617> INFO - Writing 'manuscript_1.0.bbl' with encoding 'UTF-8'
+[969] bbl.pm:720> INFO - Output to manuscript_1.0.bbl
+[975] Biber.pm:110> INFO - WARNINGS: 4

@@ -1,0 +1,2744 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.9 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{allcott2017social}{article}{}
+      \name{author}{2}{}{%
+        {{hash=cc99b38ced482f8ce08a3d71368c14d4}{%
+           family={Allcott},
+           familyi={A\bibinitperiod},
+           given={Hunt},
+           giveni={H\bibinitperiod}}}%
+        {{hash=7f632dc67b8bd2566eae625ec44fafd0}{%
+           family={Gentzkow},
+           familyi={G\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{829464bc3eac369767d25e05efa4239f}
+      \strng{fullhash}{829464bc3eac369767d25e05efa4239f}
+      \strng{bibnamehash}{829464bc3eac369767d25e05efa4239f}
+      \strng{authorbibnamehash}{829464bc3eac369767d25e05efa4239f}
+      \strng{authornamehash}{829464bc3eac369767d25e05efa4239f}
+      \strng{authorfullhash}{829464bc3eac369767d25e05efa4239f}
+      \field{sortinit}{A}
+      \field{sortinithash}{d77c7cdd82ff690d4c3ef13216f92f0b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Economic Perspectives}
+      \field{title}{Social media and fake news in the 2016 election}
+      \field{volume}{31}
+      \field{year}{2017}
+      \field{pages}{211\bibrangedash 36}
+      \range{pages}{26}
+    \endentry
+    \entry{ANES2009}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=4fa1ccb6dd7fb798dcf15f969a353026}{%
+           family={ANES},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{4fa1ccb6dd7fb798dcf15f969a353026}
+      \strng{fullhash}{4fa1ccb6dd7fb798dcf15f969a353026}
+      \strng{bibnamehash}{4fa1ccb6dd7fb798dcf15f969a353026}
+      \strng{authorbibnamehash}{4fa1ccb6dd7fb798dcf15f969a353026}
+      \strng{authornamehash}{4fa1ccb6dd7fb798dcf15f969a353026}
+      \strng{authorfullhash}{4fa1ccb6dd7fb798dcf15f969a353026}
+      \field{sortinit}{A}
+      \field{sortinithash}{d77c7cdd82ff690d4c3ef13216f92f0b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Stanford University and the University of Michigan [producers and distributors]}
+      \field{title}{The American National Election Studies 2008-2009 Panel Study [dataset]}
+      \field{year}{2009}
+      \verb{doi}
+      \verb 10.3886/ICPSR35153.v1
+      \endverb
+    \endentry
+    \entry{Bakshy1130}{article}{}
+      \name{author}{3}{}{%
+        {{hash=a9e33bce06bcac598047368f4b6d3c26}{%
+           family={Bakshy},
+           familyi={B\bibinitperiod},
+           given={Eytan},
+           giveni={E\bibinitperiod}}}%
+        {{hash=a8c9b1ec6d4f77b4d4b3f0934e5f6f0e}{%
+           family={Messing},
+           familyi={M\bibinitperiod},
+           given={Solomon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=02926cc3d958f63b5b3e85cd584af466}{%
+           family={Adamic},
+           familyi={A\bibinitperiod},
+           given={Lada\bibnamedelima A.},
+           giveni={L\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{f82d28c1825fda441ae072142cbd4803}
+      \strng{fullhash}{d88085047ba7dfff4bcf43bf5eb3e431}
+      \strng{bibnamehash}{d88085047ba7dfff4bcf43bf5eb3e431}
+      \strng{authorbibnamehash}{d88085047ba7dfff4bcf43bf5eb3e431}
+      \strng{authornamehash}{f82d28c1825fda441ae072142cbd4803}
+      \strng{authorfullhash}{d88085047ba7dfff4bcf43bf5eb3e431}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{6239}
+      \field{title}{Exposure to ideologically diverse news and opinion on {F}acebook}
+      \field{volume}{348}
+      \field{year}{2015}
+      \field{pages}{1130\bibrangedash 1132}
+      \range{pages}{3}
+      \verb{doi}
+      \verb 10.1126/science.aaa1160
+      \endverb
+    \endentry
+    \entry{Bakshy_2012}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=a9e33bce06bcac598047368f4b6d3c26}{%
+           family={Bakshy},
+           familyi={B\bibinitperiod},
+           given={Eytan},
+           giveni={E\bibinitperiod}}}%
+        {{hash=52c5edf32452a0f14aaf3a79e9204552}{%
+           family={Rosenn},
+           familyi={R\bibinitperiod},
+           given={Itamar},
+           giveni={I\bibinitperiod}}}%
+        {{hash=1908f27d74113b77bb19b7a74aaad35e}{%
+           family={Marlow},
+           familyi={M\bibinitperiod},
+           given={Cameron},
+           giveni={C\bibinitperiod}}}%
+        {{hash=07753a98455ab0eb150b11080b7d188a}{%
+           family={Adamic},
+           familyi={A\bibinitperiod},
+           given={Lada},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Lyon, France}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{f82d28c1825fda441ae072142cbd4803}
+      \strng{fullhash}{064bae6ac93b500521ecd0c74b1a2593}
+      \strng{bibnamehash}{064bae6ac93b500521ecd0c74b1a2593}
+      \strng{authorbibnamehash}{064bae6ac93b500521ecd0c74b1a2593}
+      \strng{authornamehash}{f82d28c1825fda441ae072142cbd4803}
+      \strng{authorfullhash}{064bae6ac93b500521ecd0c74b1a2593}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 21st International Conference on World Wide Web}
+      \field{isbn}{978-1-4503-1229-5}
+      \field{series}{WWW '12}
+      \field{title}{The Role of Social Networks in Information Diffusion}
+      \field{year}{2012}
+      \field{pages}{519\bibrangedash 528}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1145/2187836.2187907
+      \endverb
+      \keyw{causality,social influence,tie strength}
+    \endentry
+    \entry{barabasi2004linked}{book}{}
+      \name{author}{1}{}{%
+        {{hash=5d0a8d40f9560ad45f69488bac3d83bc}{%
+           family={Barab{á}si},
+           familyi={B\bibinitperiod},
+           given={A.\bibnamedelimi L.},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {Plume}%
+      }
+      \strng{namehash}{5d0a8d40f9560ad45f69488bac3d83bc}
+      \strng{fullhash}{5d0a8d40f9560ad45f69488bac3d83bc}
+      \strng{bibnamehash}{5d0a8d40f9560ad45f69488bac3d83bc}
+      \strng{authorbibnamehash}{5d0a8d40f9560ad45f69488bac3d83bc}
+      \strng{authornamehash}{5d0a8d40f9560ad45f69488bac3d83bc}
+      \strng{authorfullhash}{5d0a8d40f9560ad45f69488bac3d83bc}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Linked: {H}ow everything is connected to everything else and what it means for business, science, and everyday life}
+      \field{year}{2004}
+    \endentry
+    \entry{bode2017see}{article}{}
+      \name{author}{2}{}{%
+        {{hash=f8568195e958063144bd8b65e680e48e}{%
+           family={Bode},
+           familyi={B\bibinitperiod},
+           given={Leticia},
+           giveni={L\bibinitperiod}}}%
+        {{hash=e962b7960a7893f7d1db77257d445a50}{%
+           family={Vraga},
+           familyi={V\bibinitperiod},
+           given={Emily\bibnamedelima K},
+           giveni={E\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{db674f33c94c93cf5df21086d91ca1cb}
+      \strng{fullhash}{db674f33c94c93cf5df21086d91ca1cb}
+      \strng{bibnamehash}{db674f33c94c93cf5df21086d91ca1cb}
+      \strng{authorbibnamehash}{db674f33c94c93cf5df21086d91ca1cb}
+      \strng{authornamehash}{db674f33c94c93cf5df21086d91ca1cb}
+      \strng{authorfullhash}{db674f33c94c93cf5df21086d91ca1cb}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Health communication}
+      \field{title}{See something, say something: {C}orrection of global health misinformation on social media}
+      \field{volume}{Advanced online publication}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 10}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1080/10410236.2017.1331312
+      \endverb
+    \endentry
+    \entry{bond_61million}{article}{}
+      \name{author}{7}{}{%
+        {{hash=9a41767c47a5808e07dd3730d16ca211}{%
+           family={Bond},
+           familyi={B\bibinitperiod},
+           given={Robert\bibnamedelima M},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=b091a0c131fda5d81023c983eecb281f}{%
+           family={Fariss},
+           familyi={F\bibinitperiod},
+           given={Christopher\bibnamedelima J},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=cebf17242d10abbb779c876a5eeb9fbf}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Jason\bibnamedelima J},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=d2ba4f0d510ab24f3f364381110aac31}{%
+           family={Kramer},
+           familyi={K\bibinitperiod},
+           given={Adam\bibnamedelima DI},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=1908f27d74113b77bb19b7a74aaad35e}{%
+           family={Marlow},
+           familyi={M\bibinitperiod},
+           given={Cameron},
+           giveni={C\bibinitperiod}}}%
+        {{hash=c1929340f9ffe67f8fbbfa8c20562492}{%
+           family={Settle},
+           familyi={S\bibinitperiod},
+           given={Jaime\bibnamedelima E},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=bb0205d066e5618a01f00f1a00fb5978}{%
+           family={Fowler},
+           familyi={F\bibinitperiod},
+           given={James\bibnamedelima H},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{ef8954a91264069ef52146ea6de0e5a5}
+      \strng{fullhash}{e676678fd43d892708a3d9e3c1b54f80}
+      \strng{bibnamehash}{e676678fd43d892708a3d9e3c1b54f80}
+      \strng{authorbibnamehash}{e676678fd43d892708a3d9e3c1b54f80}
+      \strng{authornamehash}{ef8954a91264069ef52146ea6de0e5a5}
+      \strng{authorfullhash}{e676678fd43d892708a3d9e3c1b54f80}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature}
+      \field{number}{7415}
+      \field{title}{A 61-million-person experiment in social influence and political mobilization}
+      \field{volume}{489}
+      \field{year}{2012}
+      \field{pages}{295}
+      \range{pages}{1}
+    \endentry
+    \entry{campbell2013complex}{article}{}
+      \name{author}{2}{}{%
+        {{hash=fb70097148fc82120aa3d97614108216}{%
+           family={Campbell},
+           familyi={C\bibinitperiod},
+           given={Ellsworth},
+           giveni={E\bibinitperiod}}}%
+        {{hash=43f47e00ae0058ef4af5a82bacc06ecf}{%
+           family={Salath{é}},
+           familyi={S\bibinitperiod},
+           given={Marcel},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{d17fa2bc8ea8acf05337fe61eea6a69d}
+      \strng{fullhash}{d17fa2bc8ea8acf05337fe61eea6a69d}
+      \strng{bibnamehash}{d17fa2bc8ea8acf05337fe61eea6a69d}
+      \strng{authorbibnamehash}{d17fa2bc8ea8acf05337fe61eea6a69d}
+      \strng{authornamehash}{d17fa2bc8ea8acf05337fe61eea6a69d}
+      \strng{authorfullhash}{d17fa2bc8ea8acf05337fe61eea6a69d}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Reports}
+      \field{title}{Complex social contagion makes networks more vulnerable to disease outbreaks}
+      \field{volume}{3}
+      \field{year}{2013}
+      \field{pages}{1905}
+      \range{pages}{1}
+    \endentry
+    \entry{Centola2010Sience}{article}{}
+      \name{author}{1}{}{%
+        {{hash=92853bf516c64075dfa42a6394df87c9}{%
+           family={Centola},
+           familyi={C\bibinitperiod},
+           given={Damon},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{92853bf516c64075dfa42a6394df87c9}
+      \strng{fullhash}{92853bf516c64075dfa42a6394df87c9}
+      \strng{bibnamehash}{92853bf516c64075dfa42a6394df87c9}
+      \strng{authorbibnamehash}{92853bf516c64075dfa42a6394df87c9}
+      \strng{authornamehash}{92853bf516c64075dfa42a6394df87c9}
+      \strng{authorfullhash}{92853bf516c64075dfa42a6394df87c9}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{5996}
+      \field{title}{The Spread of Behavior in an Online Social Network Experiment}
+      \field{volume}{329}
+      \field{year}{2010}
+      \field{pages}{1194\bibrangedash 1197}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1126/science.1185231
+      \endverb
+    \endentry
+    \entry{Centola2007449}{article}{}
+      \name{author}{3}{}{%
+        {{hash=92853bf516c64075dfa42a6394df87c9}{%
+           family={Centola},
+           familyi={C\bibinitperiod},
+           given={Damon},
+           giveni={D\bibinitperiod}}}%
+        {{hash=8bc25448e1b4195f3244e9469254ddab}{%
+           family={Egu{í}luz},
+           familyi={E\bibinitperiod},
+           given={V{í}ctor\bibnamedelima M.},
+           giveni={V\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=1451ddab919f74006f016876eab09104}{%
+           family={Macy},
+           familyi={M\bibinitperiod},
+           given={Michael\bibnamedelima W.},
+           giveni={M\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{3afaca4c9bceb89ed9434deb6afa22ff}
+      \strng{fullhash}{7ab8e471f409a710fb4980e17e8a450b}
+      \strng{bibnamehash}{7ab8e471f409a710fb4980e17e8a450b}
+      \strng{authorbibnamehash}{7ab8e471f409a710fb4980e17e8a450b}
+      \strng{authornamehash}{3afaca4c9bceb89ed9434deb6afa22ff}
+      \strng{authorfullhash}{7ab8e471f409a710fb4980e17e8a450b}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0378-4371}
+      \field{journaltitle}{Physica A: Statistical Mechanics and its Applications}
+      \field{number}{1}
+      \field{title}{Cascade dynamics of complex propagation}
+      \field{volume}{374}
+      \field{year}{2007}
+      \field{pages}{449\bibrangedash 456}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1016/j.physa.2006.06.018
+      \endverb
+    \endentry
+    \entry{centola2007complex}{article}{}
+      \name{author}{2}{}{%
+        {{hash=92853bf516c64075dfa42a6394df87c9}{%
+           family={Centola},
+           familyi={C\bibinitperiod},
+           given={Damon},
+           giveni={D\bibinitperiod}}}%
+        {{hash=25e636960955c25b4be4211e177c5e8f}{%
+           family={Macy},
+           familyi={M\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The University of Chicago Press}%
+      }
+      \strng{namehash}{d0f6884df46c7a1b58e4758a57e4771d}
+      \strng{fullhash}{d0f6884df46c7a1b58e4758a57e4771d}
+      \strng{bibnamehash}{d0f6884df46c7a1b58e4758a57e4771d}
+      \strng{authorbibnamehash}{d0f6884df46c7a1b58e4758a57e4771d}
+      \strng{authornamehash}{d0f6884df46c7a1b58e4758a57e4771d}
+      \strng{authorfullhash}{d0f6884df46c7a1b58e4758a57e4771d}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Sociology}
+      \field{title}{Complex contagions and the weakness of long ties}
+      \field{volume}{113}
+      \field{year}{2007}
+      \field{pages}{702\bibrangedash 734}
+      \range{pages}{33}
+    \endentry
+    \entry{Chan_debunking_meta_2017}{article}{}
+      \name{author}{4}{}{%
+        {{hash=afded379c10ec7e003a6d23d84c5ba63}{%
+           family={Chan},
+           familyi={C\bibinitperiod},
+           given={{Man-pui}\bibnamedelima Sally},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=52f085a4ec8f6cfd9d8d203d8cda13ab}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Christopher\bibnamedelima R.},
+           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=34f25d66f154c62c7200f343c2805f94}{%
+           family={Jamieson},
+           familyi={J\bibinitperiod},
+           given={Kathleen\bibnamedelima Hall},
+           giveni={K\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=f52f6f3a2e42bb25c179d9b9c90263e9}{%
+           family={Albarrac{í}n},
+           familyi={A\bibinitperiod},
+           given={Dolores},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{85d6468decf8edb6466d65406a966b27}
+      \strng{fullhash}{847658d97fbc646d4e4edfaff30ce34c}
+      \strng{bibnamehash}{847658d97fbc646d4e4edfaff30ce34c}
+      \strng{authorbibnamehash}{847658d97fbc646d4e4edfaff30ce34c}
+      \strng{authornamehash}{85d6468decf8edb6466d65406a966b27}
+      \strng{authorfullhash}{847658d97fbc646d4e4edfaff30ce34c}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Science}
+      \field{title}{Debunking: {A} Meta-Analysis of the Psychological Efficacy of Messages Countering Misinformation}
+      \field{volume}{28}
+      \field{year}{2017}
+      \field{pages}{1531\bibrangedash 1546}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1177/0956797617714579
+      \endverb
+    \endentry
+    \entry{cranmer2017navigating}{article}{}
+      \name{author}{4}{}{%
+        {{hash=8455ab58854fde0837c1285eb6d59cc0}{%
+           family={Cranmer},
+           familyi={C\bibinitperiod},
+           given={Skyler\bibnamedelima J},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=362b21d2e55899c85dcd9789a921dc2d}{%
+           family={Leifeld},
+           familyi={L\bibinitperiod},
+           given={Philip},
+           giveni={P\bibinitperiod}}}%
+        {{hash=dd0f68287614657916f6f6d3ef5bdc5c}{%
+           family={McClurg},
+           familyi={M\bibinitperiod},
+           given={Scott\bibnamedelima D},
+           giveni={S\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=7c7e1f38569bbc0e7ae6323b9960ce35}{%
+           family={Rolfe},
+           familyi={R\bibinitperiod},
+           given={Meredith},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{20cf63e5653791d12ceb5d64070ee671}
+      \strng{fullhash}{fbc813e9853460fad2611ba97814bbe1}
+      \strng{bibnamehash}{fbc813e9853460fad2611ba97814bbe1}
+      \strng{authorbibnamehash}{fbc813e9853460fad2611ba97814bbe1}
+      \strng{authornamehash}{20cf63e5653791d12ceb5d64070ee671}
+      \strng{authorfullhash}{fbc813e9853460fad2611ba97814bbe1}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Political Science}
+      \field{number}{1}
+      \field{title}{Navigating the range of statistical tools for inferential network analysis}
+      \field{volume}{61}
+      \field{year}{2017}
+      \field{pages}{237\bibrangedash 251}
+      \range{pages}{15}
+    \endentry
+    \entry{del2016spreading}{article}{}
+      \name{author}{8}{}{%
+        {{hash=fc614d595682d4e56a1760cf2b8f91d3}{%
+           family={Del\bibnamedelima Vicario},
+           familyi={D\bibinitperiod\bibinitdelim V\bibinitperiod},
+           given={Michela},
+           giveni={M\bibinitperiod}}}%
+        {{hash=66a45d7fac5152a2ad43fea8f8b28512}{%
+           family={Bessi},
+           familyi={B\bibinitperiod},
+           given={Alessandro},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a851f9380d2a3b135eaebd8690294b8d}{%
+           family={Zollo},
+           familyi={Z\bibinitperiod},
+           given={Fabiana},
+           giveni={F\bibinitperiod}}}%
+        {{hash=e1c32989a78998fe3c03c981d0da2dc7}{%
+           family={Petroni},
+           familyi={P\bibinitperiod},
+           given={Fabio},
+           giveni={F\bibinitperiod}}}%
+        {{hash=de0cc1cf7f439916ed1a87e1f1cb7d45}{%
+           family={Scala},
+           familyi={S\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e7b00e797d140adf1c921c6c2e28ace3}{%
+           family={Caldarelli},
+           familyi={C\bibinitperiod},
+           given={Guido},
+           giveni={G\bibinitperiod}}}%
+        {{hash=dff15de034c3cb742e50a8bf877e2796}{%
+           family={Stanley},
+           familyi={S\bibinitperiod},
+           given={H\bibnamedelima Eugene},
+           giveni={H\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=5e983e0a577fa17cd50abe418badad90}{%
+           family={Quattrociocchi},
+           familyi={Q\bibinitperiod},
+           given={Walter},
+           giveni={W\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {National Acad Sciences}%
+      }
+      \strng{namehash}{ed6c23633116d0273d2deedbb745d795}
+      \strng{fullhash}{28df1d93c6781882deba922c8a893930}
+      \strng{bibnamehash}{01b00195c916523808e3ec2a0337ac2b}
+      \strng{authorbibnamehash}{01b00195c916523808e3ec2a0337ac2b}
+      \strng{authornamehash}{ed6c23633116d0273d2deedbb745d795}
+      \strng{authorfullhash}{28df1d93c6781882deba922c8a893930}
+      \field{sortinit}{D}
+      \field{sortinithash}{2ef1bd9a78cc71eb74d7231c635177b8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the National Academy of Sciences}
+      \field{number}{3}
+      \field{title}{The spreading of misinformation online}
+      \field{volume}{113}
+      \field{year}{2016}
+      \field{pages}{554\bibrangedash 559}
+      \range{pages}{6}
+    \endentry
+    \entry{carpini1996}{book}{}
+      \name{author}{2}{}{%
+        {{hash=bdc6a47e47bbb6b1873ecd12ffd0b853}{%
+           family={{Delli Carpini}},
+           familyi={D\bibinitperiod},
+           given={Michael\bibnamedelima X},
+           giveni={M\bibinitperiod\bibinitdelim X\bibinitperiod}}}%
+        {{hash=150a6a434a3300a4d22a89d048addcd3}{%
+           family={Keeter},
+           familyi={K\bibinitperiod},
+           given={Scott},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {New Haven, CT: Yale University Press}%
+      }
+      \strng{namehash}{8d9e80bee82c85e9b5cb07719effbc72}
+      \strng{fullhash}{8d9e80bee82c85e9b5cb07719effbc72}
+      \strng{bibnamehash}{8d9e80bee82c85e9b5cb07719effbc72}
+      \strng{authorbibnamehash}{8d9e80bee82c85e9b5cb07719effbc72}
+      \strng{authornamehash}{8d9e80bee82c85e9b5cb07719effbc72}
+      \strng{authorfullhash}{8d9e80bee82c85e9b5cb07719effbc72}
+      \field{sortinit}{D}
+      \field{sortinithash}{2ef1bd9a78cc71eb74d7231c635177b8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{What Americans know about politics and why it matters}
+      \field{year}{1996}
+    \endentry
+    \entry{jana_sophie_fn}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=85c9f7608aa3564e04ceb18bd7fc772f}{%
+           family={Egelhofer},
+           familyi={E\bibinitperiod},
+           given={Jana\bibnamedelima Laura},
+           giveni={J\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=bdc41f56c687a083ad1bc679a951be39}{%
+           family={Lecheler},
+           familyi={L\bibinitperiod},
+           given={Sophie},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Paper presented at The Third Annual IJPP Conference, Oxford, UK}%
+      }
+      \strng{namehash}{5e18a852d839fc746bbb2ee97ce7632a}
+      \strng{fullhash}{5e18a852d839fc746bbb2ee97ce7632a}
+      \strng{bibnamehash}{5e18a852d839fc746bbb2ee97ce7632a}
+      \strng{authorbibnamehash}{5e18a852d839fc746bbb2ee97ce7632a}
+      \strng{authornamehash}{5e18a852d839fc746bbb2ee97ce7632a}
+      \strng{authorfullhash}{5e18a852d839fc746bbb2ee97ce7632a}
+      \field{sortinit}{E}
+      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Working paper}
+      \field{month}{9}
+      \field{title}{\textit{Conceptualizing \enquote{fake news} for political communication Research: {A} Framework and Research Agenda}}
+      \field{year}{2017}
+    \endentry
+    \entry{flynn2017nature}{article}{}
+      \name{author}{3}{}{%
+        {{hash=61e57080b29ab1739a3ed57a602ac21f}{%
+           family={Flynn},
+           familyi={F\bibinitperiod},
+           given={DJ},
+           giveni={D\bibinitperiod}}}%
+        {{hash=8ef5bca6f403168706ad93d11351ed60}{%
+           family={Nyhan},
+           familyi={N\bibinitperiod},
+           given={Brendan},
+           giveni={B\bibinitperiod}}}%
+        {{hash=698c775e8046e91f3e4c4717a9af1fe4}{%
+           family={Reifler},
+           familyi={R\bibinitperiod},
+           given={Jason},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{5397a91a62428959d4eefe8a2d395a81}
+      \strng{fullhash}{137cde25a4bb4b49c22acc4f06399f41}
+      \strng{bibnamehash}{137cde25a4bb4b49c22acc4f06399f41}
+      \strng{authorbibnamehash}{137cde25a4bb4b49c22acc4f06399f41}
+      \strng{authornamehash}{5397a91a62428959d4eefe8a2d395a81}
+      \strng{authorfullhash}{137cde25a4bb4b49c22acc4f06399f41}
+      \field{sortinit}{F}
+      \field{sortinithash}{669c706c6f1fbf3b5a83d26f1d9e9e72}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Psychology}
+      \field{number}{S1}
+      \field{title}{The nature and origins of misperceptions: {U}nderstanding false and unsupported beliefs about politics}
+      \field{volume}{38}
+      \field{year}{2017}
+      \field{pages}{127\bibrangedash 150}
+      \range{pages}{24}
+    \endentry
+    \entry{friedkin2001norm}{article}{}
+      \name{author}{1}{}{%
+        {{hash=4ed0b44f2925ed0da865891019c34ede}{%
+           family={Friedkin},
+           familyi={F\bibinitperiod},
+           given={Noah\bibnamedelima E},
+           giveni={N\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{4ed0b44f2925ed0da865891019c34ede}
+      \strng{fullhash}{4ed0b44f2925ed0da865891019c34ede}
+      \strng{bibnamehash}{4ed0b44f2925ed0da865891019c34ede}
+      \strng{authorbibnamehash}{4ed0b44f2925ed0da865891019c34ede}
+      \strng{authornamehash}{4ed0b44f2925ed0da865891019c34ede}
+      \strng{authorfullhash}{4ed0b44f2925ed0da865891019c34ede}
+      \field{sortinit}{F}
+      \field{sortinithash}{669c706c6f1fbf3b5a83d26f1d9e9e72}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Social Networks}
+      \field{title}{Norm formation in social influence networks}
+      \field{volume}{23}
+      \field{year}{2001}
+      \field{pages}{167\bibrangedash 189}
+      \range{pages}{23}
+    \endentry
+    \entry{garrett2013undermining}{article}{}
+      \name{author}{3}{}{%
+        {{hash=932ec74b5e04342aa653cd156859b429}{%
+           family={Garrett},
+           familyi={G\bibinitperiod},
+           given={R\bibnamedelima Kelly},
+           giveni={R\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=6867cae610f75fc75ca8c144535d2420}{%
+           family={Nisbet},
+           familyi={N\bibinitperiod},
+           given={Erik\bibnamedelima C},
+           giveni={E\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=ba968eac6b2824fb1958ea793a1bd60e}{%
+           family={Lynch},
+           familyi={L\bibinitperiod},
+           given={Emily\bibnamedelima K},
+           giveni={E\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{da40523a49eb98eccf91482a3ca8c4cb}
+      \strng{fullhash}{80e16c265ce424d5d7baed9b78308fb6}
+      \strng{bibnamehash}{80e16c265ce424d5d7baed9b78308fb6}
+      \strng{authorbibnamehash}{80e16c265ce424d5d7baed9b78308fb6}
+      \strng{authornamehash}{da40523a49eb98eccf91482a3ca8c4cb}
+      \strng{authorfullhash}{80e16c265ce424d5d7baed9b78308fb6}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Communication}
+      \field{title}{Undermining the corrective effects of media-based political fact checking? {T}he role of contextual cues and na{ï}ve theory}
+      \field{volume}{63}
+      \field{year}{2013}
+      \field{pages}{617\bibrangedash 637}
+      \range{pages}{21}
+    \endentry
+    \entry{Garrett2017distraction}{article}{}
+      \name{author}{1}{}{%
+        {{hash=8b5c22dc98523634df1d253e40f4c879}{%
+           family={Garrett},
+           familyi={G\bibinitperiod},
+           given={R.\bibnamedelimi Kelly},
+           giveni={R\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \strng{namehash}{8b5c22dc98523634df1d253e40f4c879}
+      \strng{fullhash}{8b5c22dc98523634df1d253e40f4c879}
+      \strng{bibnamehash}{8b5c22dc98523634df1d253e40f4c879}
+      \strng{authorbibnamehash}{8b5c22dc98523634df1d253e40f4c879}
+      \strng{authornamehash}{8b5c22dc98523634df1d253e40f4c879}
+      \strng{authorfullhash}{8b5c22dc98523634df1d253e40f4c879}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Applied Research in Memory and Cognition}
+      \field{title}{The \enquote{echo chamber} Distraction: {D}isinformation Campaigns are the Problem, Not Audience Fragmentation}
+      \field{volume}{6}
+      \field{year}{2017}
+      \field{pages}{370\bibrangedash 376}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1016/j.jarmac.2017.09.011
+      \endverb
+      \keyw{Misinformation,Disinformation,Echo chamber,Filter bubble,Information,Communication,Technology,Recommender system}
+    \endentry
+    \entry{garrett2016driving}{article}{}
+      \name{author}{3}{}{%
+        {{hash=8b5c22dc98523634df1d253e40f4c879}{%
+           family={Garrett},
+           familyi={G\bibinitperiod},
+           given={R.\bibnamedelimi Kelly},
+           giveni={R\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=74687b19289bb0db263dacd8351906b1}{%
+           family={Weeks},
+           familyi={W\bibinitperiod},
+           given={Brian\bibnamedelima E},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=4c63020cabcb740254b24b3437445ef0}{%
+           family={Neo},
+           familyi={N\bibinitperiod},
+           given={Rachel\bibnamedelima L},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{e5e79f03b0fff913fadc07f33b6574e3}
+      \strng{fullhash}{6f836190516b2635462232bbbda43ad6}
+      \strng{bibnamehash}{6f836190516b2635462232bbbda43ad6}
+      \strng{authorbibnamehash}{6f836190516b2635462232bbbda43ad6}
+      \strng{authornamehash}{e5e79f03b0fff913fadc07f33b6574e3}
+      \strng{authorfullhash}{6f836190516b2635462232bbbda43ad6}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Computer-Mediated Communication}
+      \field{title}{Driving a wedge between evidence and beliefs: {H}ow online ideological news exposure promotes political misperceptions}
+      \field{volume}{21}
+      \field{year}{2016}
+      \field{pages}{331\bibrangedash 348}
+      \range{pages}{18}
+    \endentry
+    \entry{giglietto2016fakes}{article}{}
+      \name{author}{4}{}{%
+        {{hash=0b8254d84844ec3a19e66ecbf2e1e8a2}{%
+           family={Giglietto},
+           familyi={G\bibinitperiod},
+           given={Fabio},
+           giveni={F\bibinitperiod}}}%
+        {{hash=45a858864ed0bebe6e05b2c774d3ba9e}{%
+           family={Iannelli},
+           familyi={I\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod}}}%
+        {{hash=d1c3d318e9e1f80f90b5f52bfe7c2186}{%
+           family={Rossi},
+           familyi={R\bibinitperiod},
+           given={Luca},
+           giveni={L\bibinitperiod}}}%
+        {{hash=bf83ba6041cd8e22a4ca81630ce615a4}{%
+           family={Valeriani},
+           familyi={V\bibinitperiod},
+           given={Augusto},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{1508f6d96ea44b02d52697292886b936}
+      \strng{fullhash}{520d0976d06732bb4c8743199c1dde34}
+      \strng{bibnamehash}{520d0976d06732bb4c8743199c1dde34}
+      \strng{authorbibnamehash}{520d0976d06732bb4c8743199c1dde34}
+      \strng{authornamehash}{1508f6d96ea44b02d52697292886b936}
+      \strng{authorfullhash}{520d0976d06732bb4c8743199c1dde34}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Fakes, news and the election: {A} new taxonomy for the study of misleading information within the hybrid media system}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2878774
+      \endverb
+      \verb{url}
+      \verb https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2878774
+      \endverb
+    \endentry
+    \entry{gonzalez2017decoding}{book}{}
+      \name{author}{1}{}{%
+        {{hash=f03b26bbd0b1d7eb52668ca34a7b3e86}{%
+           family={Gonz{á}lez-Bail{ó}n},
+           familyi={G\bibinithyphendelim B\bibinitperiod},
+           given={Sandra},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Boston, MA}%
+      }
+      \list{publisher}{1}{%
+        {MIT Press}%
+      }
+      \strng{namehash}{f03b26bbd0b1d7eb52668ca34a7b3e86}
+      \strng{fullhash}{f03b26bbd0b1d7eb52668ca34a7b3e86}
+      \strng{bibnamehash}{f03b26bbd0b1d7eb52668ca34a7b3e86}
+      \strng{authorbibnamehash}{f03b26bbd0b1d7eb52668ca34a7b3e86}
+      \strng{authornamehash}{f03b26bbd0b1d7eb52668ca34a7b3e86}
+      \strng{authorfullhash}{f03b26bbd0b1d7eb52668ca34a7b3e86}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Decoding the Social World: {D}ata Science and the Unintended Consequences of Communication}
+      \field{year}{2017}
+    \endentry
+    \entry{granovetter1977strength}{article}{}
+      \name{author}{1}{}{%
+        {{hash=25a329287d2515ab3e435835c10f6dc6}{%
+           family={Granovetter},
+           familyi={G\bibinitperiod},
+           given={Mark\bibnamedelima S},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{25a329287d2515ab3e435835c10f6dc6}
+      \strng{fullhash}{25a329287d2515ab3e435835c10f6dc6}
+      \strng{bibnamehash}{25a329287d2515ab3e435835c10f6dc6}
+      \strng{authorbibnamehash}{25a329287d2515ab3e435835c10f6dc6}
+      \strng{authornamehash}{25a329287d2515ab3e435835c10f6dc6}
+      \strng{authorfullhash}{25a329287d2515ab3e435835c10f6dc6}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Social Networks}
+      \field{title}{The strength of weak ties}
+      \field{year}{1977}
+      \field{pages}{347\bibrangedash 367}
+      \range{pages}{21}
+    \endentry
+    \entry{guess2018selective}{article}{}
+      \name{author}{3}{}{%
+        {{hash=70740f8981727fbf1acd586e43b16b11}{%
+           family={Guess},
+           familyi={G\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=8ef5bca6f403168706ad93d11351ed60}{%
+           family={Nyhan},
+           familyi={N\bibinitperiod},
+           given={Brendan},
+           giveni={B\bibinitperiod}}}%
+        {{hash=698c775e8046e91f3e4c4717a9af1fe4}{%
+           family={Reifler},
+           familyi={R\bibinitperiod},
+           given={Jason},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{a8a35edc05ce49877ac851cea9d5f2fd}
+      \strng{fullhash}{1a2278959f274fc364fc9d49a6f5d5d3}
+      \strng{bibnamehash}{1a2278959f274fc364fc9d49a6f5d5d3}
+      \strng{authorbibnamehash}{1a2278959f274fc364fc9d49a6f5d5d3}
+      \strng{authornamehash}{a8a35edc05ce49877ac851cea9d5f2fd}
+      \strng{authorfullhash}{1a2278959f274fc364fc9d49a6f5d5d3}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Selective Exposure to Misinformation: {E}vidence from the consumption of fake news during the 2016 US presidential campaign}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://www.dartmouth.edu/~nyhan/fake-news-2016.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.dartmouth.edu/~nyhan/fake-news-2016.pdf
+      \endverb
+    \endentry
+    \entry{huckfeldt2004disagreement}{article}{}
+      \name{author}{3}{}{%
+        {{hash=9cee81951ca31596b87e3dcd2bf3bfba}{%
+           family={Huckfeldt},
+           familyi={H\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=eeaf0c936a1c5a9e299456f3c849ed52}{%
+           family={Mendez},
+           familyi={M\bibinitperiod},
+           given={Jeanette\bibnamedelima Morehouse},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=aa25f20cf66cbb8357687addbae3c8fd}{%
+           family={Osborn},
+           familyi={O\bibinitperiod},
+           given={Tracy},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{073aa58356426802b6ea4f39daffa7ae}
+      \strng{fullhash}{7cf33e404fccc17c64b7afd56d326032}
+      \strng{bibnamehash}{7cf33e404fccc17c64b7afd56d326032}
+      \strng{authorbibnamehash}{7cf33e404fccc17c64b7afd56d326032}
+      \strng{authornamehash}{073aa58356426802b6ea4f39daffa7ae}
+      \strng{authorfullhash}{7cf33e404fccc17c64b7afd56d326032}
+      \field{sortinit}{H}
+      \field{sortinithash}{5f15a7bc777ad49ff15aa4d2831b1681}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Psychology}
+      \field{number}{1}
+      \field{title}{Disagreement, ambivalence, and engagement: {T}he political consequences of heterogeneous networks}
+      \field{volume}{25}
+      \field{year}{2004}
+      \field{pages}{65\bibrangedash 95}
+      \range{pages}{31}
+    \endentry
+    \entry{epimodel}{manual}{}
+      \name{author}{3}{}{%
+        {{hash=042c8762c13ec2375cff8ebe703fde94}{%
+           family={Jenness},
+           familyi={J\bibinitperiod},
+           given={Samuel},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e3219976bd4f50ca0b0659195d56a89b}{%
+           family={Goodreau},
+           familyi={G\bibinitperiod},
+           given={Steven\bibnamedelima M.},
+           giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=129292b03dbceb84ffb2158cd84fc974}{%
+           family={Morris},
+           familyi={M\bibinitperiod},
+           given={Martina},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{91c805c63c30e9fe4133eb04ab181728}
+      \strng{fullhash}{00a5faeea923359e89dc28d9456a293c}
+      \strng{bibnamehash}{00a5faeea923359e89dc28d9456a293c}
+      \strng{authorbibnamehash}{00a5faeea923359e89dc28d9456a293c}
+      \strng{authornamehash}{91c805c63c30e9fe4133eb04ab181728}
+      \strng{authorfullhash}{00a5faeea923359e89dc28d9456a293c}
+      \field{sortinit}{J}
+      \field{sortinithash}{fce5f8d0bd05e8d93f3dbe21c78897ca}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{R package version 1.6.1, \url{http://cran.r-project.org/package=EpiModel}}
+      \field{title}{EpiModel: {M}athematical Modeling of Infectious Disease Dynamics}
+      \field{year}{2018}
+    \endentry
+    \entry{jin2013epidemiological}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=2d6add773ef0b1d3a134dc59b304f41b}{%
+           family={Jin},
+           familyi={J\bibinitperiod},
+           given={Fang},
+           giveni={F\bibinitperiod}}}%
+        {{hash=48277de6b6da3b923ad31fa26f9795ed}{%
+           family={Dougherty},
+           familyi={D\bibinitperiod},
+           given={Edward},
+           giveni={E\bibinitperiod}}}%
+        {{hash=bebee380f42bed7c9e21be827952c1e3}{%
+           family={Saraf},
+           familyi={S\bibinitperiod},
+           given={Parang},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a39e14b30fc12aef88508f8f8cbf9cfc}{%
+           family={Cao},
+           familyi={C\bibinitperiod},
+           given={Yang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=66d7745374d904c396b01378abae20e8}{%
+           family={Ramakrishnan},
+           familyi={R\bibinitperiod},
+           given={Naren},
+           giveni={N\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{72cc9a81eaaa6ab1ac721a5e45684e3d}
+      \strng{fullhash}{04328e9b84a27c8ae54549e577ad3436}
+      \strng{bibnamehash}{04328e9b84a27c8ae54549e577ad3436}
+      \strng{authorbibnamehash}{04328e9b84a27c8ae54549e577ad3436}
+      \strng{authornamehash}{72cc9a81eaaa6ab1ac721a5e45684e3d}
+      \strng{authorfullhash}{04328e9b84a27c8ae54549e577ad3436}
+      \field{sortinit}{J}
+      \field{sortinithash}{fce5f8d0bd05e8d93f3dbe21c78897ca}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 7th Workshop on Social Network Mining and Analysis}
+      \field{title}{Epidemiological modeling of news and rumors on twitter}
+      \field{year}{2013}
+      \field{pages}{8}
+      \range{pages}{1}
+    \endentry
+    \entry{Kramer8788}{article}{}
+      \name{author}{3}{}{%
+        {{hash=aa26e5a34f7f746f5cb948ed29dd1c67}{%
+           family={Kramer},
+           familyi={K\bibinitperiod},
+           given={Adam\bibnamedelimb D.\bibnamedelimi I.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+        {{hash=f72cce6e2cc02b625881429b7d05b5a4}{%
+           family={Guillory},
+           familyi={G\bibinitperiod},
+           given={Jamie\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=eeba4171ca7b158357d99c3877e6631f}{%
+           family={Hancock},
+           familyi={H\bibinitperiod},
+           given={Jeffrey\bibnamedelima T.},
+           giveni={J\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {National Academy of Sciences}%
+      }
+      \strng{namehash}{8576f03f321a766d087fb416a676dd3e}
+      \strng{fullhash}{815c5478b724e873f8735c529f9ac352}
+      \strng{bibnamehash}{815c5478b724e873f8735c529f9ac352}
+      \strng{authorbibnamehash}{815c5478b724e873f8735c529f9ac352}
+      \strng{authornamehash}{8576f03f321a766d087fb416a676dd3e}
+      \strng{authorfullhash}{815c5478b724e873f8735c529f9ac352}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the National Academy of Sciences}
+      \field{number}{24}
+      \field{title}{Experimental evidence of massive-scale emotional contagion through social networks}
+      \field{volume}{111}
+      \field{year}{2014}
+      \field{pages}{8788\bibrangedash 8790}
+      \range{pages}{3}
+      \verb{doi}
+      \verb 10.1073/pnas.1320040111
+      \endverb
+    \endentry
+    \entry{krivitsky2017inference}{article}{}
+      \name{author}{2}{}{%
+        {{hash=4a90133bceb41f0ccca27069410029c6}{%
+           family={Krivitsky},
+           familyi={K\bibinitperiod},
+           given={Pavel\bibnamedelima N},
+           giveni={P\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=129292b03dbceb84ffb2158cd84fc974}{%
+           family={Morris},
+           familyi={M\bibinitperiod},
+           given={Martina},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {NIH Public Access}%
+      }
+      \strng{namehash}{6f61c11a6c1129dd4b0f5684678073cb}
+      \strng{fullhash}{6f61c11a6c1129dd4b0f5684678073cb}
+      \strng{bibnamehash}{6f61c11a6c1129dd4b0f5684678073cb}
+      \strng{authorbibnamehash}{6f61c11a6c1129dd4b0f5684678073cb}
+      \strng{authornamehash}{6f61c11a6c1129dd4b0f5684678073cb}
+      \strng{authorfullhash}{6f61c11a6c1129dd4b0f5684678073cb}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The annals of applied statistics}
+      \field{number}{1}
+      \field{title}{Inference for social network models from egocentrically sampled data, with application to understanding persistent racial disparities in HIV prevalence in the US}
+      \field{volume}{11}
+      \field{year}{2017}
+      \field{pages}{427}
+      \range{pages}{1}
+    \endentry
+    \entry{kuklinski2000misinformation}{article}{}
+      \name{author}{5}{}{%
+        {{hash=7dc06ad0695a19eb691a289ed8dc7621}{%
+           family={Kuklinski},
+           familyi={K\bibinitperiod},
+           given={James\bibnamedelima H},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=111e70ae23471e3bc59ffc9b167a071f}{%
+           family={Quirk},
+           familyi={Q\bibinitperiod},
+           given={Paul\bibnamedelima J},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=e9af2ccedf7b42e1f2cc48f251ff5c4b}{%
+           family={Jerit},
+           familyi={J\bibinitperiod},
+           given={Jennifer},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b91655b71090e263547cc434c36235e2}{%
+           family={Schwieder},
+           familyi={S\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=0b54b1d741cb5665c325fdf08f262dca}{%
+           family={Rich},
+           familyi={R\bibinitperiod},
+           given={Robert\bibnamedelima F},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {University of Texas Press}%
+      }
+      \strng{namehash}{de752e00bf0968c765eb46eaccdf3f96}
+      \strng{fullhash}{f85276b9ba9bac684cd623d70d1303b3}
+      \strng{bibnamehash}{f85276b9ba9bac684cd623d70d1303b3}
+      \strng{authorbibnamehash}{f85276b9ba9bac684cd623d70d1303b3}
+      \strng{authornamehash}{de752e00bf0968c765eb46eaccdf3f96}
+      \strng{authorfullhash}{f85276b9ba9bac684cd623d70d1303b3}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Politics}
+      \field{number}{3}
+      \field{title}{Misinformation and the currency of democratic citizenship}
+      \field{volume}{62}
+      \field{year}{2000}
+      \field{pages}{790\bibrangedash 816}
+      \range{pages}{27}
+    \endentry
+    \entry{kumar2010structure}{incollection}{}
+      \name{author}{3}{}{%
+        {{hash=8b41fe0754fd3864ac9f18e92f6daf24}{%
+           family={Kumar},
+           familyi={K\bibinitperiod},
+           given={Ravi},
+           giveni={R\bibinitperiod}}}%
+        {{hash=ad609202f47e24bc4369e8e9787e078e}{%
+           family={Novak},
+           familyi={N\bibinitperiod},
+           given={Jasmine},
+           giveni={J\bibinitperiod}}}%
+        {{hash=1be6b0855ca65a591e8efd28fa72ebc6}{%
+           family={Tomkins},
+           familyi={T\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{56615393aa56d5ca4c564bf0c372c8ee}
+      \strng{fullhash}{8264995e857f105b9c22e8b190163301}
+      \strng{bibnamehash}{8264995e857f105b9c22e8b190163301}
+      \strng{authorbibnamehash}{8264995e857f105b9c22e8b190163301}
+      \strng{authornamehash}{56615393aa56d5ca4c564bf0c372c8ee}
+      \strng{authorfullhash}{8264995e857f105b9c22e8b190163301}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Link mining: {M}odels, algorithms, and applications}
+      \field{title}{Structure and evolution of online social networks}
+      \field{year}{2010}
+      \field{pages}{337\bibrangedash 357}
+      \range{pages}{21}
+    \endentry
+    \entry{kunda1990}{article}{}
+      \name{author}{1}{}{%
+        {{hash=23b81527fc391ea703f394ac9c1b7eaf}{%
+           family={Kunda},
+           familyi={K\bibinitperiod},
+           given={Ziva},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{23b81527fc391ea703f394ac9c1b7eaf}
+      \strng{fullhash}{23b81527fc391ea703f394ac9c1b7eaf}
+      \strng{bibnamehash}{23b81527fc391ea703f394ac9c1b7eaf}
+      \strng{authorbibnamehash}{23b81527fc391ea703f394ac9c1b7eaf}
+      \strng{authornamehash}{23b81527fc391ea703f394ac9c1b7eaf}
+      \strng{authorfullhash}{23b81527fc391ea703f394ac9c1b7eaf}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Bulletin}
+      \field{title}{The case for motivated reasoning}
+      \field{volume}{108}
+      \field{year}{1990}
+      \field{pages}{480\bibrangedash 498}
+      \range{pages}{19}
+    \endentry
+    \entry{larson2016social}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=ce2056438c074d9efdf8930de80cb9f5}{%
+           family={Larson},
+           familyi={L\bibinitperiod},
+           given={Jennifer},
+           giveni={J\bibinitperiod}}}%
+        {{hash=2d44e3039adc35df8bdfcf28ca3d927f}{%
+           family={Nagler},
+           familyi={N\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b25fab58fb19f141602ba0cba44fc9ad}{%
+           family={Ronen},
+           familyi={R\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=11982ea4e72426115310083eb86ce03e}{%
+           family={Tucker},
+           familyi={T\bibinitperiod},
+           given={Joshua},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Paper presented at the 9th Annual Political Networks Workshops \& Conference, Washington University in Saint Louis, MO}%
+      }
+      \strng{namehash}{bfbe089372defc7a00fe6be190d91972}
+      \strng{fullhash}{2341d3524c85ba859141ab3c5a41ba96}
+      \strng{bibnamehash}{2341d3524c85ba859141ab3c5a41ba96}
+      \strng{authorbibnamehash}{2341d3524c85ba859141ab3c5a41ba96}
+      \strng{authornamehash}{bfbe089372defc7a00fe6be190d91972}
+      \strng{authorfullhash}{2341d3524c85ba859141ab3c5a41ba96}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{6}
+      \field{title}{\textit{Social networks and protest participation: {E}vidence from 93 million twitter users}}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://ssrn.com/abstract=2796391
+      \endverb
+      \verb{url}
+      \verb https://ssrn.com/abstract=2796391
+      \endverb
+    \endentry
+    \entry{lazer2017combating}{article}{}
+      \name{author}{7}{}{%
+        {{hash=b997d645b4a929780c2c78606bf2ff98}{%
+           family={Lazer},
+           familyi={L\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=305e57f53eed903d7135aa87d850980b}{%
+           family={Baum},
+           familyi={B\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=27759012fa220c36ac5aad0234b03781}{%
+           family={Grinberg},
+           familyi={G\bibinitperiod},
+           given={Nir},
+           giveni={N\bibinitperiod}}}%
+        {{hash=3d337f314cf8a24b78e0a0155434d8c1}{%
+           family={Friedland},
+           familyi={F\bibinitperiod},
+           given={Lisa},
+           giveni={L\bibinitperiod}}}%
+        {{hash=af026d554aa390c386b52267805d7d83}{%
+           family={Joseph},
+           familyi={J\bibinitperiod},
+           given={Kenneth},
+           giveni={K\bibinitperiod}}}%
+        {{hash=50431f40d41e5c3e7551e4806c61c490}{%
+           family={Hobbs},
+           familyi={H\bibinitperiod},
+           given={Will},
+           giveni={W\bibinitperiod}}}%
+        {{hash=eca65025e050718ea7b454b1ad2a88fc}{%
+           family={Mattsson},
+           familyi={M\bibinitperiod},
+           given={Carolina},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{c0cd6b64975276ca3c9785d3d7740e2d}
+      \strng{fullhash}{a9d2fabfd9095a105dc5cb1d8592721b}
+      \strng{bibnamehash}{a9d2fabfd9095a105dc5cb1d8592721b}
+      \strng{authorbibnamehash}{a9d2fabfd9095a105dc5cb1d8592721b}
+      \strng{authornamehash}{c0cd6b64975276ca3c9785d3d7740e2d}
+      \strng{authorfullhash}{a9d2fabfd9095a105dc5cb1d8592721b}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Harvard Kennedy School, Shorenstein Center on Media, Politics and Public Policy}
+      \field{title}{Combating fake news: {A}n agenda for research and action}
+      \field{volume}{2}
+      \field{year}{2017}
+    \endentry
+    \entry{lazer2010coevolution}{article}{}
+      \name{author}{5}{}{%
+        {{hash=b997d645b4a929780c2c78606bf2ff98}{%
+           family={Lazer},
+           familyi={L\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=0038bdca4dc9167dd1c11c01c8b5cf3c}{%
+           family={Rubineau},
+           familyi={R\bibinitperiod},
+           given={Brian},
+           giveni={B\bibinitperiod}}}%
+        {{hash=696af356c094b277ed75d77684339f89}{%
+           family={Chetkovich},
+           familyi={C\bibinitperiod},
+           given={Carol},
+           giveni={C\bibinitperiod}}}%
+        {{hash=3f8c44829ed3c5e128793d9539a8804f}{%
+           family={Katz},
+           familyi={K\bibinitperiod},
+           given={Nancy},
+           giveni={N\bibinitperiod}}}%
+        {{hash=528f72624933403462c2b632fba655fa}{%
+           family={Neblo},
+           familyi={N\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{c0cd6b64975276ca3c9785d3d7740e2d}
+      \strng{fullhash}{32534ba4549e5a233595d7b732dedf0c}
+      \strng{bibnamehash}{32534ba4549e5a233595d7b732dedf0c}
+      \strng{authorbibnamehash}{32534ba4549e5a233595d7b732dedf0c}
+      \strng{authornamehash}{c0cd6b64975276ca3c9785d3d7740e2d}
+      \strng{authorfullhash}{32534ba4549e5a233595d7b732dedf0c}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Communication}
+      \field{title}{The coevolution of networks and political attitudes}
+      \field{volume}{27}
+      \field{year}{2010}
+      \field{pages}{248\bibrangedash 274}
+      \range{pages}{27}
+    \endentry
+    \entry{byungkyu2017important}{article}{}
+      \name{author}{2}{}{%
+        {{hash=1c60c28c6c1ac387a7ccfbae56a4d70f}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Byungkyu},
+           giveni={B\bibinitperiod}}}%
+        {{hash=4aa9f67b1f81010cc4e1f297f9e887d3}{%
+           family={Bearman},
+           familyi={B\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{9e4ded0bc355b463ff98c9f03658577f}
+      \strng{fullhash}{9e4ded0bc355b463ff98c9f03658577f}
+      \strng{bibnamehash}{9e4ded0bc355b463ff98c9f03658577f}
+      \strng{authorbibnamehash}{9e4ded0bc355b463ff98c9f03658577f}
+      \strng{authornamehash}{9e4ded0bc355b463ff98c9f03658577f}
+      \strng{authorfullhash}{9e4ded0bc355b463ff98c9f03658577f}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Sociological Science}
+      \field{title}{Important matters in political context}
+      \field{volume}{4}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 30}
+      \range{pages}{30}
+    \endentry
+    \entry{lee2017people}{article}{}
+      \name{author}{2}{}{%
+        {{hash=43a3671e460dfcabf1373a67082372dc}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Jayeon},
+           giveni={J\bibinitperiod}}}%
+        {{hash=885a13a9081ad292448153f9db0f20f5}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Hyunjin},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SAGE Publications Sage CA: Los Angeles, CA}%
+      }
+      \strng{namehash}{95dd4d82996525b2a430e72c22f679c2}
+      \strng{fullhash}{95dd4d82996525b2a430e72c22f679c2}
+      \strng{bibnamehash}{95dd4d82996525b2a430e72c22f679c2}
+      \strng{authorbibnamehash}{95dd4d82996525b2a430e72c22f679c2}
+      \strng{authornamehash}{95dd4d82996525b2a430e72c22f679c2}
+      \strng{authorfullhash}{95dd4d82996525b2a430e72c22f679c2}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Electronic News}
+      \field{title}{Why people post news on social networking sites: {A} focus on technology adoption, media bias, and partisanship strength}
+      \field{volume}{11}
+      \field{year}{2017}
+      \field{pages}{59\bibrangedash 79}
+      \range{pages}{21}
+    \endentry
+    \entry{leifeld2017temporal}{article}{}
+      \name{author}{3}{}{%
+        {{hash=362b21d2e55899c85dcd9789a921dc2d}{%
+           family={Leifeld},
+           familyi={L\bibinitperiod},
+           given={Philip},
+           giveni={P\bibinitperiod}}}%
+        {{hash=8455ab58854fde0837c1285eb6d59cc0}{%
+           family={Cranmer},
+           familyi={C\bibinitperiod},
+           given={Skyler\bibnamedelima J},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=eb50324d1c9702779dee34ded5737044}{%
+           family={Desmarais},
+           familyi={D\bibinitperiod},
+           given={Bruce\bibnamedelima A},
+           giveni={B\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Foundation for Open Access Statistics}%
+      }
+      \strng{namehash}{52fba5ca1559d109c41be3a8bd608731}
+      \strng{fullhash}{286590604f6fea0e18235bcfddf59774}
+      \strng{bibnamehash}{286590604f6fea0e18235bcfddf59774}
+      \strng{authorbibnamehash}{286590604f6fea0e18235bcfddf59774}
+      \strng{authornamehash}{52fba5ca1559d109c41be3a8bd608731}
+      \strng{authorfullhash}{286590604f6fea0e18235bcfddf59774}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Statistical Software}
+      \field{title}{Temporal exponential random graph models with btergm: {E}stimation and bootstrap confidence intervals}
+      \field{year}{2017}
+    \endentry
+    \entry{levitanspy2017}{article}{}
+      \name{author}{1}{}{%
+        {{hash=e46a1716db60a4376fb5040f6021a23c}{%
+           family={Levitan},
+           familyi={L\bibinitperiod},
+           given={Lindsey\bibnamedelima Clark},
+           giveni={L\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{e46a1716db60a4376fb5040f6021a23c}
+      \strng{fullhash}{e46a1716db60a4376fb5040f6021a23c}
+      \strng{bibnamehash}{e46a1716db60a4376fb5040f6021a23c}
+      \strng{authorbibnamehash}{e46a1716db60a4376fb5040f6021a23c}
+      \strng{authornamehash}{e46a1716db60a4376fb5040f6021a23c}
+      \strng{authorfullhash}{e46a1716db60a4376fb5040f6021a23c}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Psychology}
+      \field{title}{Social Constraint and Self-Doubt: {M}echanisms of Social Network influence on Resistance to Persuasion}
+      \field{volume}{Advanced online publication}
+      \field{year}{2017}
+    \endentry
+    \entry{levitan2008resistance}{article}{}
+      \name{author}{2}{}{%
+        {{hash=e46a1716db60a4376fb5040f6021a23c}{%
+           family={Levitan},
+           familyi={L\bibinitperiod},
+           given={Lindsey\bibnamedelima Clark},
+           giveni={L\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=78f26fbb7be6316397b8ed0aa213ca52}{%
+           family={Visser},
+           familyi={V\bibinitperiod},
+           given={Penny\bibnamedelima S},
+           giveni={P\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{a281400bb52c0d7fb88f4b732fc2f820}
+      \strng{fullhash}{a281400bb52c0d7fb88f4b732fc2f820}
+      \strng{bibnamehash}{a281400bb52c0d7fb88f4b732fc2f820}
+      \strng{authorbibnamehash}{a281400bb52c0d7fb88f4b732fc2f820}
+      \strng{authornamehash}{a281400bb52c0d7fb88f4b732fc2f820}
+      \strng{authorfullhash}{a281400bb52c0d7fb88f4b732fc2f820}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Experimental Social Psychology}
+      \field{title}{The impact of the social context on resistance to persuasion: {E}ffortful versus effortless responses to counter-attitudinal information}
+      \field{volume}{44}
+      \field{year}{2008}
+      \field{pages}{640\bibrangedash 649}
+      \range{pages}{10}
+    \endentry
+    \entry{Lewandowsky_2012PSPI}{article}{}
+      \name{author}{5}{}{%
+        {{hash=e7ebb66ea12299a9aea6e35ae34511ab}{%
+           family={Lewandowsky},
+           familyi={L\bibinitperiod},
+           given={Stephan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2c58b9f2332df464cc3430d69f735483}{%
+           family={Ecker},
+           familyi={E\bibinitperiod},
+           given={Ullrich\bibnamedelimb K.\bibnamedelimi H.},
+           giveni={U\bibinitperiod\bibinitdelim K\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=5b62bdc67d82cfc5f704e812052dbdca}{%
+           family={Seifert},
+           familyi={S\bibinitperiod},
+           given={Colleen\bibnamedelima M.},
+           giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=f80adac13cc206bee44ac5e0c8dfa15f}{%
+           family={Schwarz},
+           familyi={S\bibinitperiod},
+           given={Norbert},
+           giveni={N\bibinitperiod}}}%
+        {{hash=4dc3d25cff8125b543c099f502535f3f}{%
+           family={Cook},
+           familyi={C\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{615f8281382b83581d861b0e2cc6eb79}
+      \strng{fullhash}{b1ab432fa5ed4924e239c2a8d8bcba8c}
+      \strng{bibnamehash}{b1ab432fa5ed4924e239c2a8d8bcba8c}
+      \strng{authorbibnamehash}{b1ab432fa5ed4924e239c2a8d8bcba8c}
+      \strng{authornamehash}{615f8281382b83581d861b0e2cc6eb79}
+      \strng{authorfullhash}{b1ab432fa5ed4924e239c2a8d8bcba8c}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychological Science in the Public Interest}
+      \field{title}{Misinformation and Its Correction: {C}ontinued Influence and Successful Debiasing}
+      \field{volume}{13}
+      \field{year}{2012}
+      \field{pages}{106\bibrangedash 131}
+      \range{pages}{26}
+      \verb{doi}
+      \verb 10.1177/1529100612451018
+      \endverb
+    \endentry
+    \entry{lewandowsky2017beyond}{article}{}
+      \name{author}{3}{}{%
+        {{hash=e7ebb66ea12299a9aea6e35ae34511ab}{%
+           family={Lewandowsky},
+           familyi={L\bibinitperiod},
+           given={Stephan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=1d6992e978a19a00f3850043d5c72949}{%
+           family={Ecker},
+           familyi={E\bibinitperiod},
+           given={Ullrich\bibnamedelima KH},
+           giveni={U\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=4dc3d25cff8125b543c099f502535f3f}{%
+           family={Cook},
+           familyi={C\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{615f8281382b83581d861b0e2cc6eb79}
+      \strng{fullhash}{a62ce7f9a30040bbb847dba6224b7e85}
+      \strng{bibnamehash}{a62ce7f9a30040bbb847dba6224b7e85}
+      \strng{authorbibnamehash}{a62ce7f9a30040bbb847dba6224b7e85}
+      \strng{authornamehash}{615f8281382b83581d861b0e2cc6eb79}
+      \strng{authorfullhash}{a62ce7f9a30040bbb847dba6224b7e85}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Applied Research in Memory and Cognition}
+      \field{number}{4}
+      \field{title}{Beyond Misinformation: {U}nderstanding and Coping with the \enquote{Post-Truth} Era}
+      \field{volume}{6}
+      \field{year}{2017}
+      \field{pages}{353\bibrangedash 369}
+      \range{pages}{17}
+    \endentry
+    \entry{margolin2017}{article}{}
+      \name{author}{3}{}{%
+        {{hash=be636564a6174864305ac25de7211a44}{%
+           family={Margolin},
+           familyi={M\bibinitperiod},
+           given={Drew\bibnamedelima B},
+           giveni={D\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=11166d8e034f86b672cd4e9b3a7d85ed}{%
+           family={Hannak},
+           familyi={H\bibinitperiod},
+           given={Aniko},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a68c23bac04bfcf8e20276cf86108862}{%
+           family={Weber},
+           familyi={W\bibinitperiod},
+           given={Ingmar},
+           giveni={I\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{959231e4f47c7baf0091a4238dcfbc60}
+      \strng{fullhash}{424d0d1e341115789e8fffae42a930b9}
+      \strng{bibnamehash}{424d0d1e341115789e8fffae42a930b9}
+      \strng{authorbibnamehash}{424d0d1e341115789e8fffae42a930b9}
+      \strng{authornamehash}{959231e4f47c7baf0091a4238dcfbc60}
+      \strng{authorfullhash}{424d0d1e341115789e8fffae42a930b9}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Communication}
+      \field{title}{Political Fact-Checking on Twitter: {W}hen Do Corrections Have an Effect?}
+      \field{volume}{Advanced online publication}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 24}
+      \range{pages}{24}
+    \endentry
+    \entry{messing2014selective}{article}{}
+      \name{author}{2}{}{%
+        {{hash=a8c9b1ec6d4f77b4d4b3f0934e5f6f0e}{%
+           family={Messing},
+           familyi={M\bibinitperiod},
+           given={Solomon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=60fa93a9756cc17673b9b8d6ba7323b7}{%
+           family={Westwood},
+           familyi={W\bibinitperiod},
+           given={Sean\bibnamedelima J},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Sage Publications Sage CA: Los Angeles, CA}%
+      }
+      \strng{namehash}{138e0a1501b0b09fe880d1905842099e}
+      \strng{fullhash}{138e0a1501b0b09fe880d1905842099e}
+      \strng{bibnamehash}{138e0a1501b0b09fe880d1905842099e}
+      \strng{authorbibnamehash}{138e0a1501b0b09fe880d1905842099e}
+      \strng{authornamehash}{138e0a1501b0b09fe880d1905842099e}
+      \strng{authorfullhash}{138e0a1501b0b09fe880d1905842099e}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communication Research}
+      \field{title}{Selective exposure in the age of social media: {E}ndorsements trump partisan source affiliation when selecting news online}
+      \field{volume}{41}
+      \field{year}{2014}
+      \field{pages}{1042\bibrangedash 1063}
+      \range{pages}{22}
+    \endentry
+    \entry{metzger2010social}{article}{}
+      \name{author}{3}{}{%
+        {{hash=cd29994a8f06bef4e151a5d82392c60a}{%
+           family={Metzger},
+           familyi={M\bibinitperiod},
+           given={Miriam\bibnamedelima J},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=d57e17bbd145e457c5cb06774ac06304}{%
+           family={Flanagin},
+           familyi={F\bibinitperiod},
+           given={Andrew\bibnamedelima J},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=a5ddc57f068a6c03734c8e1adda21c7d}{%
+           family={Medders},
+           familyi={M\bibinitperiod},
+           given={Ryan\bibnamedelima B},
+           giveni={R\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{fecacd9e5eae75a6636e26551461aaf7}
+      \strng{fullhash}{032d8cae4139238103aa3c6f5a2506e0}
+      \strng{bibnamehash}{032d8cae4139238103aa3c6f5a2506e0}
+      \strng{authorbibnamehash}{032d8cae4139238103aa3c6f5a2506e0}
+      \strng{authornamehash}{fecacd9e5eae75a6636e26551461aaf7}
+      \strng{authorfullhash}{032d8cae4139238103aa3c6f5a2506e0}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of communication}
+      \field{number}{3}
+      \field{title}{Social and heuristic approaches to credibility evaluation online}
+      \field{volume}{60}
+      \field{year}{2010}
+      \field{pages}{413\bibrangedash 439}
+      \range{pages}{27}
+    \endentry
+    \entry{Monsted_plos2017}{article}{}
+      \name{author}{4}{}{%
+        {{hash=8d923c63079864e083b24ee3869fdfad}{%
+           family={M{ø}nsted},
+           familyi={M\bibinitperiod},
+           given={Bjarke},
+           giveni={B\bibinitperiod}}}%
+        {{hash=6b1d2f1825a28c0068832dfc9c9e2172}{%
+           family={Sapie{ż}y{ń}ski},
+           familyi={S\bibinitperiod},
+           given={Piotr},
+           giveni={P\bibinitperiod}}}%
+        {{hash=9ff088972e751f036f6d04e4c835050d}{%
+           family={Ferrara},
+           familyi={F\bibinitperiod},
+           given={Emilio},
+           giveni={E\bibinitperiod}}}%
+        {{hash=7275a8e12649c5b55e14fb19ee02fd7c}{%
+           family={Lehmann},
+           familyi={L\bibinitperiod},
+           given={Sune},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Public Library of Science}%
+      }
+      \strng{namehash}{0e578f2b49c904a53d506801bef517c3}
+      \strng{fullhash}{c726f27c566f7a6fc1d46621f1a3d18d}
+      \strng{bibnamehash}{c726f27c566f7a6fc1d46621f1a3d18d}
+      \strng{authorbibnamehash}{c726f27c566f7a6fc1d46621f1a3d18d}
+      \strng{authornamehash}{0e578f2b49c904a53d506801bef517c3}
+      \strng{authorfullhash}{c726f27c566f7a6fc1d46621f1a3d18d}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PLOS ONE}
+      \field{title}{Evidence of complex contagion of information in social media: An experiment using Twitter bots}
+      \field{volume}{12}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 12}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1371/journal.pone.0184148
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1371/journal.pone.0184148
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1371/journal.pone.0184148
+      \endverb
+    \endentry
+    \entry{morey2012matters}{article}{}
+      \name{author}{3}{}{%
+        {{hash=1e37c355f6df63b09796c377c34e5f8a}{%
+           family={Morey},
+           familyi={M\bibinitperiod},
+           given={Alyssa\bibnamedelima C},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=6891e640be557a8cdb07f085b9741932}{%
+           family={Eveland},
+           familyi={E\bibinitperiod},
+           given={William\bibnamedelima P},
+           giveni={W\bibinitperiod\bibinitdelim P\bibinitperiod},
+           suffix={Jr.},
+           suffixi={J\bibinitperiod}}}%
+        {{hash=f0c23555f6686fae66ff9250bdeb1500}{%
+           family={Hutchens},
+           familyi={H\bibinitperiod},
+           given={Myiah\bibnamedelima J},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{06413cb969cb2ebfd415bdf10ceb2646}
+      \strng{fullhash}{9356bde0c908a23a0cf3b8bd77f69648}
+      \strng{bibnamehash}{9356bde0c908a23a0cf3b8bd77f69648}
+      \strng{authorbibnamehash}{9356bde0c908a23a0cf3b8bd77f69648}
+      \strng{authornamehash}{06413cb969cb2ebfd415bdf10ceb2646}
+      \strng{authorfullhash}{9356bde0c908a23a0cf3b8bd77f69648}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Communication}
+      \field{number}{1}
+      \field{title}{The \enquote{who} matters: {T}ypes of interpersonal relationships and avoidance of political disagreement}
+      \field{volume}{29}
+      \field{year}{2012}
+      \field{pages}{86\bibrangedash 103}
+      \range{pages}{18}
+    \endentry
+    \entry{morris2008specification}{article}{}
+      \name{author}{3}{}{%
+        {{hash=129292b03dbceb84ffb2158cd84fc974}{%
+           family={Morris},
+           familyi={M\bibinitperiod},
+           given={Martina},
+           giveni={M\bibinitperiod}}}%
+        {{hash=072cbb79eed48e657d7dae2de236eb00}{%
+           family={Handcock},
+           familyi={H\bibinitperiod},
+           given={Mark\bibnamedelima S},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=e46824c65e15798b0eb01a56bcaa2bb0}{%
+           family={Hunter},
+           familyi={H\bibinitperiod},
+           given={David\bibnamedelima R},
+           giveni={D\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {NIH Public Access}%
+      }
+      \strng{namehash}{af1a9af987bc9530be756de2e610e649}
+      \strng{fullhash}{98891bb2fa4932a077ec200f5066ef5c}
+      \strng{bibnamehash}{98891bb2fa4932a077ec200f5066ef5c}
+      \strng{authorbibnamehash}{98891bb2fa4932a077ec200f5066ef5c}
+      \strng{authornamehash}{af1a9af987bc9530be756de2e610e649}
+      \strng{authorfullhash}{98891bb2fa4932a077ec200f5066ef5c}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of statistical software}
+      \field{number}{4}
+      \field{title}{Specification of exponential-family random graph models: terms and computational aspects}
+      \field{volume}{24}
+      \field{year}{2008}
+      \field{pages}{1548}
+      \range{pages}{1}
+    \endentry
+    \entry{noel2011unfriending}{article}{}
+      \name{author}{2}{}{%
+        {{hash=8a4d803ad9c1df682c49ca1bc0e4388b}{%
+           family={Noel},
+           familyi={N\bibinitperiod},
+           given={Hans},
+           giveni={H\bibinitperiod}}}%
+        {{hash=8ef5bca6f403168706ad93d11351ed60}{%
+           family={Nyhan},
+           familyi={N\bibinitperiod},
+           given={Brendan},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{bf4730237905bb0d38363c61eaa0d1f1}
+      \strng{fullhash}{bf4730237905bb0d38363c61eaa0d1f1}
+      \strng{bibnamehash}{bf4730237905bb0d38363c61eaa0d1f1}
+      \strng{authorbibnamehash}{bf4730237905bb0d38363c61eaa0d1f1}
+      \strng{authornamehash}{bf4730237905bb0d38363c61eaa0d1f1}
+      \strng{authorfullhash}{bf4730237905bb0d38363c61eaa0d1f1}
+      \field{sortinit}{N}
+      \field{sortinithash}{f7242c3ed3dc50029fca1be76c497c7c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Social Networks}
+      \field{number}{3}
+      \field{title}{The “unfriending” problem: The consequences of homophily in friendship retention for causal estimates of social influence}
+      \field{volume}{33}
+      \field{year}{2011}
+      \field{pages}{211\bibrangedash 218}
+      \range{pages}{8}
+    \endentry
+    \entry{nyhan2017taking}{article}{}
+      \name{author}{4}{}{%
+        {{hash=8ef5bca6f403168706ad93d11351ed60}{%
+           family={Nyhan},
+           familyi={N\bibinitperiod},
+           given={Brendan},
+           giveni={B\bibinitperiod}}}%
+        {{hash=a9a5cafbc35fe160c596db37f020a901}{%
+           family={Porter},
+           familyi={P\bibinitperiod},
+           given={Ethan},
+           giveni={E\bibinitperiod}}}%
+        {{hash=698c775e8046e91f3e4c4717a9af1fe4}{%
+           family={Reifler},
+           familyi={R\bibinitperiod},
+           given={Jason},
+           giveni={J\bibinitperiod}}}%
+        {{hash=bfb6683a46773ff76dfd85ce70f62f42}{%
+           family={Wood},
+           familyi={W\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{26149e909deb1bc8029911c5d6ef481e}
+      \strng{fullhash}{7822b8c015a6681d0e72b3d021586a6f}
+      \strng{bibnamehash}{7822b8c015a6681d0e72b3d021586a6f}
+      \strng{authorbibnamehash}{7822b8c015a6681d0e72b3d021586a6f}
+      \strng{authornamehash}{26149e909deb1bc8029911c5d6ef481e}
+      \strng{authorfullhash}{7822b8c015a6681d0e72b3d021586a6f}
+      \field{sortinit}{N}
+      \field{sortinithash}{f7242c3ed3dc50029fca1be76c497c7c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Taking corrections literally but not seriously? {T}he effects of information on factual beliefs and candidate favorability}
+      \field{year}{2017}
+      \verb{urlraw}
+      \verb https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2995128
+      \endverb
+      \verb{url}
+      \verb https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2995128
+      \endverb
+    \endentry
+    \entry{nyhan2010corrections}{article}{}
+      \name{author}{2}{}{%
+        {{hash=8ef5bca6f403168706ad93d11351ed60}{%
+           family={Nyhan},
+           familyi={N\bibinitperiod},
+           given={Brendan},
+           giveni={B\bibinitperiod}}}%
+        {{hash=698c775e8046e91f3e4c4717a9af1fe4}{%
+           family={Reifler},
+           familyi={R\bibinitperiod},
+           given={Jason},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{d21a666d934fa6f0432b913cb72d3446}
+      \strng{fullhash}{d21a666d934fa6f0432b913cb72d3446}
+      \strng{bibnamehash}{d21a666d934fa6f0432b913cb72d3446}
+      \strng{authorbibnamehash}{d21a666d934fa6f0432b913cb72d3446}
+      \strng{authornamehash}{d21a666d934fa6f0432b913cb72d3446}
+      \strng{authorfullhash}{d21a666d934fa6f0432b913cb72d3446}
+      \field{sortinit}{N}
+      \field{sortinithash}{f7242c3ed3dc50029fca1be76c497c7c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Behavior}
+      \field{title}{When corrections fail: {T}he persistence of political misperceptions}
+      \field{volume}{32}
+      \field{year}{2010}
+      \field{pages}{303\bibrangedash 330}
+      \range{pages}{28}
+    \endentry
+    \entry{pewfakenews}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=a23efa785ab9ff66db355bb66f385934}{%
+           family={{Pew Research Center}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{a23efa785ab9ff66db355bb66f385934}
+      \strng{fullhash}{a23efa785ab9ff66db355bb66f385934}
+      \strng{bibnamehash}{a23efa785ab9ff66db355bb66f385934}
+      \strng{authorbibnamehash}{a23efa785ab9ff66db355bb66f385934}
+      \strng{authornamehash}{a23efa785ab9ff66db355bb66f385934}
+      \strng{authorfullhash}{a23efa785ab9ff66db355bb66f385934}
+      \field{sortinit}{P}
+      \field{sortinithash}{8d51b3d5b78d75b54308d706b9bbe285}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Pew Research Center}
+      \field{month}{12}
+      \field{title}{Many Americans Believe Fake News Is Sowing Confusion}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb http://www.journalism.org/2016/12/15/many-americans-believe-fake-news-is-sowing-confusion/
+      \endverb
+      \verb{url}
+      \verb http://www.journalism.org/2016/12/15/many-americans-believe-fake-news-is-sowing-confusion/
+      \endverb
+    \endentry
+    \entry{robins2007introduction}{article}{}
+      \name{author}{4}{}{%
+        {{hash=e341e2fae921646c0763ebaa25184685}{%
+           family={Robins},
+           familyi={R\bibinitperiod},
+           given={Garry},
+           giveni={G\bibinitperiod}}}%
+        {{hash=dec5e38200065bdf5644e6be6845db2d}{%
+           family={Pattison},
+           familyi={P\bibinitperiod},
+           given={Pip},
+           giveni={P\bibinitperiod}}}%
+        {{hash=2399345a6e901568675344b6e5864834}{%
+           family={Kalish},
+           familyi={K\bibinitperiod},
+           given={Yuval},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=39b5695827b05fc6b5097d47f054e081}{%
+           family={Lusher},
+           familyi={L\bibinitperiod},
+           given={Dean},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{75533f830984b4c6118868fe504cd006}
+      \strng{fullhash}{d41450f46772bc4704b4bdd6a6c5605f}
+      \strng{bibnamehash}{d41450f46772bc4704b4bdd6a6c5605f}
+      \strng{authorbibnamehash}{d41450f46772bc4704b4bdd6a6c5605f}
+      \strng{authornamehash}{75533f830984b4c6118868fe504cd006}
+      \strng{authorfullhash}{d41450f46772bc4704b4bdd6a6c5605f}
+      \field{sortinit}{R}
+      \field{sortinithash}{da6b42bd3ab22fee61abed031ee405f7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Social networks}
+      \field{number}{2}
+      \field{title}{An introduction to exponential random graph (p*) models for social networks}
+      \field{volume}{29}
+      \field{year}{2007}
+      \field{pages}{173\bibrangedash 191}
+      \range{pages}{19}
+    \endentry
+    \entry{shearer2017news}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=7d73bf493e9b93a805b394e73148cb35}{%
+           family={Shearer},
+           familyi={S\bibinitperiod},
+           given={Elisa},
+           giveni={E\bibinitperiod}}}%
+        {{hash=793a40965daf69f635dc5c9e577a2611}{%
+           family={Gottfried},
+           familyi={G\bibinitperiod},
+           given={Jeffrey},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e1ae2a12d1d0516012b2b18c63e9ce6}
+      \strng{fullhash}{4e1ae2a12d1d0516012b2b18c63e9ce6}
+      \strng{bibnamehash}{4e1ae2a12d1d0516012b2b18c63e9ce6}
+      \strng{authorbibnamehash}{4e1ae2a12d1d0516012b2b18c63e9ce6}
+      \strng{authornamehash}{4e1ae2a12d1d0516012b2b18c63e9ce6}
+      \strng{authorfullhash}{4e1ae2a12d1d0516012b2b18c63e9ce6}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Pew Research Center}
+      \field{month}{9}
+      \field{title}{News Use Across Social Media Platforms 2017}
+      \field{year}{2017}
+      \verb{urlraw}
+      \verb http://www.journalism.org/2017/09/07/news-use-across-social-media-platforms-2017/
+      \endverb
+      \verb{url}
+      \verb http://www.journalism.org/2017/09/07/news-use-across-social-media-platforms-2017/
+      \endverb
+    \endentry
+    \entry{siegel2009social}{article}{}
+      \name{author}{1}{}{%
+        {{hash=df89053f297aa02f29db6083c02273ae}{%
+           family={Siegel},
+           familyi={S\bibinitperiod},
+           given={David\bibnamedelima A},
+           giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{df89053f297aa02f29db6083c02273ae}
+      \strng{fullhash}{df89053f297aa02f29db6083c02273ae}
+      \strng{bibnamehash}{df89053f297aa02f29db6083c02273ae}
+      \strng{authorbibnamehash}{df89053f297aa02f29db6083c02273ae}
+      \strng{authornamehash}{df89053f297aa02f29db6083c02273ae}
+      \strng{authorfullhash}{df89053f297aa02f29db6083c02273ae}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Political Science}
+      \field{number}{1}
+      \field{title}{Social networks and collective action}
+      \field{volume}{53}
+      \field{year}{2009}
+      \field{pages}{122\bibrangedash 138}
+      \range{pages}{17}
+    \endentry
+    \entry{small2015stable}{article}{}
+      \name{author}{3}{}{%
+        {{hash=4850edb586fea42f56ab28e0483a9cbf}{%
+           family={Small},
+           familyi={S\bibinitperiod},
+           given={Mario\bibnamedelima Luis},
+           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=2094c6c76b6acda6835f10ca08d9fa31}{%
+           family={Pamphile},
+           familyi={P\bibinitperiod},
+           given={Vontrese\bibnamedelima Deeds},
+           giveni={V\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=42b292cfb7b4c8701ecefdff78761db3}{%
+           family={McMahan},
+           familyi={M\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{4a65321ba5d24a723cb41f1b026e0914}
+      \strng{fullhash}{92b3370948af8fd8a3bd84501a4da403}
+      \strng{bibnamehash}{92b3370948af8fd8a3bd84501a4da403}
+      \strng{authorbibnamehash}{92b3370948af8fd8a3bd84501a4da403}
+      \strng{authornamehash}{4a65321ba5d24a723cb41f1b026e0914}
+      \strng{authorfullhash}{92b3370948af8fd8a3bd84501a4da403}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Social Networks}
+      \field{title}{How stable is the core discussion network?}
+      \field{volume}{40}
+      \field{year}{2015}
+      \field{pages}{90\bibrangedash 102}
+      \range{pages}{13}
+    \endentry
+    \entry{song2015uncovering}{article}{}
+      \name{author}{1}{}{%
+        {{hash=885a13a9081ad292448153f9db0f20f5}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Hyunjin},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{885a13a9081ad292448153f9db0f20f5}
+      \strng{fullhash}{885a13a9081ad292448153f9db0f20f5}
+      \strng{bibnamehash}{885a13a9081ad292448153f9db0f20f5}
+      \strng{authorbibnamehash}{885a13a9081ad292448153f9db0f20f5}
+      \strng{authornamehash}{885a13a9081ad292448153f9db0f20f5}
+      \strng{authorfullhash}{885a13a9081ad292448153f9db0f20f5}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Communication}
+      \field{title}{Uncovering the structural underpinnings of political discussion networks: {E}vidence from an exponential random graph model}
+      \field{volume}{65}
+      \field{year}{2015}
+      \field{pages}{146\bibrangedash 169}
+      \range{pages}{24}
+    \endentry
+    \entry{taber2006}{article}{}
+      \name{author}{2}{}{%
+        {{hash=135516c1b79e4e14d0a4324940e8379e}{%
+           family={Taber},
+           familyi={T\bibinitperiod},
+           given={Charles\bibnamedelima S.},
+           giveni={C\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=ef8b6d143f20a38f14986d1f4853b2c2}{%
+           family={Lodge},
+           familyi={L\bibinitperiod},
+           given={Milton},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{80f8c845c29749a801b7b58c9759e333}
+      \strng{fullhash}{80f8c845c29749a801b7b58c9759e333}
+      \strng{bibnamehash}{80f8c845c29749a801b7b58c9759e333}
+      \strng{authorbibnamehash}{80f8c845c29749a801b7b58c9759e333}
+      \strng{authornamehash}{80f8c845c29749a801b7b58c9759e333}
+      \strng{authorfullhash}{80f8c845c29749a801b7b58c9759e333}
+      \field{sortinit}{T}
+      \field{sortinithash}{6f7aff9db9dcfeb7f95fd5bbd2f78df9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Political Science}
+      \field{title}{Motivated skepticism in the evaluation of political beliefs}
+      \field{volume}{50}
+      \field{year}{2006}
+      \field{pages}{755\bibrangedash 769}
+      \range{pages}{15}
+    \endentry
+    \entry{tambuscio2015fact}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=320f95c506ad313192c27f6b84f924e5}{%
+           family={Tambuscio},
+           familyi={T\bibinitperiod},
+           given={Marcella},
+           giveni={M\bibinitperiod}}}%
+        {{hash=002f8836591a9380a775f1034433b3ef}{%
+           family={Ruffo},
+           familyi={R\bibinitperiod},
+           given={Giancarlo},
+           giveni={G\bibinitperiod}}}%
+        {{hash=2596bc60fbbe46dccfc09ae3fd2522d0}{%
+           family={Flammini},
+           familyi={F\bibinitperiod},
+           given={Alessandro},
+           giveni={A\bibinitperiod}}}%
+        {{hash=3e3991fca812b39b0448729fca507968}{%
+           family={Menczer},
+           familyi={M\bibinitperiod},
+           given={Filippo},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{d32a7b24a93c215c5aba11cc7c25e98f}
+      \strng{fullhash}{a11db0365e69789e7cf2fd3759f84278}
+      \strng{bibnamehash}{a11db0365e69789e7cf2fd3759f84278}
+      \strng{authorbibnamehash}{a11db0365e69789e7cf2fd3759f84278}
+      \strng{authornamehash}{d32a7b24a93c215c5aba11cc7c25e98f}
+      \strng{authorfullhash}{a11db0365e69789e7cf2fd3759f84278}
+      \field{sortinit}{T}
+      \field{sortinithash}{6f7aff9db9dcfeb7f95fd5bbd2f78df9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 24th International Conference on World Wide Web}
+      \field{title}{Fact-checking effect on viral hoaxes: A model of misinformation spread in social networks}
+      \field{year}{2015}
+      \field{pages}{977\bibrangedash 982}
+      \range{pages}{6}
+    \endentry
+    \entry{nyt_2017}{article}{}
+      \name{author}{1}{}{%
+        {{hash=c78f53bac340b9ec2ddf10d45a9f89a0}{%
+           family={{The New York Times}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{c78f53bac340b9ec2ddf10d45a9f89a0}
+      \strng{fullhash}{c78f53bac340b9ec2ddf10d45a9f89a0}
+      \strng{bibnamehash}{c78f53bac340b9ec2ddf10d45a9f89a0}
+      \strng{authorbibnamehash}{c78f53bac340b9ec2ddf10d45a9f89a0}
+      \strng{authornamehash}{c78f53bac340b9ec2ddf10d45a9f89a0}
+      \strng{authorfullhash}{c78f53bac340b9ec2ddf10d45a9f89a0}
+      \field{sortinit}{T}
+      \field{sortinithash}{6f7aff9db9dcfeb7f95fd5bbd2f78df9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{11}
+      \field{title}{Signs of Russian meddling in Brexit referendum}
+      \field{year}{2017}
+      \verb{urlraw}
+      \verb https://www.nytimes.com/2017/11/15/world/europe/russia-brexit-twitter-facebook.html?smid=tw-share
+      \endverb
+      \verb{url}
+      \verb https://www.nytimes.com/2017/11/15/world/europe/russia-brexit-twitter-facebook.html?smid=tw-share
+      \endverb
+    \endentry
+    \entry{thorson_2016}{article}{}
+      \name{author}{1}{}{%
+        {{hash=bc3042a1dcbebcd3ec7914cbc7b93ac2}{%
+           family={Thorson},
+           familyi={T\bibinitperiod},
+           given={Emily},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{bc3042a1dcbebcd3ec7914cbc7b93ac2}
+      \strng{fullhash}{bc3042a1dcbebcd3ec7914cbc7b93ac2}
+      \strng{bibnamehash}{bc3042a1dcbebcd3ec7914cbc7b93ac2}
+      \strng{authorbibnamehash}{bc3042a1dcbebcd3ec7914cbc7b93ac2}
+      \strng{authornamehash}{bc3042a1dcbebcd3ec7914cbc7b93ac2}
+      \strng{authorfullhash}{bc3042a1dcbebcd3ec7914cbc7b93ac2}
+      \field{sortinit}{T}
+      \field{sortinithash}{6f7aff9db9dcfeb7f95fd5bbd2f78df9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Communication}
+      \field{title}{Belief Echoes: {T}he Persistent Effects of Corrected Misinformation}
+      \field{volume}{33}
+      \field{year}{2016}
+      \field{pages}{460\bibrangedash 480}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1080/10584609.2015.1102187
+      \endverb
+    \endentry
+    \entry{ugander2011anatomy}{article}{}
+      \name{author}{4}{}{%
+        {{hash=02a2fc2adfe894eb90d24823c6df43f7}{%
+           family={Ugander},
+           familyi={U\bibinitperiod},
+           given={Johan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=8b4f260513035df036170e50abb8a1a2}{%
+           family={Karrer},
+           familyi={K\bibinitperiod},
+           given={Brian},
+           giveni={B\bibinitperiod}}}%
+        {{hash=921adb9dfe9f50c712f6be548f09df3e}{%
+           family={Backstrom},
+           familyi={B\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod}}}%
+        {{hash=1908f27d74113b77bb19b7a74aaad35e}{%
+           family={Marlow},
+           familyi={M\bibinitperiod},
+           given={Cameron},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{07036499c62746a6580bb7c3b99681c4}
+      \strng{fullhash}{b68579a2d28928f20b030f8693135b88}
+      \strng{bibnamehash}{b68579a2d28928f20b030f8693135b88}
+      \strng{authorbibnamehash}{b68579a2d28928f20b030f8693135b88}
+      \strng{authornamehash}{07036499c62746a6580bb7c3b99681c4}
+      \strng{authorfullhash}{b68579a2d28928f20b030f8693135b88}
+      \field{sortinit}{U}
+      \field{sortinithash}{36a2444f5238e0dcf4bb59704df6624d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{The Anatomy of the {F}acebook Social Graph}
+      \field{volume}{abs/1111.4503}
+      \field{year}{2011}
+      \verb{eprint}
+      \verb 1111.4503
+      \endverb
+    \endentry
+    \entry{weeks2015emotions}{article}{}
+      \name{author}{1}{}{%
+        {{hash=74687b19289bb0db263dacd8351906b1}{%
+           family={Weeks},
+           familyi={W\bibinitperiod},
+           given={Brian\bibnamedelima E},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{74687b19289bb0db263dacd8351906b1}
+      \strng{fullhash}{74687b19289bb0db263dacd8351906b1}
+      \strng{bibnamehash}{74687b19289bb0db263dacd8351906b1}
+      \strng{authorbibnamehash}{74687b19289bb0db263dacd8351906b1}
+      \strng{authornamehash}{74687b19289bb0db263dacd8351906b1}
+      \strng{authorfullhash}{74687b19289bb0db263dacd8351906b1}
+      \field{sortinit}{W}
+      \field{sortinithash}{ecb89ff85896a47dc313960773ac311d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Communication}
+      \field{title}{Emotions, partisanship, and misperceptions: {H}ow anger and anxiety moderate the effect of partisan bias on susceptibility to political misinformation}
+      \field{volume}{65}
+      \field{year}{2015}
+      \field{pages}{699\bibrangedash 719}
+      \range{pages}{21}
+    \endentry
+    \entry{weeks2014electoral}{article}{}
+      \name{author}{2}{}{%
+        {{hash=74687b19289bb0db263dacd8351906b1}{%
+           family={Weeks},
+           familyi={W\bibinitperiod},
+           given={Brian\bibnamedelima E},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=932ec74b5e04342aa653cd156859b429}{%
+           family={Garrett},
+           familyi={G\bibinitperiod},
+           given={R\bibnamedelima Kelly},
+           giveni={R\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{bb3caa5b526ff2032ad8cd0d412144ef}
+      \strng{fullhash}{bb3caa5b526ff2032ad8cd0d412144ef}
+      \strng{bibnamehash}{bb3caa5b526ff2032ad8cd0d412144ef}
+      \strng{authorbibnamehash}{bb3caa5b526ff2032ad8cd0d412144ef}
+      \strng{authornamehash}{bb3caa5b526ff2032ad8cd0d412144ef}
+      \strng{authorfullhash}{bb3caa5b526ff2032ad8cd0d412144ef}
+      \field{sortinit}{W}
+      \field{sortinithash}{ecb89ff85896a47dc313960773ac311d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Public Opinion Research}
+      \field{title}{Electoral consequences of political rumors: {M}otivated reasoning, candidate rumors, and vote choice during the 2008 US presidential election}
+      \field{volume}{26}
+      \field{year}{2014}
+      \field{pages}{401\bibrangedash 422}
+      \range{pages}{22}
+    \endentry
+    \entry{Wood2018}{article}{}
+      \name{author}{2}{}{%
+        {{hash=bfb6683a46773ff76dfd85ce70f62f42}{%
+           family={Wood},
+           familyi={W\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=a9a5cafbc35fe160c596db37f020a901}{%
+           family={Porter},
+           familyi={P\bibinitperiod},
+           given={Ethan},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{57c8c2f5381f6943cb98656498fee887}
+      \strng{fullhash}{57c8c2f5381f6943cb98656498fee887}
+      \strng{bibnamehash}{57c8c2f5381f6943cb98656498fee887}
+      \strng{authorbibnamehash}{57c8c2f5381f6943cb98656498fee887}
+      \strng{authornamehash}{57c8c2f5381f6943cb98656498fee887}
+      \strng{authorfullhash}{57c8c2f5381f6943cb98656498fee887}
+      \field{sortinit}{W}
+      \field{sortinithash}{ecb89ff85896a47dc313960773ac311d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Political Behavior}
+      \field{title}{The Elusive Backfire Effect: {M}ass Attitudes' Steadfast Factual Adherence}
+      \field{year}{2018}
+      \field{pages}{1\bibrangedash 29}
+      \range{pages}{29}
+      \verb{doi}
+      \verb 10.1007/s11109-018-9443-y
+      \endverb
+    \endentry
+    \entry{wu2007novelty}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ad46257c63194a437fd68061d437aa1f}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Fang},
+           giveni={F\bibinitperiod}}}%
+        {{hash=41a0ff119949428043805ffb602d2614}{%
+           family={Huberman},
+           familyi={H\bibinitperiod},
+           given={Bernardo\bibnamedelima A},
+           giveni={B\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {National Acad Sciences}%
+      }
+      \strng{namehash}{1619a363baa435e9658345c0358b971b}
+      \strng{fullhash}{1619a363baa435e9658345c0358b971b}
+      \strng{bibnamehash}{1619a363baa435e9658345c0358b971b}
+      \strng{authorbibnamehash}{1619a363baa435e9658345c0358b971b}
+      \strng{authornamehash}{1619a363baa435e9658345c0358b971b}
+      \strng{authorfullhash}{1619a363baa435e9658345c0358b971b}
+      \field{sortinit}{W}
+      \field{sortinithash}{ecb89ff85896a47dc313960773ac311d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the National Academy of Sciences}
+      \field{number}{45}
+      \field{title}{Novelty and collective attention}
+      \field{volume}{104}
+      \field{year}{2007}
+      \field{pages}{17599\bibrangedash 17601}
+      \range{pages}{3}
+    \endentry
+    \entry{yang2017politics}{article}{}
+      \name{author}{3}{}{%
+        {{hash=edd0955bc034e838671927dd906bc282}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Jung\bibnamedelima Hwan},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=d3a0e57d153f45e0dd271c159251e3f0}{%
+           family={Barnidge},
+           familyi={B\bibinitperiod},
+           given={Matthew},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a404999ff38b275b020d7cebc0ac44f6}{%
+           family={Rojas},
+           familyi={R\bibinitperiod},
+           given={Hernando},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{c175140022b6ca1a58179f950af17d3d}
+      \strng{fullhash}{2916c2edfb16b83e4f45b568a85ebd85}
+      \strng{bibnamehash}{2916c2edfb16b83e4f45b568a85ebd85}
+      \strng{authorbibnamehash}{2916c2edfb16b83e4f45b568a85ebd85}
+      \strng{authornamehash}{c175140022b6ca1a58179f950af17d3d}
+      \strng{authorfullhash}{2916c2edfb16b83e4f45b568a85ebd85}
+      \field{sortinit}{Y}
+      \field{sortinithash}{b8d711a035f7be9840c721c82920477e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computers in Human Behavior}
+      \field{title}{The politics of “Unfriending”: {U}ser filtration in response to political disagreement on social media}
+      \field{volume}{70}
+      \field{year}{2017}
+      \field{pages}{22\bibrangedash 29}
+      \range{pages}{8}
+    \endentry
+    \entry{zhao2010weak}{article}{}
+      \name{author}{3}{}{%
+        {{hash=b80485bc608c11ed7bb408d62881dec9}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Jichang},
+           giveni={J\bibinitperiod}}}%
+        {{hash=9231369bea1f197c31820b5cea0fc6cc}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Junjie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6ccd6b6d635d297a3626c29742a8674c}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Ke},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {APS}%
+      }
+      \strng{namehash}{6452bb4f5b58530ec106af1dd02b21a4}
+      \strng{fullhash}{54ecfb5adc5921fa7d57a056bbe05aa0}
+      \strng{bibnamehash}{54ecfb5adc5921fa7d57a056bbe05aa0}
+      \strng{authorbibnamehash}{54ecfb5adc5921fa7d57a056bbe05aa0}
+      \strng{authornamehash}{6452bb4f5b58530ec106af1dd02b21a4}
+      \strng{authorfullhash}{54ecfb5adc5921fa7d57a056bbe05aa0}
+      \field{sortinit}{Z}
+      \field{sortinithash}{156173bd08b075d7295bc3e0f4735a04}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical Review E}
+      \field{number}{1}
+      \field{title}{Weak ties: Subtle role of information diffusion in online social networks}
+      \field{volume}{82}
+      \field{year}{2010}
+      \field{pages}{016105}
+      \range{pages}{1}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
